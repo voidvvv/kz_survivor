@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.base.world.VWorld;
@@ -17,6 +18,9 @@ public class VSimpleFlatWorldRender implements WorldRender {
     TiledMap map = null;
     Viewport viewport = null;
     TiledMapRenderer tiledMapRenderer = null;
+
+
+    Box2DDebugRenderer debug = new Box2DDebugRenderer();
 
     public VSimpleFlatWorldRender(TiledMap map, Viewport viewport) {
         this.map = map;
@@ -60,6 +64,8 @@ public class VSimpleFlatWorldRender implements WorldRender {
         // background
         tiledMapRenderer.setView((OrthographicCamera) camera);
         tiledMapRenderer.render();
+
+
     }
 
     @Override

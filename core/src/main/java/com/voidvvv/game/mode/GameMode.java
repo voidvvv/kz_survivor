@@ -1,6 +1,8 @@
 package com.voidvvv.game.mode;
 
-public interface GameMode {
+import com.badlogic.gdx.ai.msg.Telegraph;
+
+public interface GameMode extends Telegraph {
     void init ();
 
     void update (float delta);

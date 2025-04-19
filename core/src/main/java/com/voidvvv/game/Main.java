@@ -6,6 +6,8 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.voidvvv.game.manager.CameraManager;
 import com.voidvvv.game.manager.DrawManager;
+import com.voidvvv.game.mode.GameMode;
+import com.voidvvv.game.screen.GameOverScreen;
 import com.voidvvv.game.screen.GameScreen;
 import com.voidvvv.game.screen.StartScreen;
 import com.voidvvv.game.screen.UpdateScreen;
@@ -24,6 +26,16 @@ public class Main extends Game {
     private AsyncGameRunnable asyncGameRunnable;
 
     InputMultiplexer input;
+
+    GameMode gameMode;
+
+    public GameMode getGameMode() {
+        return gameMode;
+    }
+
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
+    }
 
     // singleton instance
     private static Main instance;
@@ -73,6 +85,7 @@ public class Main extends Game {
     private void createScreens() {
         startScreen = new StartScreen();
         mainGameScreen = new GameScreen();
+        gameOverScreen = new GameOverScreen();
     }
 
     public static Main getInstance() {
@@ -91,7 +104,9 @@ public class Main extends Game {
         drawManager.init();
         initScreens();
         lastFrameTime = System.nanoTime();
-        new Thread(asyncGameRunnable).start();
+        Thread thread = new Thread(asyncGameRunnable);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     private void initScreens() {

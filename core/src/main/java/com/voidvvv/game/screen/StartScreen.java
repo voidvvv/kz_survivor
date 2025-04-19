@@ -3,6 +3,7 @@ package com.voidvvv.game.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -60,21 +61,20 @@ public class StartScreen implements UpdateScreen {
         uiStage = new Stage(vp, Main.getInstance().getDrawManager().getBaseBatch());
         // compose UI
         AssetManager assetManager = Main.getInstance().getAssetManager();
-        Skin skin = assetManager.get(AssetConstants.SKIN_JSON_GLOSSY, Skin.class);
+        Skin skin = assetManager.get(AssetConstants.STAR_SOLDIER, Skin.class);
         startGameButton = new TextButton("Start Game",skin);
 //        startGameButton.setPosition(100, 100);
 //        startGameButton.setSize(200, 50);
         startGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // Handle button click
-                System.out.println("Start Game button clicked!");
                 Main.getInstance().setScreen(Main.getInstance().getMainGameScreen());
 //                Main.getInstance().setScreen();
             }
         });
         titleLabel = new Label("KZ Survivor", skin);
         titleLabel.setPosition(100, 200);
+        titleLabel.setColor(Color.RED);
         titleLabel.setSize(200, 50);
         Table layout = new Table(skin);
         layout.add(titleLabel).expandX().padTop(10);
@@ -91,7 +91,7 @@ public class StartScreen implements UpdateScreen {
     private void loadAssets() {
         AssetManager assetManager = Main.getInstance().getAssetManager();
         assetManager.load(AssetConstants.SKIN_JSON_NEON, Skin.class);
-        assetManager.load(AssetConstants.SKIN_JSON_GLOSSY, Skin.class);
+        assetManager.load(AssetConstants.STAR_SOLDIER, Skin.class);
         assetManager.load(AssetConstants.HUGE_TREE_COUNTRYSIDE, Texture.class);
         assetManager.finishLoading();
     }
@@ -114,15 +114,19 @@ public class StartScreen implements UpdateScreen {
 
     @Override
     public void dispose() {
+        loaded = false;
         if (uiStage != null) {
             Main.getInstance().removeInputProcessor(uiStage);
             uiStage.dispose();
             uiStage = null;
         }
-        loaded = false;
+
     }
     @Override
     public void update(float delta) {
+        if (!loaded) {
+            return;
+        }
         uiStage.act(delta);
     }
 }

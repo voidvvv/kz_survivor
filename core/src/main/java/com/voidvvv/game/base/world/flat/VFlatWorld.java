@@ -1,6 +1,10 @@
 package com.voidvvv.game.base.world.flat;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.voidvvv.game.base.Updateable;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
@@ -53,8 +57,27 @@ public class VFlatWorld implements VWorld {
         actorComponent.init();
         initBox2dWorld();
         viewPosition.set(config.birthPlace);
+
+        initWalls();
     }
 
+    private void initWalls() {
+        Rectangle boundingBox = config.boundingBox;
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(boundingBox.x, boundingBox.y);
+        Body wallBody = box2dWorld.createBody(bodyDef);
+        ChainShape shape = new ChainShape();
+        shape.createLoop(
+                new Vector2[]{
+                        new Vector2(boundingBox.x, boundingBox.y),
+                        new Vector2(boundingBox.x + boundingBox.width, boundingBox.y),
+                        new Vector2(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height),
+                        new Vector2(boundingBox.x, boundingBox.y + boundingBox.height)
+                }
+        );
+        wallBody.createFixture(shape, 0.0f);
+    }
 
 
     private void initBox2dWorld() {
@@ -128,5 +151,9 @@ public class VFlatWorld implements VWorld {
     @Override
     public void removeUpdateable(Updateable updateable) {
         updateables.remove(updateable);
+    }
+
+    public World getBox2dWorld() {
+        return box2dWorld;
     }
 }

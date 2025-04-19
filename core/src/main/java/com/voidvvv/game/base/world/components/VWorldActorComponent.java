@@ -22,7 +22,7 @@ public class VWorldActorComponent implements VComponent {
     }
     @Override
     public void update(float delta) {
-
+        flushActors();
     }
 
     public List<? extends VWorldActor> allActors() {
@@ -44,13 +44,16 @@ public class VWorldActorComponent implements VComponent {
 
     @Override
     public void dispose() {
-
+        disposeActors();
     }
 
     private void disposeActors() {
         actors.clear();
         toAdd.clear();
         toRemove.clear();
+        actors = null;
+        toAdd = null;
+        toRemove = null;
     }
 
     public void resetActor(VWorldActor actor) {
