@@ -2,25 +2,26 @@ package com.voidvvv.game;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.voidvvv.game.manager.BaseManager;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.voidvvv.game.manager.CameraManager;
 import com.voidvvv.game.manager.DrawManager;
+import com.voidvvv.game.screen.GameScreen;
 import com.voidvvv.game.screen.StartScreen;
+import com.voidvvv.game.screen.UpdateScreen;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends Game {
     private CameraManager cameraManager;
     private DrawManager drawManager;
     private AssetManager assetManager;
-    Screen startScreen;
+    volatile UpdateScreen startScreen;
 
-    Screen mainGameScreen;
+    volatile UpdateScreen mainGameScreen;
 
-    Screen gameOverScreen;
+    volatile UpdateScreen gameOverScreen;
+
+    private AsyncGameRunnable asyncGameRunnable;
 
     InputMultiplexer input;
 
@@ -32,7 +33,7 @@ public class Main extends Game {
         drawManager = new DrawManager();
         assetManager = new AssetManager();
         input=  new InputMultiplexer();
-        startScreen = new StartScreen();
+        asyncGameRunnable = new AsyncGameRunnable(this);
         // create screens
         createScreens();
     }
@@ -70,6 +71,8 @@ public class Main extends Game {
     }
 
     private void createScreens() {
+        startScreen = new StartScreen();
+        mainGameScreen = new GameScreen();
     }
 
     public static Main getInstance() {
@@ -81,16 +84,36 @@ public class Main extends Game {
 
     @Override
     public void create() {
+        assetManager.setLoader(TiledMap.class,new TmxMapLoader());
+
         Gdx.input.setInputProcessor(input);
         cameraManager.init();
         drawManager.init();
         initScreens();
+        lastFrameTime = System.nanoTime();
+        new Thread(asyncGameRunnable).start();
     }
 
     private void initScreens() {
         this.setScreen(startScreen);
     }
 
+    @Override
+    public synchronized UpdateScreen getScreen() {
+        return (UpdateScreen) super.getScreen();
+    }
+
+    long lastFrameTime = 0L;
+
+    float deltaTime = 0.0f;
+    public synchronized void update () {
+        long time = System.nanoTime();
+        deltaTime = (time - lastFrameTime) / 1000000000.0f;
+        lastFrameTime = time;
+        if (getScreen() != null) {
+            getScreen().update(deltaTime);
+        }
+    }
 
     @Override
     public void dispose() {

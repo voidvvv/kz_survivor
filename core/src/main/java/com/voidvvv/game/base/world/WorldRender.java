@@ -7,7 +7,7 @@ public interface WorldRender extends Disposable {
 
     public abstract void init();
 
-    public abstract void render(VWorld world, float delta);
+    public abstract void render(VWorld world);
 
     public abstract void dispose();
 }

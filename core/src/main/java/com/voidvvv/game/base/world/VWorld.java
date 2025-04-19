@@ -17,7 +17,6 @@ public interface VWorld {
 
     public void update(float delta);
 
-    void draw();
 
     public void addUpdateable(Updateable updateable);
 

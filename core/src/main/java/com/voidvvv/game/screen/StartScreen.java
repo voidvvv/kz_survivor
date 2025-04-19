@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.utils.AssetConstants;
 
-public class StartScreen extends ScreenAdapter {
+public class StartScreen implements UpdateScreen {
     private boolean loaded = false;
     private Button startGameButton;
     private Label titleLabel;
@@ -27,13 +27,26 @@ public class StartScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0.2f, 0.5f, 0.5f, 1);
-        uiStage.act(delta);
+        // try to deal with resize
+        internalResize();
         uiStage.draw();
     }
 
+    private void internalResize() {
+        if (resizeFlag && loaded) {
+            uiStage.getViewport().update(resizeWidth, resizeHeight, true);
+            resizeFlag = false;
+        }
+    }
+
+    int resizeWidth;
+    int resizeHeight;
+    boolean resizeFlag = false;
     @Override
     public void resize(int width, int height) {
-        uiStage.getViewport().update(width, height, true);
+        resizeFlag = true;
+        resizeWidth = width;
+        resizeHeight = height;
     }
 
     @Override
@@ -43,7 +56,6 @@ public class StartScreen extends ScreenAdapter {
             return;
         }
         loadAssets();
-
         Viewport vp = new StretchViewport(640, 480, Main.getInstance().getCameraManager().getUiCamera());
         uiStage = new Stage(vp, Main.getInstance().getDrawManager().getBaseBatch());
         // compose UI
@@ -57,6 +69,7 @@ public class StartScreen extends ScreenAdapter {
             public void clicked(InputEvent event, float x, float y) {
                 // Handle button click
                 System.out.println("Start Game button clicked!");
+                Main.getInstance().setScreen(Main.getInstance().getMainGameScreen());
 //                Main.getInstance().setScreen();
             }
         });
@@ -85,17 +98,18 @@ public class StartScreen extends ScreenAdapter {
 
     @Override
     public void hide() {
-        super.hide();
+        dispose();
+
     }
 
     @Override
     public void pause() {
-        super.pause();
+
     }
 
     @Override
     public void resume() {
-        super.resume();
+
     }
 
     @Override
@@ -106,5 +120,9 @@ public class StartScreen extends ScreenAdapter {
             uiStage = null;
         }
         loaded = false;
+    }
+    @Override
+    public void update(float delta) {
+        uiStage.act(delta);
     }
 }

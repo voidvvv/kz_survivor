@@ -5,10 +5,15 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 public class CameraManager implements BaseManager{
     OrthographicCamera mainCamera;
     OrthographicCamera uiCamera;
-    @Override
-    public void init() {
+
+    public CameraManager() {
         mainCamera = new OrthographicCamera();
         uiCamera = new OrthographicCamera();
+    }
+
+    @Override
+    public void init() {
+
         mainCamera.setToOrtho(false, 800, 600);
 
         uiCamera.setToOrtho(false, 800, 600);

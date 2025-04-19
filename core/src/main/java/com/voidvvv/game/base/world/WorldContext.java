@@ -38,5 +38,15 @@ public class WorldContext {
     };
 
     public void init() {
+        if (this.currentWorld() != null) {
+            this.currentWorld().initWorld();
+        }
+    }
+
+    public void dispose() {
+        if (world != null) {
+            world.dispose();
+            world = null;
+        }
     }
 }

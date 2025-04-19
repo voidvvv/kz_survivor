@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.voidvvv.game.base.Updateable;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
-import com.voidvvv.game.base.world.VRenderdWorld;
+import com.voidvvv.game.base.world.VWorld;
 import com.voidvvv.game.base.world.VWorldActor;
 import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.base.world.components.VWorldActorComponent;
@@ -16,15 +16,24 @@ import java.util.function.Supplier;
 /**
  * 一个平面world，没有重力，有物理模拟。
  */
-public class VFlatWorld extends VRenderdWorld {
+public class VFlatWorld implements VWorld {
     protected World box2dWorld;
 
     private WorldContext worldContext;
 
     private VWorldActorComponent actorComponent;
 
-    // actor related
+    FlatWorldConfig config;
 
+    public final Vector2 viewPosition = new Vector2();
+
+    public FlatWorldConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(FlatWorldConfig config) {
+        this.config = config;
+    }
 
     public VFlatWorld(WorldContext worldContext) {
         this.worldContext = worldContext;
@@ -56,6 +65,7 @@ public class VFlatWorld extends VRenderdWorld {
         disposeBox2dWorld();
         actorComponent.dispose();
         actorComponent = null;
+        config = null;
     }
 
 
@@ -72,13 +82,10 @@ public class VFlatWorld extends VRenderdWorld {
         return actorComponent.allActors();
     }
 
-    public <T extends VFlatWorldActor> T spawnVActor(VActorSpawnHelper helper) {
-        return null;
-    }
 
     @Override
     public <T extends VWorldActor> T spawnVActor(Supplier<T> actorSup, VActorSpawnHelper helper) {
-        T actor = actorSup.get();
+
 
         return null;
     }
@@ -105,11 +112,6 @@ public class VFlatWorld extends VRenderdWorld {
 
     }
 
-
-    @Override
-    public void draw() {
-        super.draw();
-    }
 
     @Override
     public void addUpdateable(Updateable updateable) {
