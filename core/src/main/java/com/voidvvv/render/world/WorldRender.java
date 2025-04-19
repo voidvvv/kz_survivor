@@ -1,6 +1,7 @@
-package com.voidvvv.game.base.world;
+package com.voidvvv.render.world;
 
 import com.badlogic.gdx.utils.Disposable;
+import com.voidvvv.game.base.world.VWorld;
 
 public interface WorldRender extends Disposable {
 

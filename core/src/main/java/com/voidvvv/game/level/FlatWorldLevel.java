@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.base.world.VWorld;
 import com.voidvvv.game.base.world.WorldContext;
-import com.voidvvv.game.base.world.WorldRender;
+import com.voidvvv.render.world.WorldRender;
 import com.voidvvv.game.base.world.flat.FlatWorldConfig;
 import com.voidvvv.game.base.world.flat.VFlatWorld;
 import com.voidvvv.game.mode.GameMode;

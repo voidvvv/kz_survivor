@@ -52,6 +52,7 @@ public class VFlatWorld implements VWorld {
         actorComponent=new VWorldActorComponent();
         actorComponent.init();
         initBox2dWorld();
+        viewPosition.set(config.birthPlace);
     }
 
 
