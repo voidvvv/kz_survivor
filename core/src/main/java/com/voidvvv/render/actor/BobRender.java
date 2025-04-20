@@ -3,6 +3,7 @@ package com.voidvvv.render.actor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.voidvvv.game.Main;
@@ -32,10 +33,17 @@ public class BobRender implements VActorRender{
     public int xSplit = 32, ySplit = 32;
     private BobRender() {
     }
+    boolean loaded = false;
     @Override
     public void init() {
+        if (loaded) {
+            return;
+        }
+        loaded = true;
         if (base_pic == null) {
             AssetManager assetManager = Main.getInstance().getAssetManager();
+            assetManager.load(AssetConstants.BOB_IMAGE, Texture.class);
+            assetManager.finishLoading();
             Texture texture = assetManager.get(AssetConstants.BOB_IMAGE, Texture.class);
             base_pic = TextureRegion.split(texture, xSplit, ySplit);
             base_pic_mirror = TextureRegion.split(texture, xSplit, ySplit);
@@ -80,9 +88,20 @@ public class BobRender implements VActorRender{
     public void render(VActor actor, float delta) {
         if (Bob.class.isAssignableFrom(actor.getClass())) {
             Bob bob = (Bob) actor;
+            if (!loaded) {
+                init();
+            }
             VRectBoundComponent rectBoundComponent = bob.getRectBoundComponent();
 
+            TextureRegion keyFrame = idle_animation.getKeyFrame(bob.getStatusTime());
+            SpriteBatch baseBatch = Main.getInstance().getDrawManager().getBaseBatch();
+            baseBatch.setProjectionMatrix(Main.getInstance().getCameraManager().getMainCamera().combined);
+            baseBatch.begin();
 
+            float x = rectBoundComponent.position.x - keyFrame.getRegionWidth()/2f;
+            float y = rectBoundComponent.position.y;
+            baseBatch.draw(keyFrame, x, y);
+            baseBatch.end();
         }
     }
 
