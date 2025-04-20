@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.voidvvv.game.base.VActorMetaState;
 import com.voidvvv.game.base.world.components.VBox2dComponent;
+import com.voidvvv.game.utils.Box2dUnitConverter;
 import com.voidvvv.render.actor.VActorRender;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.base.world.VWorldActor;
@@ -52,7 +53,8 @@ public class VFlatWorldActor extends VWorldActor {
         // sync box2d world props to rect bound component
         Body flatBody = getvBox2dComponent().getFlatBody();
         Vector2 position = flatBody.getPosition();
-        getRectBoundComponent().position.set(position.x, position.y);
+        getRectBoundComponent().position.set(Box2dUnitConverter.box2dToWorld(position.x),
+                Box2dUnitConverter.box2dToWorld(position.y));
         getRectBoundComponent().update(delta);
     }
 

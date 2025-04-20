@@ -36,9 +36,6 @@ public class VRectBoundComponent extends VPositionComponent {
     @Override
     public void init() {
         super.init();
-        width = 0;
-        height = 0;
-        length = 0;
     }
 
     @Override
@@ -49,6 +46,9 @@ public class VRectBoundComponent extends VPositionComponent {
     @Override
     public void dispose() {
 
+        width = 0;
+        height = 0;
+        length = 0;
     }
 
 }

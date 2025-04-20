@@ -78,9 +78,9 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         this.setTimeLeft(getTimeLeft() - delta);
         context.getWorld().update(delta);
 
-        if (this.getTimeLeft() <= 0) {
-            Gdx.app.postRunnable(() -> Main.getInstance().setScreen(Main.getInstance().getGameOverScreen()));
-        }
+//        if (this.getTimeLeft() <= 0) {
+//            Gdx.app.postRunnable(() -> Main.getInstance().setScreen(Main.getInstance().getGameOverScreen()));
+//        }
     }
 
     @Override

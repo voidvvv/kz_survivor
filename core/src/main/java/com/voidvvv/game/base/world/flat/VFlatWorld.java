@@ -199,10 +199,7 @@ public class VFlatWorld implements VWorld {
             box2dWorld.step(delta, 6, 2);
         }
         internalUpdate(delta);
-        List<? extends VWorldActor> actors = allActors();
-        for (VWorldActor actor : actors) {
-            actor.update(delta);
-        }
+        actorComponent.update(delta);
         for (Updateable updateable : updateables) {
             updateable.update(delta);
         }

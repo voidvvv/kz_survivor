@@ -9,9 +9,9 @@ public class Bob extends VFlatWorldActor {
     public Bob() {
         super(BobRender.actorRender);
         VRectBoundComponent rectBoundComponent = getRectBoundComponent();
-        rectBoundComponent.setHeight(10);
-        rectBoundComponent.setWidth(10);
-        rectBoundComponent.setLength(10);
+        rectBoundComponent.setHeight(1000);
+        rectBoundComponent.setWidth(1000);
+        rectBoundComponent.setLength(1000);
     }
 
     @Override
