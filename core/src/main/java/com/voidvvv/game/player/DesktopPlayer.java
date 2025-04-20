@@ -77,6 +77,11 @@ public class DesktopPlayer implements Player, InputProcessor {
         }
     }
 
+    @Override
+    public void addInput(PlayerInput input) {
+
+    }
+
     public static class DesktopMapping {
         public int up = 0;
         public int down = 1;

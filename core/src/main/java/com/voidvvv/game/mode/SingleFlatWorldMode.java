@@ -3,22 +3,33 @@ package com.voidvvv.game.mode;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.voidvvv.game.Main;
-import com.voidvvv.game.base.world.VWorld;
 import com.voidvvv.game.base.world.WorldContext;
+import com.voidvvv.game.base.world.flat.FlatWorldConfig;
 import com.voidvvv.game.base.world.flat.VFlatWorld;
+import com.voidvvv.game.base.world.flat.VFlatWorldActor;
 
 public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode{
 
     WorldContext context;
+    VFlatWorld flatWorld;
+
+    VFlatWorldActor protagonist;
 
     public SingleFlatWorldMode() {
-        context = new WorldContext();
+        this(new FlatWorldConfig());
     }
 
-    public SingleFlatWorldMode(WorldContext context) {
-        this.context = context;
+    public SingleFlatWorldMode(FlatWorldConfig config) {
+        this.context = initWorld(config);
     }
+    private WorldContext initWorld(FlatWorldConfig config) {
+        WorldContext worldContext = new WorldContext();
 
+        flatWorld = new VFlatWorld(worldContext);
+        flatWorld.setConfig(config);
+        worldContext.setWorld(flatWorld);
+        return worldContext;
+    }
     public WorldContext getContext() {
         return context;
     }
@@ -29,8 +40,15 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     @Override
     public void init() {
-        this.context.init();
         Main.getInstance().setGameMode(this);
+        this.context.init();
+
+        initProtagonist();
+    }
+
+    private void initProtagonist() {
+        protagonist = new VFlatWorldActor(null);
+
     }
 
     @Override

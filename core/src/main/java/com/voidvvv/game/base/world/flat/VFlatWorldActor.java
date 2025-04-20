@@ -1,9 +1,9 @@
 package com.voidvvv.game.base.world.flat;
 
 import com.badlogic.gdx.Gdx;
-import com.github.javaparser.quality.NotNull;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.voidvvv.game.base.VActorMetaState;
-import com.voidvvv.game.base.VActorRender;
+import com.voidvvv.render.actor.VActorRender;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.base.world.VWorldActor;
 
@@ -12,6 +12,17 @@ public class VFlatWorldActor extends VWorldActor {
         public static final int BOX_2D_WORLD = 1001;
         public static final int BOUND_COMPONENT = 1002;
     }
+
+    Body flatBody;
+
+    public Body getFlatBody() {
+        return flatBody;
+    }
+
+    public void setFlatBody(Body flatBody) {
+        this.flatBody = flatBody;
+    }
+
     private VActorRender actorRender;
     private VRectBoundComponent rectBoundComponent;
 

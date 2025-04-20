@@ -2,16 +2,14 @@ package com.voidvvv.game.base.world.flat;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.ChainShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.voidvvv.game.base.Updateable;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.VWorld;
 import com.voidvvv.game.base.world.VWorldActor;
 import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.base.world.components.VWorldActorComponent;
+import com.voidvvv.game.box2d.FlatWorldListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +19,14 @@ import java.util.function.Supplier;
  * 一个平面world，没有重力，有物理模拟。
  */
 public class VFlatWorld implements VWorld {
+    public static class BOX2D_CONST {
+        public static final short BOTTOM_COLLIDE_CATEGORY = 1;
+        public static final short FACE_CATEGORY = 1<<1;
+    }
+    // box2d related
     protected World box2dWorld;
+
+    Body wallBody;
 
     private WorldContext worldContext;
 
@@ -58,7 +63,7 @@ public class VFlatWorld implements VWorld {
         initBox2dWorld();
         viewPosition.set(config.birthPlace);
 
-        initWalls();
+
     }
 
     private void initWalls() {
@@ -66,7 +71,7 @@ public class VFlatWorld implements VWorld {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(boundingBox.x, boundingBox.y);
-        Body wallBody = box2dWorld.createBody(bodyDef);
+        wallBody = box2dWorld.createBody(bodyDef);
         ChainShape shape = new ChainShape();
         shape.createLoop(
                 new Vector2[]{
@@ -76,12 +81,21 @@ public class VFlatWorld implements VWorld {
                         new Vector2(boundingBox.x, boundingBox.y + boundingBox.height)
                 }
         );
+        FixtureDef fd = new FixtureDef();
+        fd.shape = shape;
+        fd.filter.categoryBits = BOX2D_CONST.BOTTOM_COLLIDE_CATEGORY;
+        fd.density = 0f;
+        fd.filter.maskBits = BOX2D_CONST.BOTTOM_COLLIDE_CATEGORY;
         wallBody.createFixture(shape, 0.0f);
+        shape.dispose();
     }
 
 
     private void initBox2dWorld() {
         box2dWorld = new World(new Vector2(), true);
+        box2dWorld.setContactListener(new FlatWorldListener());
+
+        initWalls();
     }
 
     @Override

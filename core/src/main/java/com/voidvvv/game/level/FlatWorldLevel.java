@@ -80,8 +80,7 @@ public class FlatWorldLevel implements Level{
         if (gameModeSupplier != null) {
             gameMode = gameModeSupplier.get();
         } else {
-            WorldContext worldContext = initWorld();
-            SingleFlatWorldMode localMode = new SingleFlatWorldMode(worldContext);
+            SingleFlatWorldMode localMode = new SingleFlatWorldMode(config);
             localMode.setTimeLimit(DEFAULT_TIME);
             localMode.setTimeLeft(DEFAULT_TIME);
             gameMode = localMode;
@@ -119,14 +118,7 @@ public class FlatWorldLevel implements Level{
         return config;
     }
 
-    private WorldContext initWorld() {
-        WorldContext worldContext = new WorldContext();
 
-        VFlatWorld flatWorld = new VFlatWorld(worldContext);
-        flatWorld.setConfig(config);
-        worldContext.setWorld(flatWorld);
-        return worldContext;
-    }
 
     @Override
     public void update(float delta) {

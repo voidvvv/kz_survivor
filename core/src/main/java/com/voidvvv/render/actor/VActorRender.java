@@ -1,4 +1,6 @@
-package com.voidvvv.game.base;
+package com.voidvvv.render.actor;
+
+import com.voidvvv.game.base.VActor;
 
 public interface VActorRender {
     public abstract void init();

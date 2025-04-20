@@ -13,6 +13,8 @@ import com.voidvvv.game.screen.GameScreen;
 import com.voidvvv.game.screen.StartScreen;
 import com.voidvvv.game.screen.UpdateScreen;
 
+import static com.voidvvv.game.player.Player.PLAYERS;
+
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends Game {
     private CameraManager cameraManager;
@@ -107,6 +109,7 @@ public class Main extends Game {
         lastFrameTime = System.nanoTime();
 
         if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
+            PLAYERS[0] = DesktopPlayer.PLAYER_1;
             this.addInputProcessor(DesktopPlayer.PLAYER_1);
         }
 
