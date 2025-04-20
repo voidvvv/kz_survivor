@@ -8,6 +8,7 @@ import com.voidvvv.game.manager.CameraManager;
 import com.voidvvv.game.manager.DrawManager;
 import com.voidvvv.game.mode.GameMode;
 import com.voidvvv.game.player.DesktopPlayer;
+import com.voidvvv.game.player.Player;
 import com.voidvvv.game.screen.GameOverScreen;
 import com.voidvvv.game.screen.GameScreen;
 import com.voidvvv.game.screen.StartScreen;
@@ -142,6 +143,11 @@ public class Main extends Game {
         deltaTime = (time - lastFrameTime) / 1000000000.0f;
         deltaTime = Math.min(deltaTime, 0.1f); // cap deltaTime to avoid large jumps
         lastFrameTime = time;
+        for (int i = 0; i < PLAYERS.length; i++) {
+            if (PLAYERS[i] != null) {
+                PLAYERS[i].update(deltaTime);
+            }
+        }
         if (getScreen() != null) {
             getScreen().update(deltaTime);
         }

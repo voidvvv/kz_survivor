@@ -23,6 +23,11 @@ public class VWorldActorComponent implements VComponent {
     @Override
     public void update(float delta) {
         flushActors();
+        actors.forEach(actor -> {
+            if (actor != null) {
+                actor.update(delta);
+            }
+        });
     }
 
     public List<? extends VWorldActor> allActors() {

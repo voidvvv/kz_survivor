@@ -76,10 +76,10 @@ public class VFlatWorld implements VWorld {
         ChainShape shape = new ChainShape();
         shape.createLoop(
                 new Vector2[]{
-                        new Vector2(boundingBox.x, boundingBox.y),
-                        new Vector2(boundingBox.x + boundingBox.width, boundingBox.y),
-                        new Vector2(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height),
-                        new Vector2(boundingBox.x, boundingBox.y + boundingBox.height)
+                        Box2dUnitConverter.worldToBox2d(new Vector2(boundingBox.x, boundingBox.y)),
+                        Box2dUnitConverter.worldToBox2d(new Vector2(boundingBox.x + boundingBox.width, boundingBox.y)),
+                        Box2dUnitConverter.worldToBox2d(new Vector2(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height)),
+                        Box2dUnitConverter.worldToBox2d(new Vector2(boundingBox.x, boundingBox.y + boundingBox.height))
                 }
         );
         FixtureDef fd = new FixtureDef();

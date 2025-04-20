@@ -79,7 +79,7 @@ public class DesktopPlayer implements Player, InputProcessor {
 
     @Override
     public void addInput(PlayerInput input) {
-
+        list.add(input);
     }
 
     public static class DesktopMapping {

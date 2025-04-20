@@ -50,11 +50,25 @@ public class VFlatWorldActor extends VWorldActor {
 
     @Override
     public void update(float delta) {
+        syncBox2dCotentToWorld(delta);
+        flatWorldActorUpdate(delta);
+        syncWorldContentToBox2d(delta);
+    }
+
+    protected void flatWorldActorUpdate(float delta) {
+
+    }
+
+    protected void syncWorldContentToBox2d(float delta) {
+
+    }
+
+    protected void syncBox2dCotentToWorld(float delta) {
         // sync box2d world props to rect bound component
         Body flatBody = getvBox2dComponent().getFlatBody();
         Vector2 position = flatBody.getPosition();
         getRectBoundComponent().position.set(Box2dUnitConverter.box2dToWorld(position.x),
-                Box2dUnitConverter.box2dToWorld(position.y));
+            Box2dUnitConverter.box2dToWorld(position.y));
         getRectBoundComponent().update(delta);
     }
 

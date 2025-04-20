@@ -2,13 +2,19 @@ package com.voidvvv.game.mode;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.math.Vector2;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.Bob;
+import com.voidvvv.game.base.MoveComponent;
+import com.voidvvv.game.base.MoveComponentHolder;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.base.world.flat.FlatWorldConfig;
 import com.voidvvv.game.base.world.flat.VFlatWorld;
 import com.voidvvv.game.base.world.flat.VFlatWorldActor;
+import com.voidvvv.game.base.world.flat.VFlatWorldMoveActor;
+import com.voidvvv.game.player.Player;
+import com.voidvvv.game.player.PlayerInput;
 
 import java.util.function.Supplier;
 
@@ -59,10 +65,37 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         VActorSpawnHelper helper = new VActorSpawnHelper();
         helper.initX = config.birthPlace.x;
         helper.initY = config.birthPlace.y;
-        helper.hx = this.protagonist.getRectBoundComponent().getLength() / 2;
-        helper.hy = this.protagonist.getRectBoundComponent().getHeight() / 2;
-        helper.hz = this.protagonist.getRectBoundComponent().getWidth() / 2;
-        this.flatWorld.spawnVActor(() -> this.protagonist, helper);
+        VFlatWorldActor localProtagonist = this.protagonist;
+        helper.hx = localProtagonist.getRectBoundComponent().getLength() / 2;
+        helper.hy = localProtagonist.getRectBoundComponent().getHeight() / 2;
+        helper.hz = localProtagonist.getRectBoundComponent().getWidth() / 2;
+        this.flatWorld.spawnVActor(() -> localProtagonist, helper);
+        // add protagonist to Player1
+        Player.PLAYERS[0].addInput(new PlayerInput() {
+            @Override
+            public void move(Vector2 dir) {
+                MoveComponent att = (MoveComponent)localProtagonist.getAtt(MoveComponentHolder.MOVEMENT_COMPONENT_ATTR);
+
+                if (att != null) {
+                    att.vel.set(dir);
+                }
+            }
+
+            @Override
+            public void skill1() {
+
+            }
+
+            @Override
+            public void skill2() {
+
+            }
+
+            @Override
+            public void special() {
+
+            }
+        });
     }
 
     private void readProtagonistConfig() {
@@ -76,6 +109,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     @Override
     public void update(float delta) {
         this.setTimeLeft(getTimeLeft() - delta);
+        Vector2 position = protagonist.getRectBoundComponent().position;
+        flatWorld.viewPosition.set(position);
         context.getWorld().update(delta);
 
 //        if (this.getTimeLeft() <= 0) {
