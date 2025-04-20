@@ -50,6 +50,7 @@ public class VFlatWorldActor extends VWorldActor {
 
     @Override
     public void update(float delta) {
+        super.update(delta);
         syncBox2dCotentToWorld(delta);
         flatWorldActorUpdate(delta);
         syncWorldContentToBox2d(delta);

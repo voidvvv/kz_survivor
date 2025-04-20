@@ -82,6 +82,11 @@ public class DesktopPlayer implements Player, InputProcessor {
         list.add(input);
     }
 
+    @Override
+    public void removeInput(PlayerInput input) {
+        list.remove(input);
+    }
+
     public static class DesktopMapping {
         public int up = 0;
         public int down = 1;

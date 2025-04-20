@@ -18,8 +18,8 @@ import com.voidvvv.game.player.PlayerInput;
 
 import java.util.function.Supplier;
 
-public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode{
-
+public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode {
+    PlayerInput playerInput;
     WorldContext context;
     VFlatWorld flatWorld;
 
@@ -36,6 +36,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         this.config = config;
         this.context = initWorld(config);
     }
+
     private WorldContext initWorld(FlatWorldConfig config) {
         WorldContext worldContext = new WorldContext();
 
@@ -44,6 +45,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         worldContext.setWorld(flatWorld);
         return worldContext;
     }
+
     public WorldContext getContext() {
         return context;
     }
@@ -71,10 +73,10 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         helper.hz = localProtagonist.getRectBoundComponent().getWidth() / 2;
         this.flatWorld.spawnVActor(() -> localProtagonist, helper);
         // add protagonist to Player1
-        Player.PLAYERS[0].addInput(new PlayerInput() {
+        playerInput = new PlayerInput() {
             @Override
             public void move(Vector2 dir) {
-                MoveComponent att = (MoveComponent)localProtagonist.getAtt(MoveComponentHolder.MOVEMENT_COMPONENT_ATTR);
+                MoveComponent att = (MoveComponent) localProtagonist.getAtt(MoveComponentHolder.MOVEMENT_COMPONENT_ATTR);
 
                 if (att != null) {
                     att.vel.set(dir);
@@ -95,7 +97,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
             public void special() {
 
             }
-        });
+        };
+        Player.PLAYERS[0].addInput(playerInput);
     }
 
     private void readProtagonistConfig() {
@@ -110,7 +113,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     public void update(float delta) {
         this.setTimeLeft(getTimeLeft() - delta);
         Vector2 position = protagonist.getRectBoundComponent().position;
-        flatWorld.viewPosition.set(position);
+        flatWorld.viewPosition.lerp(position, 0.5f);
         context.getWorld().update(delta);
 
 //        if (this.getTimeLeft() <= 0) {

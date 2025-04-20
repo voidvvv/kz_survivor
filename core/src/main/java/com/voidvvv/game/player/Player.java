@@ -10,4 +10,6 @@ public interface Player {
     void update(float delta);
 
     void addInput(PlayerInput input);
+
+    void removeInput(PlayerInput input);
 }
