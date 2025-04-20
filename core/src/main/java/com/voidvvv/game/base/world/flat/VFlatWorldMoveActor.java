@@ -1,7 +1,7 @@
 package com.voidvvv.game.base.world.flat;
 
 import com.badlogic.gdx.math.Vector2;
-import com.voidvvv.game.base.MoveComponent;
+import com.voidvvv.game.base.components.MoveComponent;
 import com.voidvvv.game.base.MoveComponentHolder;
 import com.voidvvv.game.utils.Box2dUnitConverter;
 import com.voidvvv.render.actor.VActorRender;

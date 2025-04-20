@@ -93,7 +93,7 @@ public class VFlatWorld implements VWorld {
 
 
     private void initBox2dWorld() {
-        box2dWorld = new World(new Vector2(), true);
+        box2dWorld = new World(new Vector2(0f,0f), true);
         box2dWorld.setContactListener(new FlatWorldListener());
 
         initWalls();

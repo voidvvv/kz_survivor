@@ -1,6 +1,6 @@
 package com.voidvvv.game.base.world.components;
 
-import com.voidvvv.game.base.VComponent;
+import com.voidvvv.game.base.components.VComponent;
 import com.voidvvv.game.base.world.VWorldActor;
 
 import java.util.ArrayList;

@@ -1,8 +1,9 @@
 package com.voidvvv.game.base;
 
 import com.badlogic.gdx.math.Vector3;
+import com.voidvvv.game.base.components.VComponent;
 
-public class VPositionComponent implements VComponent{
+public class VPositionComponent implements VComponent {
     protected Vector3 position;
 
     public Vector3 getPosition() {

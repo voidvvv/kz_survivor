@@ -1,6 +1,7 @@
 package com.voidvvv.render.actor;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -92,6 +93,10 @@ public class BobRender implements VActorRender{
                 init();
             }
             VRectBoundComponent rectBoundComponent = bob.getRectBoundComponent();
+            if (rectBoundComponent == null) {
+                return;
+            }
+            Main.getInstance().getDrawManager().drawDebug(rectBoundComponent);
 
             TextureRegion keyFrame = idle_animation.getKeyFrame(bob.getStatusTime());
             SpriteBatch baseBatch = Main.getInstance().getDrawManager().getBaseBatch();
@@ -107,6 +112,6 @@ public class BobRender implements VActorRender{
 
     @Override
     public void dispose() {
-
+        loaded = false;
     }
 }

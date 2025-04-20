@@ -1,22 +1,18 @@
 package com.voidvvv.game.mode;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.Vector2;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.Bob;
-import com.voidvvv.game.base.MoveComponent;
+import com.voidvvv.game.base.components.MoveComponent;
 import com.voidvvv.game.base.MoveComponentHolder;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.base.world.flat.FlatWorldConfig;
 import com.voidvvv.game.base.world.flat.VFlatWorld;
 import com.voidvvv.game.base.world.flat.VFlatWorldActor;
-import com.voidvvv.game.base.world.flat.VFlatWorldMoveActor;
 import com.voidvvv.game.player.Player;
 import com.voidvvv.game.player.PlayerInput;
-
-import java.util.function.Supplier;
 
 public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode {
     PlayerInput playerInput;
@@ -124,6 +120,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     @Override
     public void dispose() {
         context.dispose();
+        Player.PLAYERS[0].removeInput(playerInput);
     }
 
     @Override

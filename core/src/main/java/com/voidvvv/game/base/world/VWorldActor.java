@@ -1,51 +1,14 @@
 package com.voidvvv.game.base.world;
 
 
+import com.badlogic.gdx.ai.fsm.StateMachine;
+import com.voidvvv.game.base.StateComponentHolder;
 import com.voidvvv.game.base.VAttrActor;
+import com.voidvvv.game.base.components.StateMachineComponent;
 
-public abstract class VWorldActor extends VAttrActor {
-
-    public static class VWorldActorState {
-        public static final int IDLE = 0;
-        public static final int MOVE = 1;
-        public static final int ATTACK = 2;
-        public static final int DYING = 3;
-
-        public static final int DEAD = 4;
-    }
+public abstract class VWorldActor extends VAttrActor implements StateComponentHolder {
 
     protected float time;
-
-    protected float statusTime;
-
-    /**
-     * {@link com.voidvvv.game.base.world.VWorldActor.VWorldActorState}
-     */
-    protected int status;
-
-    public float getTime() {
-        return time;
-    }
-
-    public void setTime(float time) {
-        this.time = time;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public float getStatusTime() {
-        return statusTime;
-    }
-
-    public void setStatusTime(float statusTime) {
-        this.statusTime = statusTime;
-    }
 
     protected WorldContext worldContext;
     public WorldContext getWorldContext() {
@@ -59,6 +22,21 @@ public abstract class VWorldActor extends VAttrActor {
     @Override
     public void update(float delta) {
         this.time += delta;
-        this.statusTime += delta;
+    }
+
+    @Override
+    public StateMachineComponent getStateMachine() {
+        return null;
+    }
+
+    @Override
+    public <T> T getAtt(int type) {
+        if (type == STATE_COMPONENT_ATTR) {
+            StateMachineComponent stateMachineComponent = getStateMachine();
+            if (stateMachineComponent != null) {
+                return (T) stateMachineComponent;
+            }
+        }
+        return super.getAtt(type);
     }
 }

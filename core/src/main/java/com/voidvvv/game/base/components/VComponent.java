@@ -1,4 +1,4 @@
-package com.voidvvv.game.base;
+package com.voidvvv.game.base.components;
 
 public interface VComponent {
     void init();
