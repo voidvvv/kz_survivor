@@ -1,13 +1,15 @@
 package com.voidvvv.game.base.world;
 
 
+import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.voidvvv.game.base.StateComponentHolder;
 import com.voidvvv.game.base.VAttrActor;
 import com.voidvvv.game.base.components.StateMachineComponent;
+import com.voidvvv.game.base.state.Idle;
 
 public abstract class VWorldActor extends VAttrActor implements StateComponentHolder {
-
+    StateMachineComponent stateMachineComponent;
     protected float time;
 
     protected WorldContext worldContext;
@@ -20,13 +22,20 @@ public abstract class VWorldActor extends VAttrActor implements StateComponentHo
     }
 
     @Override
+    public void init() {
+        stateMachineComponent = new StateMachineComponent(new DefaultStateMachine(this, new Idle()));
+        stateMachineComponent.init();
+    }
+
+    @Override
     public void update(float delta) {
         this.time += delta;
+        this.stateMachineComponent.update(delta);
     }
 
     @Override
     public StateMachineComponent getStateMachine() {
-        return null;
+        return stateMachineComponent;
     }
 
     @Override

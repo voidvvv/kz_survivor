@@ -98,7 +98,7 @@ public class BobRender implements VActorRender{
             }
             Main.getInstance().getDrawManager().drawDebug(rectBoundComponent);
 
-            TextureRegion keyFrame = idle_animation.getKeyFrame(bob.getStatusTime());
+            TextureRegion keyFrame = idle_animation.getKeyFrame(bob.getStateMachine().stateTime);
             SpriteBatch baseBatch = Main.getInstance().getDrawManager().getBaseBatch();
             baseBatch.setProjectionMatrix(Main.getInstance().getCameraManager().getMainCamera().combined);
             baseBatch.begin();

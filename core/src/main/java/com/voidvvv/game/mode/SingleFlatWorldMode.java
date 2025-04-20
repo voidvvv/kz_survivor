@@ -103,6 +103,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         } else {
             this.protagonist = new Bob();
         }
+        this.protagonist.init();
     }
 
     @Override

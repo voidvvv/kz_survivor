@@ -21,7 +21,7 @@ public class StateMachineComponent implements VComponent{
 
     @Override
     public void init() {
-
+        stateTime = 0f;
     }
 
     @Override
