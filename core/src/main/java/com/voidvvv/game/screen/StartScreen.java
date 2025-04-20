@@ -68,7 +68,11 @@ public class StartScreen implements UpdateScreen {
         startGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                // Handle button click
+                Gdx.app.log("StartScreen", "Start Game button clicked");
+                // Transition to the game screen
                 Main.getInstance().setScreen(Main.getInstance().getMainGameScreen());
+                // Optionally, you can dispose of this screen if it's no longer needed
 //                Main.getInstance().setScreen();
             }
         });
@@ -122,11 +126,15 @@ public class StartScreen implements UpdateScreen {
         }
 
     }
+
+    boolean gotoGameScreen = false;
+
     @Override
     public void update(float delta) {
         if (!loaded) {
             return;
         }
+
         uiStage.act(delta);
     }
 }

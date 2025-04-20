@@ -3,10 +3,14 @@ package com.voidvvv.game.mode;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.voidvvv.game.Main;
+import com.voidvvv.game.actor.Bob;
+import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.base.world.flat.FlatWorldConfig;
 import com.voidvvv.game.base.world.flat.VFlatWorld;
 import com.voidvvv.game.base.world.flat.VFlatWorldActor;
+
+import java.util.function.Supplier;
 
 public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode{
 
@@ -15,11 +19,15 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     VFlatWorldActor protagonist;
 
+
+    FlatWorldConfig config;
+
     public SingleFlatWorldMode() {
         this(new FlatWorldConfig());
     }
 
     public SingleFlatWorldMode(FlatWorldConfig config) {
+        this.config = config;
         this.context = initWorld(config);
     }
     private WorldContext initWorld(FlatWorldConfig config) {
@@ -47,8 +55,22 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     }
 
     private void initProtagonist() {
-        protagonist = new VFlatWorldActor(null);
+        readProtagonistConfig();
+        VActorSpawnHelper helper = new VActorSpawnHelper();
+        helper.initX = config.birthPlace.x;
+        helper.initY = config.birthPlace.y;
+        helper.hx = this.protagonist.getRectBoundComponent().getLength() / 2;
+        helper.hy = this.protagonist.getRectBoundComponent().getHeight() / 2;
+        helper.hz = this.protagonist.getRectBoundComponent().getWidth() / 2;
+        this.flatWorld.spawnVActor(() -> this.protagonist, helper);
+    }
 
+    private void readProtagonistConfig() {
+        if (config.supplier != null && config.supplier.get() != null) {
+            this.protagonist = config.supplier.get();
+        } else {
+            this.protagonist = new Bob();
+        }
     }
 
     @Override

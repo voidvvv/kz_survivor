@@ -113,10 +113,10 @@ public class Main extends Game {
             this.addInputProcessor(DesktopPlayer.PLAYER_1);
         }
 
-        Thread thread = new Thread(asyncGameRunnable);
-        thread.setName("KZ_Survivor GameMain");
-        thread.setDaemon(true);
-        thread.start();
+//        Thread thread = new Thread(asyncGameRunnable);
+//        thread.setName("KZ_Survivor GameMain");
+//        thread.setDaemon(true);
+//        thread.start();
     }
 
     private void initScreens() {
@@ -130,10 +130,17 @@ public class Main extends Game {
 
     long lastFrameTime = 0L;
 
+    @Override
+    public void render() {
+        update();
+        super.render();
+    }
+
     float deltaTime = 0.0f;
     public synchronized void update () {
         long time = System.nanoTime();
         deltaTime = (time - lastFrameTime) / 1000000000.0f;
+        deltaTime = Math.min(deltaTime, 0.1f); // cap deltaTime to avoid large jumps
         lastFrameTime = time;
         if (getScreen() != null) {
             getScreen().update(deltaTime);

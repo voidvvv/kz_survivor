@@ -1,9 +1,13 @@
 package com.voidvvv.game.base;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class VRectBoundComponent extends VPositionComponent {
     private float width; // z len
     private float height; // y len
     private float length; // x len
+
+    public final Vector2 position = new Vector2();
 
     public float getWidth() {
         return width;

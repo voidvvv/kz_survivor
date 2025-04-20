@@ -76,7 +76,6 @@ public class FlatWorldLevel implements Level{
         this.worldViewPort = Main.getInstance().getCameraManager().getWorldViewPort();
         loadAssets();
         loadConfig();
-
         if (gameModeSupplier != null) {
             gameMode = gameModeSupplier.get();
         } else {
@@ -86,7 +85,6 @@ public class FlatWorldLevel implements Level{
             gameMode = localMode;
         }
         gameMode.init();
-
         // render
         if (renderSupplier != null) {
             this.render = renderSupplier.get();
@@ -119,7 +117,7 @@ public class FlatWorldLevel implements Level{
     }
 
 
-
+    boolean needInitMode = true;
     @Override
     public void update(float delta) {
         if (gameMode != null) {

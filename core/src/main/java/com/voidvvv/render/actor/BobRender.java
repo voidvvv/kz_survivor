@@ -1,11 +1,13 @@
 package com.voidvvv.render.actor;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.voidvvv.game.actor.Bob;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VRectBoundComponent;
 
 public class BobRender implements VActorRender{
     public static final BobRender actorRender = new BobRender();
+    ShapeRenderer shapeRenderer;
     private BobRender() {
     }
     @Override

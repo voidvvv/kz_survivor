@@ -30,7 +30,6 @@ public class GameScreen implements UpdateScreen {
 
     @Override
     public void show() {
-        CameraManager cameraManager = Main.getInstance().getCameraManager();
         initLevel();
         initUI();
     }
@@ -86,15 +85,22 @@ public class GameScreen implements UpdateScreen {
 
     @Override
     public void update(float delta) {
-        level.update(delta);
-        ui.act(delta);
+        if (level != null) {
+            level.update(delta);
+        }
+        if (ui != null) {
+            ui.act(delta);
+        }
     }
 
     @Override
     public void resize(int width, int height) {
-        Main.getInstance().getCameraManager().getScreenViewport().update(width, height, true);
-        Main.getInstance().getCameraManager().getWorldViewPort().update(width, height, false);
-//        timer.setPosition(Gdx.graphics.getWidth()/2f  - 20,Gdx.graphics.getHeight() - 20);
+        Gdx.app.postRunnable(() -> {
+            Main.getInstance().getCameraManager().getScreenViewport().update(width, height, true);
+            Main.getInstance().getCameraManager().getWorldViewPort().update(width, height, false);
+
+        });
+        //        timer.setPosition(Gdx.graphics.getWidth()/2f  - 20,Gdx.graphics.getHeight() - 20);
     }
 
     @Override

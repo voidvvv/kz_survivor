@@ -59,4 +59,10 @@ public class VWorldActorComponent implements VComponent {
     public void resetActor(VWorldActor actor) {
         toRemove.add(actor);
     }
+
+    public void addActor (VWorldActor actor) {
+        if (actor != null) {
+            toAdd.add(actor);
+        }
+    }
 }
