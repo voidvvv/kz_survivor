@@ -7,6 +7,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.voidvvv.game.manager.CameraManager;
 import com.voidvvv.game.manager.DrawManager;
 import com.voidvvv.game.mode.GameMode;
+import com.voidvvv.game.player.DesktopPlayer;
 import com.voidvvv.game.screen.GameOverScreen;
 import com.voidvvv.game.screen.GameScreen;
 import com.voidvvv.game.screen.StartScreen;
@@ -97,14 +98,20 @@ public class Main extends Game {
 
     @Override
     public void create() {
+        Gdx.input.setInputProcessor(input);
         assetManager.setLoader(TiledMap.class,new TmxMapLoader());
 
-        Gdx.input.setInputProcessor(input);
         cameraManager.init();
         drawManager.init();
         initScreens();
         lastFrameTime = System.nanoTime();
+
+        if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
+            this.addInputProcessor(DesktopPlayer.PLAYER_1);
+        }
+
         Thread thread = new Thread(asyncGameRunnable);
+        thread.setName("KZ_Survivor GameMain");
         thread.setDaemon(true);
         thread.start();
     }

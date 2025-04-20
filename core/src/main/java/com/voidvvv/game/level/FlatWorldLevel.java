@@ -39,7 +39,10 @@ public class FlatWorldLevel implements Level{
             return this.mapPath;
         }
     }
-    public LevelPreset levelPresetEnum;
+
+    static final int DEFAULT_TIME = 500;
+
+    public LevelPreset levelPreset;
 
     public Supplier<WorldRender> renderSupplier;
 
@@ -66,8 +69,8 @@ public class FlatWorldLevel implements Level{
 
     @Override
     public void init() {
-        if (levelPresetEnum == null) {
-            levelPresetEnum = LevelPresetEnum.DEFAULT;
+        if (levelPreset == null) {
+            levelPreset = LevelPresetEnum.DEFAULT;
         }
         // viewport
         this.worldViewPort = Main.getInstance().getCameraManager().getWorldViewPort();
@@ -79,8 +82,8 @@ public class FlatWorldLevel implements Level{
         } else {
             WorldContext worldContext = initWorld();
             SingleFlatWorldMode localMode = new SingleFlatWorldMode(worldContext);
-            localMode.setTimeLimit(3);
-            localMode.setTimeLeft(3);
+            localMode.setTimeLimit(DEFAULT_TIME);
+            localMode.setTimeLeft(DEFAULT_TIME);
             gameMode = localMode;
         }
         gameMode.init();
@@ -97,13 +100,13 @@ public class FlatWorldLevel implements Level{
     }
     TiledMap mapAsset = null;
     private void loadAssets() {
-        Main.getInstance().getAssetManager().load(levelPresetEnum.getMapPath(), TiledMap.class);
+        Main.getInstance().getAssetManager().load(levelPreset.getMapPath(), TiledMap.class);
         Main.getInstance().getAssetManager().finishLoading();
     }
 
     private FlatWorldConfig loadConfig() {
         this.config = new FlatWorldConfig();
-        mapAsset = Main.getInstance().getAssetManager().get(levelPresetEnum.getMapPath());
+        mapAsset = Main.getInstance().getAssetManager().get(levelPreset.getMapPath());
         MapLayer mapLayer = mapAsset.getLayers().get("main_obj");
         RectangleMapObject mapObj1 = (RectangleMapObject) mapLayer.getObjects().get("birthPlace");
 

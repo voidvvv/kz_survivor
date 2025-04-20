@@ -33,9 +33,6 @@ public class VFlatWorldActor extends VWorldActor {
 
     @Override
     public void init() {
-        if (actorRender != null) {
-            actorRender.init();
-        }
         if (this.getRectBoundComponent() == null) {
             setRectBoundComponent(new VRectBoundComponent());
         }

@@ -1,5 +1,10 @@
 package com.voidvvv.game.player;
 
-public abstract class Player {
+import com.badlogic.gdx.InputProcessor;
 
+import java.util.List;
+
+public interface Player {
+    List<PlayerInput> getPlayerInputList();
+    void update(float delta);
 }
