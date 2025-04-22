@@ -5,23 +5,24 @@ import com.voidvvv.game.base.components.VComponent;
 public interface BattleComponent extends VComponent {
     float getHp();
 
-    float changeHp(float hpDelta);
-
-    float getMaxHp();
-
-    float changeMaxHp(float maxHpDelta);
-
     float getMp();
 
+    float changeHp(float hpDelta);
     float changeMp(float mpDelta);
 
-    float getMaxMp();
+    BaseBattleFloat getMaxHp();
 
-    float changeMaxMp(float maxMpDelta);
+    BaseBattleFloat changeMaxHp(BattleFloatDelta maxHpDelta);
 
-    float getAttack();
 
-    float changeAttack(float attackDelta);
+
+    BaseBattleFloat getMaxMp();
+
+    BaseBattleFloat changeMaxMp(BattleFloatDelta maxMpDelta);
+
+    BaseBattleFloat getAttack();
+
+    BaseBattleFloat changeAttack(BattleFloatDelta attackDelta);
 
     void apply(BattleEvent battleEvent);
 }

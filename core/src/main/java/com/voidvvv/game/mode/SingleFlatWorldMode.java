@@ -110,7 +110,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     public void update(float delta) {
         this.setTimeLeft(getTimeLeft() - delta);
         Vector2 position = protagonist.getRectBoundComponent().position;
-        flatWorld.viewPosition.lerp(position, 0.5f);
+        flatWorld.viewPosition.lerp(position, 0.05f);
         context.getWorld().update(delta);
 
 //        if (this.getTimeLeft() <= 0) {

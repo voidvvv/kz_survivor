@@ -1,6 +1,8 @@
 package com.voidvvv.game.battle;
 
-public interface BattleEvent {
+import com.voidvvv.game.event.VEvent;
+
+public interface BattleEvent extends VEvent {
     BattleComponent getFrom();
     BattleComponent getTo();
 
