@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.voidvvv.game.base.Updateable;
+import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.VWorld;
 import com.voidvvv.game.base.world.VWorldActor;
@@ -144,6 +145,10 @@ public class VFlatWorld implements VWorld {
         Body body = this.box2dWorld.createBody(bd);
         flatWorldActor.getvBox2dComponent().setFlatBody(body);
 
+        VRectBoundComponent rectBoundComponent = flatWorldActor.getRectBoundComponent();
+        rectBoundComponent.setHeight(helper.hy*2);
+        rectBoundComponent.setWidth(helper.hz*2);
+        rectBoundComponent.setLength(helper.hx*2);
         // bottom fixture
         FixtureDef bottomFixtureDef = new FixtureDef();
         bottomFixtureDef.filter.categoryBits = BOX2D_CONST.BOTTOM_COLLIDE_CATEGORY;

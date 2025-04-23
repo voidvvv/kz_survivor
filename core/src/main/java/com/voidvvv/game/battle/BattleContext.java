@@ -1,7 +1,6 @@
 package com.voidvvv.game.battle;
 
-public interface BattleContext {
-    Damage createDamage(BattleComponent from, BattleComponent to);
+public interface BattleContext extends DamageFactory{
 
     void removeEvent(BattleEvent battleEvent);
 

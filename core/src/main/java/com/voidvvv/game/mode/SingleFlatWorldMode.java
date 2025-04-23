@@ -3,7 +3,9 @@ package com.voidvvv.game.mode;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.Vector2;
 import com.voidvvv.game.Main;
+import com.voidvvv.game.actor.ActorConstants;
 import com.voidvvv.game.actor.Bob;
+import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.base.components.MoveComponent;
 import com.voidvvv.game.base.MoveComponentHolder;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
@@ -53,6 +55,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     @Override
     public void init() {
         Main.getInstance().setGameMode(this);
+        ActorConstants.init();
         this.context.init();
 
         initProtagonist();
@@ -64,9 +67,12 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         helper.initX = config.birthPlace.x;
         helper.initY = config.birthPlace.y;
         VFlatWorldActor localProtagonist = this.protagonist;
-        helper.hx = localProtagonist.getRectBoundComponent().getLength() / 2;
-        helper.hy = localProtagonist.getRectBoundComponent().getHeight() / 2;
-        helper.hz = localProtagonist.getRectBoundComponent().getWidth() / 2;
+        VRectBoundComponent defaultRect = ActorConstants.BOX2D_INIT.getOrDefault(localProtagonist.getClass().getName(),
+            ActorConstants.DEFAULT_BOX2D_INIT);
+
+        helper.hx = defaultRect.getLength() / 2;
+        helper.hy = defaultRect.getHeight() / 2;
+        helper.hz = defaultRect.getWidth() / 2;
         this.flatWorld.spawnVActor(() -> localProtagonist, helper);
         // add protagonist to Player1
         playerInput = new PlayerInput() {

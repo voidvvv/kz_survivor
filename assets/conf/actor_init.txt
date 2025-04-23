@@ -1,0 +1,1 @@
+com.voidvvv.game.actor.Bob=100,20,50

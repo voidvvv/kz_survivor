@@ -9,10 +9,6 @@ import com.voidvvv.render.actor.VActorRender;
 public class Bob extends VFlatWorldMoveActor {
     public Bob() {
         super(BobRender.actorRender);
-        VRectBoundComponent rectBoundComponent = getRectBoundComponent();
-        rectBoundComponent.setHeight(4);
-        rectBoundComponent.setWidth(16);
-        rectBoundComponent.setLength(8);
 
         getMoveComponent().speed = 200;
     }
