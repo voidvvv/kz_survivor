@@ -88,7 +88,7 @@ public class VFlatWorld implements VWorld {
         fd.filter.categoryBits = BOX2D_CONST.BOTTOM_COLLIDE_CATEGORY;
         fd.density = 0f;
         fd.filter.maskBits = BOX2D_CONST.BOTTOM_COLLIDE_CATEGORY;
-        wallBody.createFixture(shape, 0.0f);
+        wallBody.createFixture(fd);
         shape.dispose();
     }
 
@@ -164,6 +164,7 @@ public class VFlatWorld implements VWorld {
         faceFixtureDef.filter.categoryBits = BOX2D_CONST.FACE_CATEGORY;
         faceFixtureDef.filter.maskBits = BOX2D_CONST.FACE_CATEGORY;
         faceFixtureDef.density = 0f;
+        faceFixtureDef.isSensor = true;
         PolygonShape faceShape = new PolygonShape();
         faceShape.setAsBox(Box2dUnitConverter.worldToBox2d(helper.hz),
             Box2dUnitConverter.worldToBox2d(helper.hz));
