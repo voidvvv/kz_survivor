@@ -9,19 +9,19 @@ public interface Box2dComponentHolder {
 
     default void updateBox2dComponent() {
         VBox2dComponent box2dComponent = getBox2dComponent();
-        List<Fixture> startContactFixtures = box2dComponent.getStartContactFixtures();
-        List<Fixture> endContactFixtures = box2dComponent.getEndContactFixtures();
-        for (Fixture fixture : startContactFixtures) {
-            contactWithOther(fixture);
+        List<CollisionPair> startContactFixtures = box2dComponent.getStartContactFixtures();
+        List<CollisionPair> endContactFixtures = box2dComponent.getEndContactFixtures();
+        for (CollisionPair pair : startContactFixtures) {
+            contactWithOther(pair);
         }
         box2dComponent.clearStartContactFixtures();
-        for (Fixture fixture : endContactFixtures) {
-            contactEndWithOther(fixture);
+        for (CollisionPair pair : endContactFixtures) {
+            contactEndWithOther(pair);
         }
         box2dComponent.clearEndContactFixtures();
     }
 
-    void contactEndWithOther(Fixture fixture);
+    void contactEndWithOther(CollisionPair fixture);
 
-    void contactWithOther(Fixture fixture);
+    void contactWithOther(CollisionPair fixture);
 }

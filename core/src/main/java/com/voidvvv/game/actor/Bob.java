@@ -4,6 +4,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.voidvvv.game.battle.BattleComponent;
 import com.voidvvv.game.battle.BattleComponentHolder;
 import com.voidvvv.game.battle.BattleEvent;
+import com.voidvvv.game.box2d.CollisionPair;
 import com.voidvvv.game.impl.flat.VFlatWorldMoveActor;
 import com.voidvvv.game.box2d.Box2dComponentHolder;
 import com.voidvvv.render.actor.BobRender;
@@ -22,12 +23,12 @@ public class Bob extends VFlatWorldMoveActor implements BattleComponentHolder {
     }
 
     @Override
-    public void contactEndWithOther(Fixture fixture) {
+    public void contactEndWithOther(CollisionPair fixture) {
         super.contactEndWithOther(fixture);
     }
 
     @Override
-    public void contactWithOther(Fixture fixture) {
+    public void contactWithOther(CollisionPair fixture) {
         super.contactWithOther(fixture);
     }
 

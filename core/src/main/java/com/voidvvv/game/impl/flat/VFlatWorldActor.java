@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.voidvvv.game.base.VActorMetaState;
+import com.voidvvv.game.box2d.CollisionPair;
 import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.box2d.Box2dComponentHolder;
 import com.voidvvv.game.utils.Box2dUnitConverter;
@@ -19,12 +20,12 @@ public class VFlatWorldActor extends VWorldActor implements Box2dComponentHolder
     }
 
     @Override
-    public void contactEndWithOther(Fixture fixture) {
+    public void contactEndWithOther(CollisionPair fixture) {
 
     }
 
     @Override
-    public void contactWithOther(Fixture fixture) {
+    public void contactWithOther(CollisionPair fixture) {
 
     }
 

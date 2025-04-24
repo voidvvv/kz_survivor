@@ -15,25 +15,25 @@ public class VBox2dComponent {
 
     Fixture faceFixture;
 
-    List<Fixture> startContactFixtures = new ArrayList<>();
+    List<CollisionPair> startContactFixtures = new ArrayList<>();
 
-    List<Fixture> endContactFixtures = new ArrayList<>();
+    List<CollisionPair> endContactFixtures = new ArrayList<>();
 
-    public List<Fixture> getStartContactFixtures() {
+    public List<CollisionPair> getStartContactFixtures() {
         return startContactFixtures;
     }
 
-    public List<Fixture> getEndContactFixtures() {
+    public List<CollisionPair> getEndContactFixtures() {
         return endContactFixtures;
     }
 
-    public void addStartContactFixture(Fixture fixture) {
+    public void addStartContactFixture(CollisionPair fixture) {
         if (!startContactFixtures.contains(fixture)) {
             startContactFixtures.add(fixture);
         }
     }
 
-    public void addEndContactFixture(Fixture fixture) {
+    public void addEndContactFixture(CollisionPair fixture) {
         if (!endContactFixtures.contains(fixture)) {
             endContactFixtures.add(fixture);
         }

@@ -117,10 +117,6 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         Vector2 position = protagonist.getRectBoundComponent().position;
         flatWorld.viewPosition.lerp(position, 0.05f);
         context.getWorld().update(delta);
-
-//        if (this.getTimeLeft() <= 0) {
-//            Gdx.app.postRunnable(() -> Main.getInstance().setScreen(Main.getInstance().getGameOverScreen()));
-//        }
     }
 
     @Override
