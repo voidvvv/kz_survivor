@@ -14,8 +14,6 @@ public interface BattleComponent extends VComponent {
 
     BaseBattleFloat changeMaxHp(BattleFloatDelta maxHpDelta);
 
-
-
     BaseBattleFloat getMaxMp();
 
     BaseBattleFloat changeMaxMp(BattleFloatDelta maxMpDelta);
@@ -23,6 +21,10 @@ public interface BattleComponent extends VComponent {
     BaseBattleFloat getAttack();
 
     BaseBattleFloat changeAttack(BattleFloatDelta attackDelta);
+
+    BaseBattleFloat getArmor();
+
+    BaseBattleFloat changeArmor(BattleFloatDelta attackDelta);
 
     void apply(BattleEvent battleEvent);
 }

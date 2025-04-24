@@ -1,5 +1,7 @@
 package com.voidvvv.game.battle;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class BaseDamage implements Damage{
     BattleContext battleContext;
     BattleComponent from;
@@ -46,6 +48,12 @@ public class BaseDamage implements Damage{
     @Override
     public DamageType damageType() {
         return DamageType.PHISICAL;
+    }
+
+    Vector2 position = new Vector2();
+    @Override
+    public Vector2 position() {
+        return position;
     }
 
     @Override

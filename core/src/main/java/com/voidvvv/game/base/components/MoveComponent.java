@@ -6,7 +6,9 @@ public class MoveComponent implements VComponent {
     public final Vector2 vel = new Vector2();
     public float speed;
 
-    public final Vector2 face = new Vector2();
+    public final Vector2 additionalVel = new Vector2();
+
+    public final Vector2 face = new Vector2(1,0);
 
     @Override
     public void init() {
@@ -15,7 +17,9 @@ public class MoveComponent implements VComponent {
 
     @Override
     public void update(float delta) {
-
+        if (vel.len() != 0) {
+            face.set(vel).nor();
+        }
     }
 
     @Override

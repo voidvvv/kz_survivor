@@ -13,10 +13,6 @@ public class VFlatWorldMoveActor extends VFlatWorldActor implements MoveComponen
         this.moveComponent = new MoveComponent();
     }
 
-    @Override
-    protected void flatWorldActorUpdate(float delta) {
-
-    }
 
     @Override
     protected void syncWorldContentToBox2d(float delta) {
@@ -24,7 +20,8 @@ public class VFlatWorldMoveActor extends VFlatWorldActor implements MoveComponen
         float speed = moveComponent.speed;
         vel.scl(speed);
         getvBox2dComponent().getFlatBody()
-            .setLinearVelocity(Box2dUnitConverter.worldToBox2d(vel));
+            .setLinearVelocity(Box2dUnitConverter.worldToBox2d(vel.add(moveComponent.additionalVel)));
+        moveComponent.additionalVel.set(0, 0);
     }
 
     @Override
@@ -35,6 +32,12 @@ public class VFlatWorldMoveActor extends VFlatWorldActor implements MoveComponen
     @Override
     public void setMoveComponent(MoveComponent moveComponent) {
         // nothing
+    }
+
+    @Override
+    public void flatWorldActorUpdate(float delta) {
+        super.update(delta);
+        moveComponent.update(delta);
     }
 
     @Override
