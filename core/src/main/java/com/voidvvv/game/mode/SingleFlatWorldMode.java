@@ -10,9 +10,9 @@ import com.voidvvv.game.base.components.MoveComponent;
 import com.voidvvv.game.base.MoveComponentHolder;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.WorldContext;
-import com.voidvvv.game.base.world.flat.FlatWorldConfig;
-import com.voidvvv.game.base.world.flat.VFlatWorld;
-import com.voidvvv.game.base.world.flat.VFlatWorldActor;
+import com.voidvvv.game.impl.flat.FlatWorldConfig;
+import com.voidvvv.game.impl.flat.VFlatWorld;
+import com.voidvvv.game.impl.flat.VFlatWorldActor;
 import com.voidvvv.game.player.Player;
 import com.voidvvv.game.player.PlayerInput;
 

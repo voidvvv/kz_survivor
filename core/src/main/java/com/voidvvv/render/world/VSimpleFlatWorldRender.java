@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.base.world.VWorld;
 import com.voidvvv.game.base.world.VWorldActor;
-import com.voidvvv.game.base.world.flat.VFlatWorld;
+import com.voidvvv.game.impl.flat.VFlatWorld;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.voidvvv.game.base.world.flat;
+package com.voidvvv.game.impl.flat;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;

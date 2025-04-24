@@ -1,4 +1,4 @@
-package com.voidvvv.game.base.world.components;
+package com.voidvvv.game.box2d;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;

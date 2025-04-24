@@ -1,17 +1,27 @@
-package com.voidvvv.game.base.world.flat;
+package com.voidvvv.game.impl.flat;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.voidvvv.game.base.VActorMetaState;
-import com.voidvvv.game.base.world.components.VBox2dComponent;
+import com.voidvvv.game.box2d.VBox2dComponent;
+import com.voidvvv.game.box2d.Box2dComponentHolder;
 import com.voidvvv.game.utils.Box2dUnitConverter;
 import com.voidvvv.render.actor.VActorRender;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.base.world.VWorldActor;
 
-public class VFlatWorldActor extends VWorldActor {
+public class VFlatWorldActor extends VWorldActor implements Box2dComponentHolder {
+    @Override
+    public VBox2dComponent getBox2dComponent() {
+        return getvBox2dComponent();
+    }
+
+    @Override
+    public void contactWithOther(Box2dComponentHolder other, boolean isBeginContact) {
+
+    }
+
     public static class Attribute {
         public static final int BOX_2D_WORLD = 1001;
         public static final int BOUND_COMPONENT = 1002;

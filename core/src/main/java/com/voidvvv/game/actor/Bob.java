@@ -1,10 +1,8 @@
 package com.voidvvv.game.actor;
 
-import com.voidvvv.game.base.VRectBoundComponent;
-import com.voidvvv.game.base.world.flat.VFlatWorldActor;
-import com.voidvvv.game.base.world.flat.VFlatWorldMoveActor;
+import com.voidvvv.game.impl.flat.VFlatWorldMoveActor;
+import com.voidvvv.game.box2d.Box2dComponentHolder;
 import com.voidvvv.render.actor.BobRender;
-import com.voidvvv.render.actor.VActorRender;
 
 public class Bob extends VFlatWorldMoveActor {
     public Bob() {
@@ -16,5 +14,10 @@ public class Bob extends VFlatWorldMoveActor {
     @Override
     public void update(float delta) {
         super.update(delta);
+    }
+
+    @Override
+    public void contactWithOther(Box2dComponentHolder other, boolean isBeginContact) {
+        super.contactWithOther(other, isBeginContact);
     }
 }
