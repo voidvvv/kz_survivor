@@ -4,6 +4,9 @@ public class BaseDamage implements Damage{
     BattleContext battleContext;
     BattleComponent from;
     BattleComponent to;
+
+    public float damageVal;
+
     public BattleContext getBattleContext() {
         return battleContext;
     }
@@ -37,11 +40,16 @@ public class BaseDamage implements Damage{
 
     @Override
     public float damageVal() {
-        return 0;
+        return damageVal;
     }
 
     @Override
     public DamageType damageType() {
         return DamageType.PHISICAL;
+    }
+
+    @Override
+    public void apply() {
+
     }
 }

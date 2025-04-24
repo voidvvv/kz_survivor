@@ -1,4 +1,5 @@
 package com.voidvvv.game.event;
 
 public interface VEvent {
+    void apply();
 }

@@ -5,20 +5,10 @@ import com.voidvvv.game.battle.BattleComponent;
 import com.voidvvv.game.battle.BattleComponentHolder;
 import com.voidvvv.game.battle.BattleEvent;
 import com.voidvvv.game.impl.flat.VFlatWorldMoveActor;
-import com.voidvvv.game.box2d.Box2dComponentHolder;
-import com.voidvvv.render.actor.BobRender;
 
-public class Bob extends VFlatWorldMoveActor implements BattleComponentHolder {
-    BattleComponent battleComponent;
-    public Bob() {
-        super(BobRender.actorRender);
-
-        getMoveComponent().speed = 200;
-    }
-
-    @Override
-    public void update(float delta) {
-        super.update(delta);
+public class Slime extends VFlatWorldMoveActor implements BattleComponentHolder {
+    public Slime() {
+        super(null);
     }
 
     @Override
@@ -31,10 +21,13 @@ public class Bob extends VFlatWorldMoveActor implements BattleComponentHolder {
         super.contactWithOther(fixture);
     }
 
+
     @Override
     public BattleComponent getBattleComponent() {
-        return battleComponent;
+        return null;
     }
+
+
 
     @Override
     public void applyBattleEvent(BattleEvent event) {

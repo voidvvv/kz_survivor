@@ -3,6 +3,10 @@ package com.voidvvv.game.box2d;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
+import java.security.PublicKey;
+import java.util.ArrayList;
+import java.util.List;
+
 public class VBox2dComponent {
 
     Body flatBody;
@@ -10,6 +14,46 @@ public class VBox2dComponent {
     Fixture bottomFixture;
 
     Fixture faceFixture;
+
+    List<Fixture> startContactFixtures = new ArrayList<>();
+
+    List<Fixture> endContactFixtures = new ArrayList<>();
+
+    public List<Fixture> getStartContactFixtures() {
+        return startContactFixtures;
+    }
+
+    public List<Fixture> getEndContactFixtures() {
+        return endContactFixtures;
+    }
+
+    public void addStartContactFixture(Fixture fixture) {
+        if (!startContactFixtures.contains(fixture)) {
+            startContactFixtures.add(fixture);
+        }
+    }
+
+    public void addEndContactFixture(Fixture fixture) {
+        if (!endContactFixtures.contains(fixture)) {
+            endContactFixtures.add(fixture);
+        }
+    }
+
+    public void removeStartContactFixture(Fixture fixture) {
+        startContactFixtures.remove(fixture);
+    }
+
+    public void removeEndContactFixture(Fixture fixture) {
+        endContactFixtures.remove(fixture);
+    }
+
+    public void clearStartContactFixtures() {
+        startContactFixtures.clear();
+    }
+
+    public void clearEndContactFixtures() {
+        endContactFixtures.clear();
+    }
 
     public Fixture getFaceFixture() {
         return faceFixture;

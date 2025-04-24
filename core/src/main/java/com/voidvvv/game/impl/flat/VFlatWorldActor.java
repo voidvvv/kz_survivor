@@ -3,6 +3,7 @@ package com.voidvvv.game.impl.flat;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.voidvvv.game.base.VActorMetaState;
 import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.box2d.Box2dComponentHolder;
@@ -18,9 +19,15 @@ public class VFlatWorldActor extends VWorldActor implements Box2dComponentHolder
     }
 
     @Override
-    public void contactWithOther(Box2dComponentHolder other, boolean isBeginContact) {
+    public void contactEndWithOther(Fixture fixture) {
 
     }
+
+    @Override
+    public void contactWithOther(Fixture fixture) {
+
+    }
+
 
     public static class Attribute {
         public static final int BOX_2D_WORLD = 1001;
@@ -63,6 +70,7 @@ public class VFlatWorldActor extends VWorldActor implements Box2dComponentHolder
     public void update(float delta) {
         super.update(delta);
         syncBox2dCotentToWorld(delta);
+        this.updateBox2dComponent();
         flatWorldActorUpdate(delta);
         syncWorldContentToBox2d(delta);
     }
@@ -82,6 +90,8 @@ public class VFlatWorldActor extends VWorldActor implements Box2dComponentHolder
         getRectBoundComponent().position.set(Box2dUnitConverter.box2dToWorld(position.x),
             Box2dUnitConverter.box2dToWorld(position.y));
         getRectBoundComponent().update(delta);
+
+
     }
 
     @Override

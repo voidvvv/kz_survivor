@@ -10,7 +10,6 @@ import com.voidvvv.game.base.world.VWorld;
 import com.voidvvv.game.base.world.VWorldActor;
 import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.base.world.components.VWorldActorComponent;
-import com.voidvvv.game.box2d.FlatWorldListener;
 import com.voidvvv.game.utils.Box2dUnitConverter;
 
 import java.util.ArrayList;
@@ -170,8 +169,9 @@ public class VFlatWorld implements VWorld {
             Box2dUnitConverter.worldToBox2d(helper.hz));
         float x1 = -Box2dUnitConverter.worldToBox2d(helper.hx);
         float x2 = Box2dUnitConverter.worldToBox2d(helper.hx);
-        float y1 = -Box2dUnitConverter.worldToBox2d(helper.hy);
-        float y2 = -Box2dUnitConverter.worldToBox2d(helper.hy) + 2 * Box2dUnitConverter.worldToBox2d(helper.hz);
+//        float y1 = -Box2dUnitConverter.worldToBox2d(helper.hy);
+        float y1 = 0f;
+        float y2 = y1 + 2 * Box2dUnitConverter.worldToBox2d(helper.hz);
         int i = 0;
         verticesTmp[i++] = x1;
         verticesTmp[i++] = y1;

@@ -1,1 +1,1 @@
-com.voidvvv.game.actor.Bob=100,20,50
+com.voidvvv.game.actor.Bob=20,45,15
