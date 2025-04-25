@@ -1,8 +1,9 @@
 package com.voidvvv.game.base;
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector2;
 
-public class VRectBoundComponent extends VPositionComponent {
+public class VRectBoundComponent extends VPositionComponent implements Component {
     private float width; // z len
     private float height; // y len
     private float length; // x len

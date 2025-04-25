@@ -1,5 +1,7 @@
 package com.voidvvv.game.mode;
 
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.Vector2;
 import com.voidvvv.game.Main;
@@ -11,6 +13,9 @@ import com.voidvvv.game.base.components.MoveComponent;
 import com.voidvvv.game.base.MoveComponentHolder;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.WorldContext;
+import com.voidvvv.game.box2d.VBox2dComponent;
+import com.voidvvv.game.ecs.system.BattleComponentBaseSystem;
+import com.voidvvv.game.ecs.system.Box2dMoveSystem;
 import com.voidvvv.game.impl.flat.FlatWorldConfig;
 import com.voidvvv.game.impl.flat.VFlatWorld;
 import com.voidvvv.game.impl.flat.VFlatWorldActor;
@@ -23,6 +28,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     VFlatWorld flatWorld;
 
     VFlatWorldActor protagonist;
+
+    Engine engine; // ecs engine
 
 
     FlatWorldConfig config;
@@ -56,11 +63,23 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     @Override
     public void init() {
         Main.getInstance().setGameMode(this);
+        // init ECS
+        initECS();
         ActorConstants.init();
         this.context.init();
 
         initProtagonist();
     }
+
+    private void initECS() {
+        engine = new Engine();
+
+        engine.addSystem(new BattleComponentBaseSystem());
+        engine.addSystem(new Box2dMoveSystem());
+        moveMapper = ComponentMapper.getFor(MoveComponent.class);
+    }
+
+    ComponentMapper<MoveComponent> moveMapper;
 
     private void initProtagonist() {
         readProtagonistConfig();
@@ -68,6 +87,10 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         helper.initX = config.birthPlace.x;
         helper.initY = config.birthPlace.y;
         VFlatWorldActor localProtagonist = this.protagonist;
+        engine.addEntity(localProtagonist.getEntity());
+        localProtagonist.getEntity().add(new MoveComponent());
+        localProtagonist.getEntity().add(new VBox2dComponent());
+        localProtagonist.getEntity().add(new VRectBoundComponent());
         VRectBoundComponent defaultRect = ActorConstants.BOX2D_INIT.getOrDefault(localProtagonist.getClass().getName(),
             ActorConstants.DEFAULT_BOX2D_INIT);
 
@@ -79,10 +102,9 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         playerInput = new PlayerInput() {
             @Override
             public void move(Vector2 dir) {
-                MoveComponent att = (MoveComponent) localProtagonist.getAtt(VActor.Attribute.MOVEMENT_COMPONENT_ATTR);
-
-                if (att != null) {
-                    att.vel.set(dir);
+                MoveComponent mc = moveMapper.get(localProtagonist.getEntity());
+                if (mc != null) {
+                    mc.vel.set(dir);
                 }
             }
 
@@ -115,7 +137,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     @Override
     public void update(float delta) {
         this.setTimeLeft(getTimeLeft() - delta);
-        Vector2 position = protagonist.getRectBoundComponent().position;
+        engine.update(delta);
+        Vector2 position = protagonist.getEntity().getComponent(VRectBoundComponent.class).position;
         flatWorld.viewPosition.lerp(position, 0.05f);
         context.getWorld().update(delta);
     }

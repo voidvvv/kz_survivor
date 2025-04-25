@@ -1,22 +1,21 @@
 package com.voidvvv.game.actor;
 
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.voidvvv.game.base.VActor;
+import com.voidvvv.game.base.components.MoveComponent;
 import com.voidvvv.game.battle.BattleComponent;
-import com.voidvvv.game.battle.BattleComponentHolder;
-import com.voidvvv.game.battle.BattleEvent;
-import com.voidvvv.game.battle.DefaultBattleComponent;
 import com.voidvvv.game.box2d.CollisionPair;
-import com.voidvvv.game.impl.flat.VFlatWorldMoveActor;
-import com.voidvvv.game.box2d.Box2dComponentHolder;
+import com.voidvvv.game.impl.flat.VFlatWorldActor;
 import com.voidvvv.render.actor.BobRender;
 
-public class Bob extends VFlatWorldMoveActor implements BattleComponentHolder {
-    BattleComponent battleComponent;
+public class Bob extends VFlatWorldActor {
+
     public Bob() {
         super(BobRender.actorRender);
+    }
 
-        getMoveComponent().speed = 200;
+    @Override
+    public void init() {
+        super.init();
+        this.getEntity().getComponent(MoveComponent.class).speed = 100f;
     }
 
     @Override
@@ -24,34 +23,4 @@ public class Bob extends VFlatWorldMoveActor implements BattleComponentHolder {
         super.update(delta);
     }
 
-    @Override
-    public void contactEndWithOther(CollisionPair fixture) {
-        super.contactEndWithOther(fixture);
-    }
-
-    @Override
-    public void contactWithOther(CollisionPair fixture) {
-        super.contactWithOther(fixture);
-    }
-
-    @Override
-    public BattleComponent getBattleComponent() {
-        if (battleComponent == null) {
-            battleComponent = new DefaultBattleComponent();
-        }
-        return battleComponent;
-    }
-
-    @Override
-    public void applyBattleEvent(BattleEvent event) {
-
-    }
-
-    @Override
-    public <T> T getAtt(int type) {
-        if (type == Attribute.BATTLE_COMPONENT) {
-            return (T) getBattleComponent();
-        }
-        return super.getAtt(type);
-    }
 }

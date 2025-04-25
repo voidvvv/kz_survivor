@@ -1,5 +1,6 @@
 package com.voidvvv.game.box2d;
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
@@ -7,7 +8,7 @@ import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VBox2dComponent {
+public class VBox2dComponent implements Component {
 
     Body flatBody;
 

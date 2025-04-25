@@ -1,5 +1,7 @@
 package com.voidvvv.game.impl.flat;
 
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -10,6 +12,7 @@ import com.voidvvv.game.base.world.VWorld;
 import com.voidvvv.game.base.world.VWorldActor;
 import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.base.world.components.VWorldActorComponent;
+import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.utils.Box2dUnitConverter;
 
 import java.util.ArrayList;
@@ -93,6 +96,8 @@ public class VFlatWorld implements VWorld {
 
 
     private void initBox2dWorld() {
+        box2dMapper = ComponentMapper.getFor(VBox2dComponent.class);
+        rectBoundComponentComponentMapper = ComponentMapper.getFor(VRectBoundComponent.class);
         box2dWorld = new World(new Vector2(0f,0f), true);
         box2dWorld.setContactListener(new FlatWorldListener());
 
@@ -133,18 +138,21 @@ public class VFlatWorld implements VWorld {
         actorComponent.addActor(actor);
         return actor;
     }
-
+    ComponentMapper<VBox2dComponent> box2dMapper;
+    ComponentMapper<VRectBoundComponent> rectBoundComponentComponentMapper;
     private <T extends VWorldActor> void initBox2dContentForActor(T actor, VActorSpawnHelper helper) {
         VFlatWorldActor flatWorldActor = (VFlatWorldActor) actor;
+        Entity entity = flatWorldActor.getEntity();
         // generate box2d related
         BodyDef bd = new BodyDef();
         bd.position.set(Box2dUnitConverter.worldToBox2d(helper.initX), Box2dUnitConverter.worldToBox2d(helper.initY));
         bd.type = helper.bodyType;
         bd.fixedRotation = true;
         Body body = this.box2dWorld.createBody(bd);
-        flatWorldActor.getvBox2dComponent().setFlatBody(body);
+        VBox2dComponent vBox2dComponent = box2dMapper.get(entity);
+        vBox2dComponent.setFlatBody(body);
 
-        VRectBoundComponent rectBoundComponent = flatWorldActor.getRectBoundComponent();
+        VRectBoundComponent rectBoundComponent = rectBoundComponentComponentMapper.get(entity);
         rectBoundComponent.setHeight(helper.hy*2);
         rectBoundComponent.setWidth(helper.hz*2);
         rectBoundComponent.setLength(helper.hx*2);
@@ -189,8 +197,8 @@ public class VFlatWorld implements VWorld {
 
         bottonFixture.setUserData(flatWorldActor);
         faceFixture.setUserData(flatWorldActor);
-        flatWorldActor.getvBox2dComponent().setBottomFixture(bottonFixture);
-        flatWorldActor.getvBox2dComponent().setFaceFixture(faceFixture);
+        vBox2dComponent.setBottomFixture(bottonFixture);
+        vBox2dComponent.setFaceFixture(faceFixture);
         return;
     }
 

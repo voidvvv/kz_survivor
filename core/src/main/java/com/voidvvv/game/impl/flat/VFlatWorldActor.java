@@ -13,64 +13,33 @@ import com.voidvvv.render.actor.VActorRender;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.base.world.VWorldActor;
 
-public class VFlatWorldActor extends VWorldActor implements Box2dComponentHolder {
-    @Override
-    public VBox2dComponent getBox2dComponent() {
-        return getvBox2dComponent();
-    }
+public class VFlatWorldActor extends VWorldActor{
 
-    @Override
-    public void contactEndWithOther(CollisionPair fixture) {
-
-    }
-
-    @Override
-    public void contactWithOther(CollisionPair fixture) {
-
-    }
-
-
-    private final VBox2dComponent vBox2dComponent = new VBox2dComponent();
     private VActorRender actorRender;
-    private VRectBoundComponent rectBoundComponent;
-
-    public VRectBoundComponent getRectBoundComponent() {
-        return rectBoundComponent;
-    }
-
-    public void setRectBoundComponent(VRectBoundComponent rectBoundComponent) {
-        this.rectBoundComponent = rectBoundComponent;
-    }
-
-    public VBox2dComponent getvBox2dComponent() {
-        return vBox2dComponent;
-    }
 
     public VFlatWorldActor(VActorRender actorRender) {
         if (actorRender == null) {
             throw new NullPointerException("actorRender is null");
         }
         this.actorRender = actorRender;
-        rectBoundComponent = new VRectBoundComponent();
     }
 
     @Override
     public void init() {
         super.init();
-        if (this.getRectBoundComponent() == null) {
-            setRectBoundComponent(new VRectBoundComponent());
+        if (getEntity().getComponent(VRectBoundComponent.class) != null) {
+
+            getEntity().getComponent(VRectBoundComponent.class).init();
         }
-        getRectBoundComponent().init();
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
-        syncBox2dCotentToWorld(delta);
-        this.updateBox2dComponent();
         flatWorldActorUpdate(delta);
         syncWorldContentToBox2d(delta);
     }
+
 
     protected void flatWorldActorUpdate(float delta) {
 
@@ -80,21 +49,22 @@ public class VFlatWorldActor extends VWorldActor implements Box2dComponentHolder
 
     }
 
-    protected void syncBox2dCotentToWorld(float delta) {
-        // sync box2d world props to rect bound component
-        Body flatBody = getvBox2dComponent().getFlatBody();
-        Vector2 position = flatBody.getPosition();
-        getRectBoundComponent().position.set(Box2dUnitConverter.box2dToWorld(position.x),
-            Box2dUnitConverter.box2dToWorld(position.y));
-        getRectBoundComponent().update(delta);
-
-
-    }
+//    protected void syncBox2dCotentToWorld(float delta) {
+//        // sync box2d world props to rect bound component
+//        Body flatBody = getEntity().getComponent(VBox2dComponent.class).getFlatBody();
+//        Vector2 position = flatBody.getPosition();
+//        getRectBoundComponent().position.set(Box2dUnitConverter.box2dToWorld(position.x),
+//            Box2dUnitConverter.box2dToWorld(position.y));
+//        getRectBoundComponent().update(delta);
+//
+//
+//    }
 
     @Override
     public void reset() {
-        getRectBoundComponent().dispose();
-        getvBox2dComponent().dispose();
+//        getRectBoundComponent().dispose();
+//        getvBox2dComponent().dispose();
+
     }
 
     @Override
@@ -102,27 +72,6 @@ public class VFlatWorldActor extends VWorldActor implements Box2dComponentHolder
         actorRender.render(this, Gdx.graphics.getDeltaTime());
     }
 
-    @Override
-    public <T> T getAtt(int type) {
-        Object result = super.getAtt(type);
-        if (result != null) {
-            return (T)result;
-        }
-        if (type == Attribute.BOX_2D_WORLD) {
-            return (T) getWorldContext().getWorld();
-        }
-        if (type == Attribute.BOUND_COMPONENT) {
-            return (T) getRectBoundComponent();
-        }
-        return null;
-    }
-
-
-
-    @Override
-    public <T> void setAtt(int type, T value) {
-        super.setAtt(type , value);
-    }
 
     @Override
     public void setState(VActorMetaState state) {

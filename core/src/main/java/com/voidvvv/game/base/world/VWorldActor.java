@@ -1,16 +1,26 @@
 package com.voidvvv.game.base.world;
 
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
-import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.voidvvv.game.base.StateComponentHolder;
-import com.voidvvv.game.base.VAttrActor;
+import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.components.StateMachineComponent;
 import com.voidvvv.game.base.state.Idle;
 
-public abstract class VWorldActor extends VAttrActor implements StateComponentHolder {
+public abstract class VWorldActor implements VActor , StateComponentHolder {
     StateMachineComponent stateMachineComponent;
     protected float time;
+
+    protected Entity entity = new Entity();
+
+    public Entity getEntity() {
+        return entity;
+    }
+
+    public void setEntity(Entity entity) {
+        this.entity = entity;
+    }
 
     protected WorldContext worldContext;
     public WorldContext getWorldContext() {
@@ -38,14 +48,4 @@ public abstract class VWorldActor extends VAttrActor implements StateComponentHo
         return stateMachineComponent;
     }
 
-    @Override
-    public <T> T getAtt(int type) {
-        if (type == STATE_COMPONENT_ATTR) {
-            StateMachineComponent stateMachineComponent = getStateMachine();
-            if (stateMachineComponent != null) {
-                return (T) stateMachineComponent;
-            }
-        }
-        return super.getAtt(type);
-    }
 }

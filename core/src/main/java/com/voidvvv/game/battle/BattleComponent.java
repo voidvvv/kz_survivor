@@ -1,8 +1,9 @@
 package com.voidvvv.game.battle;
 
+import com.badlogic.ashley.core.Component;
 import com.voidvvv.game.base.components.VComponent;
 
-public interface BattleComponent extends VComponent {
+public interface BattleComponent extends VComponent, Component {
     float getHp();
 
     float getMp();

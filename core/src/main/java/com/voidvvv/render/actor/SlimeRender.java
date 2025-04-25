@@ -21,7 +21,7 @@ public class SlimeRender implements VActorRender{
         }
         if (Slime.class.isAssignableFrom(actor.getClass())) {
             Slime slime = (Slime) actor;
-            VRectBoundComponent rectBoundComponent = slime.getRectBoundComponent();
+            VRectBoundComponent rectBoundComponent = slime.getEntity().getComponent(VRectBoundComponent.class);
             if (rectBoundComponent == null) {
                 return;
             }

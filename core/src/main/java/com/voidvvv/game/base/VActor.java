@@ -1,5 +1,6 @@
 package com.voidvvv.game.base;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 
@@ -7,6 +8,7 @@ public interface VActor extends Pool.Poolable {
 
 
     public static class Attribute {
+        public static final int ENTITY = 0;
         public static final int BOX_2D_WORLD = 1001;
         public static final int BOUND_COMPONENT = 1002;
         public static final int MOVEMENT_COMPONENT_ATTR = 2001;
@@ -22,10 +24,7 @@ public interface VActor extends Pool.Poolable {
 
 
     void draw();
-
-    public <T> T getAtt(int type);
-
-    public <T>  void setAtt(int type, T value);
+    public Entity getEntity();
 
     void setState(VActorMetaState state);
 

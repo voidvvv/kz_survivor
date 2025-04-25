@@ -92,7 +92,7 @@ public class BobRender implements VActorRender{
             if (!loaded) {
                 init();
             }
-            VRectBoundComponent rectBoundComponent = bob.getRectBoundComponent();
+            VRectBoundComponent rectBoundComponent = bob.getEntity().getComponent(VRectBoundComponent.class);
             if (rectBoundComponent == null) {
                 return;
             }
