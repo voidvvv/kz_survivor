@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.ActorConstants;
 import com.voidvvv.game.actor.Bob;
+import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.base.components.MoveComponent;
 import com.voidvvv.game.base.MoveComponentHolder;
@@ -78,7 +79,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         playerInput = new PlayerInput() {
             @Override
             public void move(Vector2 dir) {
-                MoveComponent att = (MoveComponent) localProtagonist.getAtt(MoveComponentHolder.MOVEMENT_COMPONENT_ATTR);
+                MoveComponent att = (MoveComponent) localProtagonist.getAtt(VActor.Attribute.MOVEMENT_COMPONENT_ATTR);
 
                 if (att != null) {
                     att.vel.set(dir);

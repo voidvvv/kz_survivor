@@ -30,10 +30,6 @@ public class VFlatWorldActor extends VWorldActor implements Box2dComponentHolder
     }
 
 
-    public static class Attribute {
-        public static final int BOX_2D_WORLD = 1001;
-        public static final int BOUND_COMPONENT = 1002;
-    }
     private final VBox2dComponent vBox2dComponent = new VBox2dComponent();
     private VActorRender actorRender;
     private VRectBoundComponent rectBoundComponent;

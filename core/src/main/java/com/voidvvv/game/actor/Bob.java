@@ -1,6 +1,7 @@
 package com.voidvvv.game.actor;
 
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.battle.BattleComponent;
 import com.voidvvv.game.battle.BattleComponentHolder;
 import com.voidvvv.game.battle.BattleEvent;
@@ -44,5 +45,13 @@ public class Bob extends VFlatWorldMoveActor implements BattleComponentHolder {
     @Override
     public void applyBattleEvent(BattleEvent event) {
 
+    }
+
+    @Override
+    public <T> T getAtt(int type) {
+        if (type == Attribute.BATTLE_COMPONENT) {
+            return (T) getBattleComponent();
+        }
+        return super.getAtt(type);
     }
 }

@@ -1,6 +1,7 @@
 package com.voidvvv.game.impl.flat;
 
 import com.badlogic.gdx.math.Vector2;
+import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.components.MoveComponent;
 import com.voidvvv.game.base.MoveComponentHolder;
 import com.voidvvv.game.utils.Box2dUnitConverter;
@@ -36,13 +37,13 @@ public class VFlatWorldMoveActor extends VFlatWorldActor implements MoveComponen
 
     @Override
     public void flatWorldActorUpdate(float delta) {
-        super.update(delta);
+        super.flatWorldActorUpdate(delta);
         moveComponent.update(delta);
     }
 
     @Override
     public <T> T getAtt(int type) {
-        if (type == MoveComponentHolder.MOVEMENT_COMPONENT_ATTR) {
+        if (type == VActor.Attribute.MOVEMENT_COMPONENT_ATTR) {
             return (T) moveComponent;
         }
         return super.getAtt(type);
