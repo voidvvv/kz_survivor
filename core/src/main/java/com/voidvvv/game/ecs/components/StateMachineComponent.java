@@ -1,8 +1,10 @@
-package com.voidvvv.game.base.components;
+package com.voidvvv.game.ecs.components;
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.ai.fsm.StateMachine;
+import com.voidvvv.game.base.components.VComponent;
 
-public class StateMachineComponent implements VComponent{
+public class StateMachineComponent implements Component {
     StateMachine stateMachine;
 
     public float stateTime = 0f;
@@ -19,19 +21,4 @@ public class StateMachineComponent implements VComponent{
         this.stateMachine = stateMachine;
     }
 
-    @Override
-    public void init() {
-        stateTime = 0f;
-    }
-
-    @Override
-    public void update(float delta) {
-        stateTime += delta;
-        this.stateMachine.update();
-    }
-
-    @Override
-    public void dispose() {
-
-    }
 }

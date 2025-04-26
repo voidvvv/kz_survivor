@@ -133,7 +133,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         engine.addSystem(new BattleComponentBaseSystem());
         engine.addSystem(new Box2dMoveSystem());
         engine.addSystem(new MovementComponentSystem());
-        engine.addSystem(new DamageValueSystem(2.f));
+        engine.addSystem(new DamageValueSystem(0.5f));
+        engine.addSystem(new StateMachineUpdateSystem());
         moveMapper = ComponentMapper.getFor(MoveComponent.class);
     }
 

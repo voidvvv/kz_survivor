@@ -5,10 +5,10 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.voidvvv.game.base.StateComponentHolder;
 import com.voidvvv.game.base.VActor;
-import com.voidvvv.game.base.components.StateMachineComponent;
+import com.voidvvv.game.ecs.components.StateMachineComponent;
 import com.voidvvv.game.base.state.Idle;
 
-public abstract class VWorldActor implements VActor , StateComponentHolder {
+public abstract class VWorldActor implements VActor {
     StateMachineComponent stateMachineComponent;
     protected float time;
 
@@ -33,19 +33,13 @@ public abstract class VWorldActor implements VActor , StateComponentHolder {
 
     @Override
     public void init() {
-        stateMachineComponent = new StateMachineComponent(new DefaultStateMachine(this, new Idle()));
-        stateMachineComponent.init();
+
     }
 
     @Override
     public void update(float delta) {
         this.time += delta;
-        this.stateMachineComponent.update(delta);
     }
 
-    @Override
-    public StateMachineComponent getStateMachine() {
-        return stateMachineComponent;
-    }
 
 }

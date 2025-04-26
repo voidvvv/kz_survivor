@@ -11,6 +11,7 @@ import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.Bob;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VRectBoundComponent;
+import com.voidvvv.game.ecs.components.StateMachineComponent;
 import com.voidvvv.game.utils.AssetConstants;
 
 public class BobRender implements VActorRender{
@@ -97,8 +98,8 @@ public class BobRender implements VActorRender{
                 return;
             }
             Main.getInstance().getDrawManager().drawDebug(rectBoundComponent);
-
-            TextureRegion keyFrame = idle_animation.getKeyFrame(bob.getStateMachine().stateTime);
+            StateMachineComponent component = bob.getEntity().getComponent(StateMachineComponent.class);
+            TextureRegion keyFrame = idle_animation.getKeyFrame(component.stateTime);
             SpriteBatch baseBatch = Main.getInstance().getDrawManager().getBaseBatch();
             baseBatch.setProjectionMatrix(Main.getInstance().getCameraManager().getMainCamera().combined);
             baseBatch.begin();

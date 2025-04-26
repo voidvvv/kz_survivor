@@ -8,7 +8,6 @@ public class Idle extends BaseState {
 
     @Override
     public void enter(VWorldActor entity) {
-        entity.getStateMachine().stateTime = 0f;
     }
 
     @Override

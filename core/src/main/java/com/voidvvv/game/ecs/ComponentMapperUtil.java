@@ -17,4 +17,6 @@ public class ComponentMapperUtil {
     public static final ComponentMapper<BattleEventListenerComponent> eventListenerComponentComponentMapper = ComponentMapper.getFor(BattleEventListenerComponent.class);
 
     public static final ComponentMapper<com.voidvvv.game.ecs.components.DamageValueComponent> damageValueComponentMapper = ComponentMapper.getFor(com.voidvvv.game.ecs.components.DamageValueComponent.class);
+
+    public static final ComponentMapper<com.voidvvv.game.ecs.components.StateMachineComponent> stateMachineComponentMapper = ComponentMapper.getFor(com.voidvvv.game.ecs.components.StateMachineComponent.class);
 }

@@ -1,6 +1,8 @@
 package com.voidvvv.game.base.components;
 
-public interface VComponent {
+import com.badlogic.ashley.core.Component;
+
+public interface VComponent extends Component {
     void init();
 
     void update(float delta);
