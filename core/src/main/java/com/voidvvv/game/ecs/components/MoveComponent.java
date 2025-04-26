@@ -1,7 +1,8 @@
-package com.voidvvv.game.base.components;
+package com.voidvvv.game.ecs.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector2;
+import com.voidvvv.game.base.components.VComponent;
 
 public class MoveComponent implements VComponent, Component {
     public final Vector2 vel = new Vector2();

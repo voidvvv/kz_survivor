@@ -1,15 +1,23 @@
 package com.voidvvv.game.battle;
 
-import com.badlogic.gdx.math.Vector2;
-
-import javax.swing.text.html.parser.Entity;
+import com.badlogic.ashley.core.Entity;
 
 public class BaseDamage implements Damage{
     BattleContext battleContext;
     Entity from;
     Entity to;
 
+    DamageType damageType;
+
     public float damageVal;
+
+    public void setDamageType(DamageType damageType) {
+        this.damageType = damageType;
+    }
+
+    public void setDamageVal(float damageVal) {
+        this.damageVal = damageVal;
+    }
 
     public BattleContext getBattleContext() {
         return battleContext;
@@ -49,15 +57,11 @@ public class BaseDamage implements Damage{
 
     @Override
     public DamageType damageType() {
-        return DamageType.PHISICAL;
+        return damageType;
     }
 
-    Vector2 position = new Vector2();
+
     @Override
-    public Vector2 position() {
-        return position;
-    }
-
     public void apply() {
 
     }

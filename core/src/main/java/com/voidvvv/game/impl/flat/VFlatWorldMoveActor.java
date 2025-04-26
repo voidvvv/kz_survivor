@@ -2,7 +2,7 @@
 //
 //import com.badlogic.gdx.math.Vector2;
 //import com.voidvvv.game.base.VActor;
-//import com.voidvvv.game.base.components.MoveComponent;
+//import com.voidvvv.game.ecs.components.MoveComponent;
 //import com.voidvvv.game.base.MoveComponentHolder;
 //import com.voidvvv.game.utils.Box2dUnitConverter;
 //import com.voidvvv.render.actor.VActorRender;

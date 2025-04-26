@@ -7,5 +7,4 @@ public interface Damage extends BattleEvent{
 
     DamageType damageType();
 
-    Vector2 position();
 }

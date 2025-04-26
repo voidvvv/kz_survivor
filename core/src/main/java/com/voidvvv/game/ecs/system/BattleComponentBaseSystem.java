@@ -17,6 +17,7 @@ public class BattleComponentBaseSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
+        // 修正战斗属性
         BattleComponent battleComponent = battleMapper.get(entity);
         if (battleComponent != null) {
             battleComponent.update(deltaTime);

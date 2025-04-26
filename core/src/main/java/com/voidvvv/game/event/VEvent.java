@@ -1,8 +1,11 @@
 package com.voidvvv.game.event;
 
-import javax.swing.text.html.parser.Entity;
+
+import com.badlogic.ashley.core.Entity;
 
 public interface VEvent {
     Entity getFrom();
     Entity getTo();
+
+    void apply();
 }

@@ -4,7 +4,7 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.voidvvv.game.base.components.MoveComponent;
+import com.voidvvv.game.ecs.components.MoveComponent;
 
 public class MovementComponentSystem extends IteratingSystem {
     ComponentMapper<MoveComponent> moveMapper = null;

@@ -12,4 +12,6 @@ public interface BattleEvent extends VEvent {
      * @return
      */
     BattleContext getContext();
+
+
 }

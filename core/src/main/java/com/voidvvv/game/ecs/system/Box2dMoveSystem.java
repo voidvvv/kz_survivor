@@ -6,7 +6,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.Vector2;
 import com.voidvvv.game.base.VRectBoundComponent;
-import com.voidvvv.game.base.components.MoveComponent;
+import com.voidvvv.game.ecs.components.MoveComponent;
 import com.voidvvv.game.box2d.CollisionPair;
 import com.voidvvv.game.box2d.ContactPairListener;
 import com.voidvvv.game.box2d.VBox2dComponent;

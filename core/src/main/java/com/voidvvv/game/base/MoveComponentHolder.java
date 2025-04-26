@@ -1,6 +1,6 @@
 package com.voidvvv.game.base;
 
-import com.voidvvv.game.base.components.MoveComponent;
+import com.voidvvv.game.ecs.components.MoveComponent;
 
 public interface MoveComponentHolder{
 

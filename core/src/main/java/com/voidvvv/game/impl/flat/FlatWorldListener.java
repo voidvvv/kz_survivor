@@ -3,7 +3,6 @@ package com.voidvvv.game.impl.flat;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.gdx.physics.box2d.*;
 import com.voidvvv.game.base.VActor;
-import com.voidvvv.game.box2d.Box2dComponentHolder;
 import com.voidvvv.game.box2d.CollisionPair;
 import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.utils.ReflectUtil;

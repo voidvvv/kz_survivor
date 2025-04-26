@@ -1,14 +1,7 @@
 package com.voidvvv.game.impl.flat;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.voidvvv.game.base.VActorMetaState;
-import com.voidvvv.game.box2d.CollisionPair;
-import com.voidvvv.game.box2d.VBox2dComponent;
-import com.voidvvv.game.box2d.Box2dComponentHolder;
-import com.voidvvv.game.utils.Box2dUnitConverter;
 import com.voidvvv.render.actor.VActorRender;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.base.world.VWorldActor;
