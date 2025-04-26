@@ -101,6 +101,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     }
     DamageValueComponent damageValueComponent;
+    DebugRenderIteratorSystem debugRenderIteratorSystem = new DebugRenderIteratorSystem();
     private void initECS() {
         engine = new Engine();
         BaseBattleContext baseBattleContext = new BaseBattleContext();
@@ -136,7 +137,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         engine.addSystem(new MovementComponentSystem());
         engine.addSystem(new DamageValueSystem(0.5f));
         engine.addSystem(new StateMachineUpdateSystem());
-        engine.addSystem(new DebugRenderIteratorSystem());
+//        engine.addSystem(new DebugRenderIteratorSystem());
         moveMapper = ComponentMapper.getFor(MoveComponent.class);
     }
 
