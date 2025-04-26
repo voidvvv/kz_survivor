@@ -1,5 +1,6 @@
 package com.voidvvv.render.other;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -28,7 +29,9 @@ public class DamageRender {
             int damage = damageValue.damage;
             tmp.set(damageValue.position);
             worldViewPort.project(tmp);
+            tmp.y = Gdx.graphics.getHeight() - tmp.y;
             screenViewport.unproject(tmp);
+
             bitmapFont.draw(baseBatch, String.valueOf(damage), tmp.x, tmp.y);
         }
         baseBatch.end();
