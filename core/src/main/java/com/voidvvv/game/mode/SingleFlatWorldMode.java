@@ -20,6 +20,7 @@ import com.voidvvv.game.ecs.components.MoveComponent;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.ecs.system.*;
+import com.voidvvv.game.ecs.system.render.DebugRenderIteratorSystem;
 import com.voidvvv.game.impl.flat.FlatWorldConfig;
 import com.voidvvv.game.impl.flat.VFlatWorld;
 import com.voidvvv.game.impl.flat.VFlatWorldActor;
@@ -135,6 +136,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         engine.addSystem(new MovementComponentSystem());
         engine.addSystem(new DamageValueSystem(0.5f));
         engine.addSystem(new StateMachineUpdateSystem());
+        engine.addSystem(new DebugRenderIteratorSystem());
         moveMapper = ComponentMapper.getFor(MoveComponent.class);
     }
 

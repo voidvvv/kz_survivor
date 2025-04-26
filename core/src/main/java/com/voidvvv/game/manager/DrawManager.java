@@ -35,25 +35,24 @@ public class DrawManager implements BaseManager{
             baseBatch.dispose();
         }
     }
-    Color bottomColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
-    Color faceColor = new Color(1f, 0.5f, 0.5f, 0.5f);
-    public void drawDebug (VRectBoundComponent rectBoundComponent) {
-        Gdx.gl.glEnable(Gdx.gl.GL_BLEND);
-        Gdx.gl.glBlendFunc(Gdx.gl.GL_SRC_ALPHA, Gdx.gl.GL_ONE_MINUS_SRC_ALPHA);
-        // debug
-        ShapeRenderer shapeRenderer = Main.getInstance().getDrawManager().getShapeRenderer();
-        shapeRenderer.setProjectionMatrix(Main.getInstance().getCameraManager().getMainCamera().combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        shapeRenderer.setColor(bottomColor);
-        shapeRenderer.rect(rectBoundComponent.position.x - rectBoundComponent.getLength() / 2f,
-            rectBoundComponent.position.y - rectBoundComponent.getHeight() / 2f,
-            rectBoundComponent.getLength(), rectBoundComponent.getHeight());
-        shapeRenderer.setColor(faceColor);
-        shapeRenderer.rect(rectBoundComponent.position.x - rectBoundComponent.getLength() / 2f,
-            rectBoundComponent.position.y,
-            rectBoundComponent.getLength(), rectBoundComponent.getWidth());
-        shapeRenderer.end();
-        Gdx.gl.glDisable(Gdx.gl.GL_BLEND);
-    }
+//    public void drawDebug (VRectBoundComponent rectBoundComponent) {
+//        Gdx.gl.glEnable(Gdx.gl.GL_BLEND);
+//        Gdx.gl.glBlendFunc(Gdx.gl.GL_SRC_ALPHA, Gdx.gl.GL_ONE_MINUS_SRC_ALPHA);
+//        // debug
+//        ShapeRenderer shapeRenderer = Main.getInstance().getDrawManager().getShapeRenderer();
+//        shapeRenderer.setProjectionMatrix(Main.getInstance().getCameraManager().getMainCamera().combined);
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//
+//        shapeRenderer.setColor(bottomColor);
+//        shapeRenderer.rect(rectBoundComponent.position.x - rectBoundComponent.getLength() / 2f,
+//            rectBoundComponent.position.y - rectBoundComponent.getHeight() / 2f,
+//            rectBoundComponent.getLength(), rectBoundComponent.getHeight());
+//        shapeRenderer.setColor(faceColor);
+//        shapeRenderer.rect(rectBoundComponent.position.x - rectBoundComponent.getLength() / 2f,
+//            rectBoundComponent.position.y,
+//            rectBoundComponent.getLength(), rectBoundComponent.getWidth());
+//        shapeRenderer.end();
+//        Gdx.gl.glDisable(Gdx.gl.GL_BLEND);
+//    }
 }

@@ -97,7 +97,7 @@ public class BobRender implements VActorRender{
             if (rectBoundComponent == null) {
                 return;
             }
-            Main.getInstance().getDrawManager().drawDebug(rectBoundComponent);
+//            Main.getInstance().getDrawManager().drawDebug(rectBoundComponent);
             StateMachineComponent component = bob.getEntity().getComponent(StateMachineComponent.class);
             TextureRegion keyFrame = idle_animation.getKeyFrame(component.stateTime);
             SpriteBatch baseBatch = Main.getInstance().getDrawManager().getBaseBatch();

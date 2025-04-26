@@ -25,7 +25,7 @@ public class SlimeRender implements VActorRender{
             if (rectBoundComponent == null) {
                 return;
             }
-            Main.getInstance().getDrawManager().drawDebug(rectBoundComponent);
+//            Main.getInstance().getDrawManager().drawDebug(rectBoundComponent);
         }
 
 
