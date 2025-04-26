@@ -8,21 +8,25 @@ import com.badlogic.gdx.math.Vector2;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.ActorConstants;
 import com.voidvvv.game.actor.Bob;
+import com.voidvvv.game.actor.Slime;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.battle.BaseBattleContext;
+import com.voidvvv.game.battle.BattleEvent;
+import com.voidvvv.game.battle.BattleEventListener;
+import com.voidvvv.game.battle.Damage;
 import com.voidvvv.game.ecs.components.BattleContextComponent;
+import com.voidvvv.game.ecs.components.DamageValueComponent;
 import com.voidvvv.game.ecs.components.MoveComponent;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.WorldContext;
-import com.voidvvv.game.ecs.system.BattleComponentBaseSystem;
-import com.voidvvv.game.ecs.system.BattleContextUpdateSystem;
-import com.voidvvv.game.ecs.system.Box2dMoveSystem;
-import com.voidvvv.game.ecs.system.MovementComponentSystem;
+import com.voidvvv.game.ecs.system.*;
 import com.voidvvv.game.impl.flat.FlatWorldConfig;
 import com.voidvvv.game.impl.flat.VFlatWorld;
 import com.voidvvv.game.impl.flat.VFlatWorldActor;
 import com.voidvvv.game.player.Player;
 import com.voidvvv.game.player.PlayerInput;
+import com.voidvvv.game.utils.ReflectUtil;
+import com.voidvvv.render.other.DamageRender;
 
 public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode {
     PlayerInput playerInput;
@@ -38,6 +42,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     FlatWorldConfig config;
 
+    DamageRender damageRender;
+
     public SingleFlatWorldMode() {
         this(new FlatWorldConfig());
     }
@@ -45,6 +51,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     public SingleFlatWorldMode(FlatWorldConfig config) {
         this.config = config;
         this.context = initWorld(config);
+        damageRender = new DamageRender();
     }
 
     private WorldContext initWorld(FlatWorldConfig config) {
@@ -73,17 +80,60 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         this.context.init();
 
         initProtagonist();
+
+        otherInit();
     }
 
+    private void otherInit() {
+        Slime slime = new Slime();
+        VActorSpawnHelper helper = new VActorSpawnHelper();
+        helper.initX = config.birthPlace.x - 29;
+        helper.initY = config.birthPlace.y - 50;
+        VRectBoundComponent defaultRect = ActorConstants.BOX2D_INIT.getOrDefault(slime.getClass().getName(),
+            ActorConstants.DEFAULT_BOX2D_INIT);
+        helper.hx = defaultRect.getLength() / 2;
+        helper.hy = defaultRect.getHeight() / 2;
+        helper.hz = defaultRect.getWidth() / 2;
+
+        engine.addEntity(slime.getEntity());
+        this.flatWorld.spawnVActor(() -> slime, helper);
+
+    }
+    DamageValueComponent damageValueComponent;
     private void initECS() {
         engine = new Engine();
-        entity.add(new BattleContextComponent(new BaseBattleContext()));
+        BaseBattleContext baseBattleContext = new BaseBattleContext();
+        damageValueComponent = new DamageValueComponent();
+        baseBattleContext.addGlobalListener(new BattleEventListener() {
+            @Override
+            public void afterPassiveEvent(BattleEvent event) {
+                Damage damage = ReflectUtil.convert(event, Damage.class);
+                if (damage != null) {
+                    DamageValue damageValue = new DamageValue();
+                    damageValue.damage = (int) damage.damageVal();
+                    damageValue.type = damage.damageType();
+                    VRectBoundComponent targetPosition = event.getTo().getComponent(VRectBoundComponent.class);
+                    if (targetPosition != null) {
+                        damageValue.position.set(targetPosition.position);
+                    }
 
+                    damageValueComponent.damageValues.add(damageValue);
+                }
+            }
+
+            @Override
+            public void afterActiveEvent(BattleEvent event) {
+
+            }
+        });
+        entity.add(new BattleContextComponent(baseBattleContext));
+        entity.add(damageValueComponent);
         engine.addEntity(entity);
         engine.addSystem(new BattleContextUpdateSystem());
         engine.addSystem(new BattleComponentBaseSystem());
         engine.addSystem(new Box2dMoveSystem());
         engine.addSystem(new MovementComponentSystem());
+        engine.addSystem(new DamageValueSystem(2.f));
         moveMapper = ComponentMapper.getFor(MoveComponent.class);
     }
 
@@ -161,6 +211,11 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     @Override
     public Entity getEntity() {
         return entity;
+    }
+
+    @Override
+    public void render() {
+        damageRender.render(damageValueComponent);
     }
 
     @Override

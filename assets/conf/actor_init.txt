@@ -1,1 +1,2 @@
 com.voidvvv.game.actor.Bob=20,45,15
+com.voidvvv.game.actor.Slime=20,45,15

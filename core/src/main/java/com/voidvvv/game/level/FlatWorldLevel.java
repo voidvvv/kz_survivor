@@ -127,6 +127,7 @@ public class FlatWorldLevel implements Level{
     public void render() {
         VWorld world = gameMode.getContext().getWorld();
         render.render(world);
+        gameMode.render();
     }
 
     @Override

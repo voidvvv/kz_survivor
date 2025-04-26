@@ -10,6 +10,17 @@ import java.util.List;
 
 public class BaseBattleContext implements BattleContext{
     List<BattleEvent> battleEvents = new ArrayList<>();
+    List<BattleEventListener> globalListeners = new ArrayList<>();
+
+    public void addGlobalListener(BattleEventListener listener) {
+        if (!globalListeners.contains(listener)) {
+            globalListeners.add(listener);
+        }
+    }
+
+    public BaseBattleContext () {
+    }
+
     @Override
     public void removeEvent(BattleEvent battleEvent) {
         battleEvents.remove(battleEvent);
@@ -39,7 +50,12 @@ public class BaseBattleContext implements BattleContext{
                     listener.afterPassiveEvent(event);
                 }
             }
+            // global after event
+            for (BattleEventListener globalListener : globalListeners) {
+                globalListener.afterPassiveEvent(event);
+            }
         }
+        battleEvents.clear();
     }
 
     @Override
@@ -54,7 +70,7 @@ public class BaseBattleContext implements BattleContext{
         damage.setTo(to);
         damage.setDamageType(type);
         damage.setDamageVal(damageVal);
-        eventList().add(damage);
+        addEvent(damage);
         return damage;
     }
 }

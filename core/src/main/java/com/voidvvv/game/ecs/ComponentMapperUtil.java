@@ -15,4 +15,6 @@ public class ComponentMapperUtil {
     public static final ComponentMapper<VBox2dComponent> box2dMapper = ComponentMapper.getFor(VBox2dComponent.class);
 
     public static final ComponentMapper<BattleEventListenerComponent> eventListenerComponentComponentMapper = ComponentMapper.getFor(BattleEventListenerComponent.class);
+
+    public static final ComponentMapper<com.voidvvv.game.ecs.components.DamageValueComponent> damageValueComponentMapper = ComponentMapper.getFor(com.voidvvv.game.ecs.components.DamageValueComponent.class);
 }

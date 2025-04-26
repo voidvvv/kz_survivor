@@ -2,6 +2,7 @@ package com.voidvvv.game;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.voidvvv.game.manager.CameraManager;
@@ -103,7 +104,8 @@ public class Main extends Game {
     public void create() {
         Gdx.input.setInputProcessor(input);
         assetManager.setLoader(TiledMap.class,new TmxMapLoader());
-
+        assetManager.load("font/yizi.fnt", BitmapFont.class);
+        assetManager.finishLoading();
         cameraManager.init();
         drawManager.init();
         initScreens();

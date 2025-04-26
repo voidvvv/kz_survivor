@@ -12,4 +12,6 @@ public interface GameMode extends Telegraph {
     void dispose();
 
     Entity getEntity();
+
+    void render();
 }

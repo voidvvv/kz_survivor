@@ -63,6 +63,9 @@ public class BaseDamage implements Damage{
 
     @Override
     public void apply() {
-
+        // Apply damage logic here
+        // For example, reduce the health of the target entity
+        // This is just a placeholder implementation
+        System.out.println("Applying damage: " + damageVal + " from " + from + " to " + to);
     }
 }
