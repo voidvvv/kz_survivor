@@ -1,5 +1,6 @@
 package com.voidvvv.game.base.world;
 
+import com.badlogic.ashley.core.Entity;
 import com.voidvvv.game.base.Updateable;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public interface VWorld {
     public void addUpdateable(Updateable updateable);
 
     List<Updateable> updatableList();
+
+    Entity getEntity();
 
     // remove updatable
     public void removeUpdateable(Updateable updateable);

@@ -9,11 +9,15 @@ import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.ActorConstants;
 import com.voidvvv.game.actor.Bob;
 import com.voidvvv.game.base.VRectBoundComponent;
+import com.voidvvv.game.battle.BaseBattleContext;
+import com.voidvvv.game.ecs.components.BattleContextComponent;
 import com.voidvvv.game.ecs.components.MoveComponent;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.ecs.system.BattleComponentBaseSystem;
+import com.voidvvv.game.ecs.system.BattleContextUpdateSystem;
 import com.voidvvv.game.ecs.system.Box2dMoveSystem;
+import com.voidvvv.game.ecs.system.MovementComponentSystem;
 import com.voidvvv.game.impl.flat.FlatWorldConfig;
 import com.voidvvv.game.impl.flat.VFlatWorld;
 import com.voidvvv.game.impl.flat.VFlatWorldActor;
@@ -73,9 +77,13 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     private void initECS() {
         engine = new Engine();
+        entity.add(new BattleContextComponent(new BaseBattleContext()));
 
+        engine.addEntity(entity);
+        engine.addSystem(new BattleContextUpdateSystem());
         engine.addSystem(new BattleComponentBaseSystem());
         engine.addSystem(new Box2dMoveSystem());
+        engine.addSystem(new MovementComponentSystem());
         moveMapper = ComponentMapper.getFor(MoveComponent.class);
     }
 
@@ -145,6 +153,9 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     public void dispose() {
         context.dispose();
         Player.PLAYERS[0].removeInput(playerInput);
+
+        engine = null;
+        entity = null;
     }
 
     @Override

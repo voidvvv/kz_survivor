@@ -2,6 +2,7 @@ package com.voidvvv.game.battle;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
+import com.voidvvv.game.ecs.ComponentMapperUtil;
 import com.voidvvv.game.ecs.components.BattleEventListenerComponent;
 
 import java.util.ArrayList;
@@ -9,8 +10,6 @@ import java.util.List;
 
 public class BaseBattleContext implements BattleContext{
     List<BattleEvent> battleEvents = new ArrayList<>();
-
-    public static final ComponentMapper<BattleEventListenerComponent> battleEventListenerComponentMapper = ComponentMapper.getFor(BattleEventListenerComponent.class);
     @Override
     public void removeEvent(BattleEvent battleEvent) {
         battleEvents.remove(battleEvent);
@@ -27,8 +26,8 @@ public class BaseBattleContext implements BattleContext{
             Entity from = event.getFrom();
             Entity to = event.getTo();
             event.apply();
-            BattleEventListenerComponent fromListener = battleEventListenerComponentMapper.get(from);
-            BattleEventListenerComponent toListener = battleEventListenerComponentMapper.get(to);
+            BattleEventListenerComponent fromListener = ComponentMapperUtil.eventListenerComponentComponentMapper.get(from);
+            BattleEventListenerComponent toListener = ComponentMapperUtil.eventListenerComponentComponentMapper.get(to);
 
             if (fromListener != null) {
                 for (BattleEventListener listener : fromListener.getListeners()) {

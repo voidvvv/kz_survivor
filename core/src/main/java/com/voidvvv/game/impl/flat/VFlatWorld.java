@@ -38,6 +38,8 @@ public class VFlatWorld implements VWorld {
 
     FlatWorldConfig config;
 
+    Entity entity = new Entity();
+
     public final Vector2 viewPosition = new Vector2();
 
     public FlatWorldConfig getConfig() {
@@ -234,6 +236,11 @@ public class VFlatWorld implements VWorld {
     @Override
     public List<Updateable> updatableList() {
         return updateables;
+    }
+
+    @Override
+    public Entity getEntity() {
+        return entity;
     }
 
     @Override
