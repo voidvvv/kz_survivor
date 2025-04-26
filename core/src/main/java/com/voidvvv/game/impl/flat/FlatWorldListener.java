@@ -1,24 +1,27 @@
 package com.voidvvv.game.impl.flat;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.gdx.physics.box2d.*;
 import com.voidvvv.game.box2d.Box2dComponentHolder;
 import com.voidvvv.game.box2d.CollisionPair;
+import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.utils.ReflectUtil;
 
 public class FlatWorldListener implements ContactListener {
+    ComponentMapper<VBox2dComponent> box2dComponentMapper = ComponentMapper.getFor(VBox2dComponent.class);
     @Override
     public void beginContact(Contact contact) {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
-        Box2dComponentHolder userDataA = ReflectUtil.convert(fixtureA.getBody().getUserData(), Box2dComponentHolder.class);
-        Box2dComponentHolder userDataB = ReflectUtil.convert(fixtureB.getBody().getUserData(), Box2dComponentHolder.class);
+        VFlatWorldActor userDataA = ReflectUtil.convert(fixtureA.getBody().getUserData(), VFlatWorldActor.class);
+        VFlatWorldActor userDataB = ReflectUtil.convert(fixtureB.getBody().getUserData(), VFlatWorldActor.class);
 
         if (userDataA != null) {
-            userDataA.getBox2dComponent().addStartContactFixture(CollisionPair.of(fixtureA, fixtureB));
+            box2dComponentMapper.get(userDataA.getEntity()).addStartContactFixture(CollisionPair.of(fixtureA, fixtureB));
         }
         if (userDataB != null) {
-            userDataB.getBox2dComponent().addStartContactFixture(CollisionPair.of(fixtureB, fixtureA));
+            box2dComponentMapper.get(userDataB.getEntity()).addStartContactFixture(CollisionPair.of(fixtureB, fixtureA));
         }
     }
 
@@ -27,14 +30,14 @@ public class FlatWorldListener implements ContactListener {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
-        Box2dComponentHolder userDataA = ReflectUtil.convert(fixtureA.getBody().getUserData(), Box2dComponentHolder.class);
-        Box2dComponentHolder userDataB = ReflectUtil.convert(fixtureB.getBody().getUserData(), Box2dComponentHolder.class);
+        VFlatWorldActor userDataA = ReflectUtil.convert(fixtureA.getBody().getUserData(), VFlatWorldActor.class);
+        VFlatWorldActor userDataB = ReflectUtil.convert(fixtureB.getBody().getUserData(), VFlatWorldActor.class);
 
         if (userDataA != null) {
-            userDataA.getBox2dComponent().addEndContactFixture(CollisionPair.of(fixtureA, fixtureB));
+            box2dComponentMapper.get(userDataA.getEntity()).addEndContactFixture(CollisionPair.of(fixtureA, fixtureB));
         }
         if (userDataB != null) {
-            userDataB.getBox2dComponent().addEndContactFixture(CollisionPair.of(fixtureB, fixtureA));
+            box2dComponentMapper.get(userDataB.getEntity()).addEndContactFixture(CollisionPair.of(fixtureB, fixtureA));
         }
     }
 

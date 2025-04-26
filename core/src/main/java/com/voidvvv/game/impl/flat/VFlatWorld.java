@@ -195,8 +195,9 @@ public class VFlatWorld implements VWorld {
         bottomShape.dispose();
         faceShape.dispose();
 
-        bottonFixture.setUserData(flatWorldActor);
-        faceFixture.setUserData(flatWorldActor);
+        body.setUserData(flatWorldActor);
+//        bottonFixture.setUserData(flatWorldActor);
+//        faceFixture.setUserData(flatWorldActor);
         vBox2dComponent.setBottomFixture(bottonFixture);
         vBox2dComponent.setFaceFixture(faceFixture);
         return;

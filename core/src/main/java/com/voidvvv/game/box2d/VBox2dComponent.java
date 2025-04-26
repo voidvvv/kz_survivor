@@ -20,6 +20,22 @@ public class VBox2dComponent implements Component {
 
     List<CollisionPair> endContactFixtures = new ArrayList<>();
 
+    List<ContactPairListener> contactPairListeners = new ArrayList<>();
+
+    public List<ContactPairListener> getContactPairListeners() {
+        return contactPairListeners;
+    }
+
+    public void addContactPairListener(ContactPairListener contactPairListener) {
+        if (!contactPairListeners.contains(contactPairListener)) {
+            contactPairListeners.add(contactPairListener);
+        }
+    }
+
+    public void removeContactPairListener(ContactPairListener contactPairListener) {
+        contactPairListeners.remove(contactPairListener);
+    }
+
     public List<CollisionPair> getStartContactFixtures() {
         return startContactFixtures;
     }
@@ -83,4 +99,6 @@ public class VBox2dComponent implements Component {
     public void dispose () {
         this.flatBody.getWorld().destroyBody(this.flatBody);
     }
+
+
 }

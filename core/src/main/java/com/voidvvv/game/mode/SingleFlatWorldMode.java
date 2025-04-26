@@ -88,9 +88,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         helper.initY = config.birthPlace.y;
         VFlatWorldActor localProtagonist = this.protagonist;
         engine.addEntity(localProtagonist.getEntity());
-        localProtagonist.getEntity().add(new MoveComponent());
-        localProtagonist.getEntity().add(new VBox2dComponent());
-        localProtagonist.getEntity().add(new VRectBoundComponent());
+
         VRectBoundComponent defaultRect = ActorConstants.BOX2D_INIT.getOrDefault(localProtagonist.getClass().getName(),
             ActorConstants.DEFAULT_BOX2D_INIT);
 

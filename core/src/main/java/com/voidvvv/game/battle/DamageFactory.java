@@ -1,6 +1,8 @@
 package com.voidvvv.game.battle;
 
+import javax.swing.text.html.parser.Entity;
+
 public interface DamageFactory {
-    Damage createDamage(BattleComponent from, BattleComponent to, DamageType type, float damageVal);
+    Damage createDamage(Entity from, Entity to, DamageType type, float damageVal);
 
 }

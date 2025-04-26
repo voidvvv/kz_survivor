@@ -2,10 +2,12 @@ package com.voidvvv.game.battle;
 
 import com.badlogic.gdx.math.Vector2;
 
+import javax.swing.text.html.parser.Entity;
+
 public class BaseDamage implements Damage{
     BattleContext battleContext;
-    BattleComponent from;
-    BattleComponent to;
+    Entity from;
+    Entity to;
 
     public float damageVal;
 
@@ -18,20 +20,20 @@ public class BaseDamage implements Damage{
     }
 
     @Override
-    public BattleComponent getFrom() {
+    public Entity getFrom() {
         return from;
     }
 
     @Override
-    public BattleComponent getTo() {
+    public Entity getTo() {
         return to;
     }
 
-    public void setFrom(BattleComponent from) {
+    public void setFrom(Entity from) {
         this.from = from;
     }
 
-    public void setTo(BattleComponent to) {
+    public void setTo(Entity to) {
         this.to = to;
     }
 
