@@ -2,6 +2,7 @@ package com.voidvvv.game.impl.flat;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.gdx.physics.box2d.*;
+import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.box2d.Box2dComponentHolder;
 import com.voidvvv.game.box2d.CollisionPair;
 import com.voidvvv.game.box2d.VBox2dComponent;
@@ -14,8 +15,8 @@ public class FlatWorldListener implements ContactListener {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
-        VFlatWorldActor userDataA = ReflectUtil.convert(fixtureA.getBody().getUserData(), VFlatWorldActor.class);
-        VFlatWorldActor userDataB = ReflectUtil.convert(fixtureB.getBody().getUserData(), VFlatWorldActor.class);
+        VActor userDataA = ReflectUtil.convert(fixtureA.getBody().getUserData(), VActor.class);
+        VActor userDataB = ReflectUtil.convert(fixtureB.getBody().getUserData(), VActor.class);
 
         if (userDataA != null) {
             box2dComponentMapper.get(userDataA.getEntity()).addStartContactFixture(CollisionPair.of(fixtureA, fixtureB));
@@ -30,8 +31,8 @@ public class FlatWorldListener implements ContactListener {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
-        VFlatWorldActor userDataA = ReflectUtil.convert(fixtureA.getBody().getUserData(), VFlatWorldActor.class);
-        VFlatWorldActor userDataB = ReflectUtil.convert(fixtureB.getBody().getUserData(), VFlatWorldActor.class);
+        VActor userDataA = ReflectUtil.convert(fixtureA.getBody().getUserData(), VActor.class);
+        VActor userDataB = ReflectUtil.convert(fixtureB.getBody().getUserData(), VActor.class);
 
         if (userDataA != null) {
             box2dComponentMapper.get(userDataA.getEntity()).addEndContactFixture(CollisionPair.of(fixtureA, fixtureB));

@@ -1,5 +1,8 @@
 package com.voidvvv.game.event;
 
+import javax.swing.text.html.parser.Entity;
+
 public interface VEvent {
-    void apply();
+    Entity getFrom();
+    Entity getTo();
 }

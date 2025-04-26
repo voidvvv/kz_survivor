@@ -58,7 +58,6 @@ public class BaseDamage implements Damage{
         return position;
     }
 
-    @Override
     public void apply() {
 
     }

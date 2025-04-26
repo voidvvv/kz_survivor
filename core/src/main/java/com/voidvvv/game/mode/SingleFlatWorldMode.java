@@ -2,6 +2,7 @@ package com.voidvvv.game.mode;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.Vector2;
 import com.voidvvv.game.Main;
@@ -26,6 +27,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     PlayerInput playerInput;
     WorldContext context;
     VFlatWorld flatWorld;
+
+    Entity entity = new Entity();
 
     VFlatWorldActor protagonist;
 
@@ -145,6 +148,11 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     public void dispose() {
         context.dispose();
         Player.PLAYERS[0].removeInput(playerInput);
+    }
+
+    @Override
+    public Entity getEntity() {
+        return entity;
     }
 
     @Override

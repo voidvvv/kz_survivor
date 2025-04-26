@@ -9,13 +9,10 @@ import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.impl.flat.VFlatWorldActor;
 import com.voidvvv.render.actor.BobRender;
 
-public class Bob extends VFlatWorldActor {
+public class Bob extends MoveShapeBox2dActor {
 
     public Bob() {
         super(BobRender.actorRender);
-        this.getEntity().add(new MoveComponent());
-        this.getEntity().add(new VBox2dComponent());
-        this.getEntity().add(new VRectBoundComponent());
     }
 
     @Override
