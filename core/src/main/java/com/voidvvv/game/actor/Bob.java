@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.voidvvv.game.Main;
+import com.voidvvv.game.base.state.Idle;
 import com.voidvvv.game.ecs.components.BaseStateActorAnimationComponent;
 import com.voidvvv.game.ecs.components.MoveComponent;
 import com.voidvvv.game.box2d.VBox2dComponent;
@@ -25,7 +26,7 @@ public class Bob extends MoveShapeBox2dActor {
         if (animPrototype == null) {
             initAnim();
         }
-        StateMachine machine = new DefaultStateMachine(this, null);
+        StateMachine machine = new DefaultStateMachine(this, new Idle());
         this.getEntity().add(new StateMachineComponent(machine));
         this.getEntity().add(AssetUtils.cpy(animPrototype));
     }
@@ -53,6 +54,7 @@ public class Bob extends MoveShapeBox2dActor {
         Texture texture = assetManager.get(AssetConstants.BOB_IMAGE, Texture.class);
         TextureRegion[][] base_pic = TextureRegion.split(texture, xSplit, ySplit);
         TextureRegion[][] base_pic_mirror = TextureRegion.split(texture, xSplit, ySplit);
+        AssetUtils.flip(base_pic_mirror);
 
         if (base_pic != null) {
             animPrototype = new BaseStateActorAnimationComponent();

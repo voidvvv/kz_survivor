@@ -1,5 +1,6 @@
 package com.voidvvv.game.utils;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.voidvvv.game.ecs.components.BaseStateActorAnimationComponent;
 import groovy.util.ConfigObject;
 
@@ -32,5 +33,16 @@ public class AssetUtils {
         newCom.dying_animation = oriCom.dying_animation;
         newCom.dying_animation_mirror = oriCom.dying_animation_mirror;
         return newCom;
+    }
+
+    public static void flip (TextureRegion[][] tr) {
+        if (tr == null) {
+            return;
+        }
+        for (TextureRegion[] a : tr) {
+            for (TextureRegion b : a) {
+                b.flip(true, false);
+            }
+        }
     }
 }
