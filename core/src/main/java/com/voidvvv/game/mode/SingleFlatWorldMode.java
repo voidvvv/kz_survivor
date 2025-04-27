@@ -20,6 +20,7 @@ import com.voidvvv.game.ecs.components.MoveComponent;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.ecs.system.*;
+import com.voidvvv.game.ecs.system.render.BaseStateActorAnimationSystem;
 import com.voidvvv.game.ecs.system.render.DebugRenderIteratorSystem;
 import com.voidvvv.game.impl.flat.FlatWorldConfig;
 import com.voidvvv.game.impl.flat.VFlatWorld;
@@ -27,7 +28,7 @@ import com.voidvvv.game.impl.flat.VFlatWorldActor;
 import com.voidvvv.game.player.Player;
 import com.voidvvv.game.player.PlayerInput;
 import com.voidvvv.game.utils.ReflectUtil;
-import com.voidvvv.render.other.DamageRender;
+import com.voidvvv.game.ecs.system.render.DamageSpriteBatchRender;
 
 public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode {
     PlayerInput playerInput;
@@ -43,7 +44,6 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     FlatWorldConfig config;
 
-    DamageRender damageRender;
 
     public SingleFlatWorldMode() {
         this(new FlatWorldConfig());
@@ -52,7 +52,6 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     public SingleFlatWorldMode(FlatWorldConfig config) {
         this.config = config;
         this.context = initWorld(config);
-        damageRender = new DamageRender();
     }
 
     private WorldContext initWorld(FlatWorldConfig config) {
@@ -131,12 +130,15 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         entity.add(new BattleContextComponent(baseBattleContext));
         entity.add(damageValueComponent);
         engine.addEntity(entity);
+        engine.addSystem(debugRenderIteratorSystem);
         engine.addSystem(new BattleContextUpdateSystem());
         engine.addSystem(new BattleComponentBaseSystem());
         engine.addSystem(new Box2dMoveSystem());
         engine.addSystem(new MovementComponentSystem());
         engine.addSystem(new DamageValueSystem(0.5f));
         engine.addSystem(new StateMachineUpdateSystem());
+        engine.addSystem(new DamageSpriteBatchRender());
+        engine.addSystem(new BaseStateActorAnimationSystem());
 //        engine.addSystem(new DebugRenderIteratorSystem());
         moveMapper = ComponentMapper.getFor(MoveComponent.class);
     }
@@ -219,7 +221,6 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     @Override
     public void render() {
-        damageRender.render(damageValueComponent);
     }
 
     @Override

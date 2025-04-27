@@ -65,9 +65,9 @@ public class VSimpleFlatWorldRender implements WorldRender {
         tiledMapRenderer.setView((OrthographicCamera) camera);
         tiledMapRenderer.render();
 
-        for (VWorldActor actor : vWorldActors) {
-            actor.draw();
-        }
+//        for (VWorldActor actor : vWorldActors) {
+//            actor.draw();
+//        }
     }
 
     @Override

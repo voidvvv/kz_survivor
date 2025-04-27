@@ -7,17 +7,17 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.voidvvv.game.Main;
 
-public abstract class RenderIteratorSystem extends EntitySystem {
+public abstract class SpriteBatchRenderIteratorSystem extends EntitySystem {
     Family family;
     SpriteBatch spriteBatch;
 
-    public RenderIteratorSystem(Family family) {
+    public SpriteBatchRenderIteratorSystem(Family family) {
         super(Integer.MAX_VALUE);
         this.family = family;
         this.spriteBatch = Main.getInstance().getDrawManager().getBaseBatch();
     }
 
-    public RenderIteratorSystem(Family family, SpriteBatch spriteBatch) {
+    public SpriteBatchRenderIteratorSystem(Family family, SpriteBatch spriteBatch) {
         super(Integer.MAX_VALUE);
         this.family = family;
         this.spriteBatch = spriteBatch;

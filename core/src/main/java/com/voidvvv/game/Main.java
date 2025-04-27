@@ -135,8 +135,8 @@ public class Main extends Game {
 
     @Override
     public void render() {
-        update();
         super.render();
+        update();
     }
 
     float deltaTime = 0.0f;
