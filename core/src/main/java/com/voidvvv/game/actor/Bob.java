@@ -3,6 +3,8 @@ package com.voidvvv.game.actor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.StateMachine;
+import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -11,11 +13,13 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.base.state.Idle;
 import com.voidvvv.game.ecs.components.BaseStateActorAnimationComponent;
+import com.voidvvv.game.ecs.components.MoveChangeListenerComponent;
 import com.voidvvv.game.ecs.components.MoveComponent;
 import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.ecs.components.StateMachineComponent;
 import com.voidvvv.game.utils.AssetConstants;
 import com.voidvvv.game.utils.AssetUtils;
+import com.voidvvv.game.utils.MessageConstants;
 import com.voidvvv.render.actor.BobRender;
 
 public class Bob extends MoveShapeBox2dActor {
@@ -29,6 +33,12 @@ public class Bob extends MoveShapeBox2dActor {
         StateMachine machine = new DefaultStateMachine(this, new Idle());
         this.getEntity().add(new StateMachineComponent(machine));
         this.getEntity().add(AssetUtils.cpy(animPrototype));
+
+        MoveChangeListenerComponent component = getEntity().getComponent(MoveChangeListenerComponent.class);
+        component.list.add( () -> {
+            MessageManager.getInstance().dispatchMessage((Telegraph)null, machine, MessageConstants.MSG_ACTOR_BASE_VELOCITY_CHANGE);
+
+        });
     }
 
     @Override

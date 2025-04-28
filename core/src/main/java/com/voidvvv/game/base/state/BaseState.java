@@ -3,9 +3,18 @@ package com.voidvvv.game.base.state;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.voidvvv.game.base.world.VWorldActor;
+import com.voidvvv.game.ecs.components.StateMachineComponent;
 import com.voidvvv.game.utils.MessageConstants;
 
 public abstract class BaseState implements State<VWorldActor> {
+
+    @Override
+    public void enter(VWorldActor entity) {
+        StateMachineComponent component = entity.getEntity().getComponent(StateMachineComponent.class);
+        if (component != null) {
+            component.stateTime = 0f;
+        }
+    }
 
     @Override
     public boolean onMessage(VWorldActor entity, Telegram telegram) {

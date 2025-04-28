@@ -4,8 +4,11 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.voidvvv.game.base.MoveChangeListener;
 import com.voidvvv.game.base.VRectBoundComponent;
+import com.voidvvv.game.ecs.components.MoveChangeListenerComponent;
 import com.voidvvv.game.ecs.components.MoveComponent;
 import com.voidvvv.game.box2d.CollisionPair;
 import com.voidvvv.game.box2d.ContactPairListener;
@@ -31,10 +34,27 @@ public class Box2dMoveSystem extends IteratingSystem {
         MoveComponent moveComponent = moveMapper.get(entity);
         VBox2dComponent box2dComponent = box2dMapper.get(entity);
         VRectBoundComponent vRectBoundComponent = rectBoundComponentComponentMapper.get(entity);
-        if (moveComponent != null && box2dComponent != null) {
+        if (moveComponent != null) {
             Vector2 vel = moveComponent.vel.nor();
-            box2dComponent.getFlatBody().setLinearVelocity(Box2dUnitConverter.worldToBox2d(vel.scl(moveComponent.speed)));
-
+            if (box2dComponent != null) {
+                box2dComponent.getFlatBody().setLinearVelocity(Box2dUnitConverter.worldToBox2d(vel.scl(moveComponent.speed)));
+            }
+            Vector2 preVel = moveComponent.preVel.nor();
+            if (!MathUtils.isEqual(preVel.x, vel.x) || !MathUtils.isEqual(preVel.y, vel.y)) {
+                MoveChangeListenerComponent changeListener = entity.getComponent(MoveChangeListenerComponent.class);
+                if (changeListener != null) {
+                    for (MoveChangeListener listener: changeListener.list) {
+                        listener.onChange();
+                    }
+                }
+                preVel.set(vel);
+            }
+            if (!MathUtils.isEqual(vel.x, 0)) {
+                moveComponent.face.x = vel.x;
+            }
+            if (!MathUtils.isEqual(vel.y, 0)) {
+                moveComponent.face.y = vel.y;
+            }
         }
         if (box2dComponent != null) {
             dealWithContact(box2dComponent);

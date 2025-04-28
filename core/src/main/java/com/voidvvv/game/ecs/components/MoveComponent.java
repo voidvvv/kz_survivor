@@ -6,11 +6,13 @@ import com.voidvvv.game.base.components.VComponent;
 
 public class MoveComponent implements VComponent, Component {
     public final Vector2 vel = new Vector2();
+    public final Vector2 preVel = new Vector2();
     public float speed;
 
     public final Vector2 additionalVel = new Vector2();
 
     public final Vector2 face = new Vector2(1,0);
+
 
     @Override
     public void init() {
@@ -19,9 +21,6 @@ public class MoveComponent implements VComponent, Component {
 
     @Override
     public void update(float delta) {
-        if (vel.len() != 0) {
-            face.set(vel).nor();
-        }
     }
 
     @Override

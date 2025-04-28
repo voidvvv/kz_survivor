@@ -3,6 +3,7 @@ package com.voidvvv.game.actor;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.battle.DefaultBattleComponent;
 import com.voidvvv.game.ecs.components.BattleEventListenerComponent;
+import com.voidvvv.game.ecs.components.MoveChangeListenerComponent;
 import com.voidvvv.game.ecs.components.MoveComponent;
 import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.ecs.components.StateMachineComponent;
@@ -18,6 +19,7 @@ public class MoveShapeBox2dActor extends VFlatWorldActor {
         this.getEntity().add(new VRectBoundComponent());
         this.getEntity().add(new BattleEventListenerComponent());
         this.getEntity().add(new DefaultBattleComponent());
+        this.getEntity().add(new MoveChangeListenerComponent());
 //        this.getEntity().add(new StateMachineComponent());
     }
 }
