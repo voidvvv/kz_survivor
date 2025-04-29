@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.voidvvv.game.base.MoveChangeListener;
@@ -28,7 +29,7 @@ public class Box2dMoveSystem extends IteratingSystem {
         box2dMapper = ComponentMapper.getFor(VBox2dComponent.class);
         rectBoundComponentComponentMapper = ComponentMapper.getFor(VRectBoundComponent.class);
     }
-
+    Vector2 tmp = new Vector2();
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         MoveComponent moveComponent = moveMapper.get(entity);
@@ -36,24 +37,9 @@ public class Box2dMoveSystem extends IteratingSystem {
         VRectBoundComponent vRectBoundComponent = rectBoundComponentComponentMapper.get(entity);
         if (moveComponent != null) {
             Vector2 vel = moveComponent.vel.nor();
+            tmp.set(vel);
             if (box2dComponent != null) {
-                box2dComponent.getFlatBody().setLinearVelocity(Box2dUnitConverter.worldToBox2d(vel.scl(moveComponent.speed)));
-            }
-            Vector2 preVel = moveComponent.preVel.nor();
-            if (!MathUtils.isEqual(preVel.x, vel.x) || !MathUtils.isEqual(preVel.y, vel.y)) {
-                MoveChangeListenerComponent changeListener = entity.getComponent(MoveChangeListenerComponent.class);
-                if (changeListener != null) {
-                    for (MoveChangeListener listener: changeListener.list) {
-                        listener.onChange();
-                    }
-                }
-                preVel.set(vel);
-            }
-            if (!MathUtils.isEqual(vel.x, 0)) {
-                moveComponent.face.x = vel.x;
-            }
-            if (!MathUtils.isEqual(vel.y, 0)) {
-                moveComponent.face.y = vel.y;
+                box2dComponent.getFlatBody().setLinearVelocity(Box2dUnitConverter.worldToBox2d(tmp.scl(moveComponent.speed).add(moveComponent.additionalVel)));
             }
         }
         if (box2dComponent != null) {
@@ -61,7 +47,6 @@ public class Box2dMoveSystem extends IteratingSystem {
         }
         if (vRectBoundComponent != null) {
             vRectBoundComponent.position.set(Box2dUnitConverter.box2dToWorld(box2dComponent.getFlatBody().getPosition()));
-            vRectBoundComponent.update(deltaTime);
         }
 
 

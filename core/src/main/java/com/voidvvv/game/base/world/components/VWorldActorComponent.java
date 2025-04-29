@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VWorldActorComponent implements VComponent {
-    List<VWorldActor> actors;
-    List<VWorldActor> toAdd;
-    List<VWorldActor> toRemove;
+    public List<VWorldActor> actors;
+    public List<VWorldActor> toAdd;
+    public List<VWorldActor> toRemove;
 
     @Override
     public void init() {

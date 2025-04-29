@@ -66,6 +66,7 @@ public class VFlatWorld implements VWorld {
     public void initWorld() {
         actorComponent=new VWorldActorComponent();
         actorComponent.init();
+        this.entity.add(actorComponent);
         initBox2dWorld();
         viewPosition.set(config.birthPlace);
 
@@ -216,7 +217,7 @@ public class VFlatWorld implements VWorld {
             box2dWorld.step(delta, 6, 2);
         }
         internalUpdate(delta);
-        actorComponent.update(delta);
+//        actorComponent.update(delta);
         for (Updateable updateable : updateables) {
             updateable.update(delta);
         }

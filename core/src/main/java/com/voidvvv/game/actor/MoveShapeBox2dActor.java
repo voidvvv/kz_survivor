@@ -1,5 +1,6 @@
 package com.voidvvv.game.actor;
 
+import com.badlogic.gdx.physics.box2d.World;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.battle.DefaultBattleComponent;
 import com.voidvvv.game.ecs.components.BattleEventListenerComponent;
@@ -21,5 +22,20 @@ public class MoveShapeBox2dActor extends VFlatWorldActor {
         this.getEntity().add(new DefaultBattleComponent());
         this.getEntity().add(new MoveChangeListenerComponent());
 //        this.getEntity().add(new StateMachineComponent());
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        VBox2dComponent box2dComponent = this.entity.getComponent(VBox2dComponent.class);
+        if (box2dComponent != null) {
+            World world = box2dComponent.getFlatBody().getWorld();
+            world.destroyBody(box2dComponent.getFlatBody());
+            box2dComponent.setBottomFixture(null);
+            box2dComponent.setFaceFixture(null);
+            box2dComponent.setFlatBody(null);
+            box2dComponent.clearEndContactFixtures();
+            box2dComponent.clearStartContactFixtures();
+        }
     }
 }

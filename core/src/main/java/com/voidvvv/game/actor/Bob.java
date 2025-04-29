@@ -30,20 +30,22 @@ public class Bob extends MoveShapeBox2dActor {
         if (animPrototype == null) {
             initAnim();
         }
-        StateMachine machine = new DefaultStateMachine(this, new Idle());
-        this.getEntity().add(new StateMachineComponent(machine));
-        this.getEntity().add(AssetUtils.cpy(animPrototype));
 
-        MoveChangeListenerComponent component = getEntity().getComponent(MoveChangeListenerComponent.class);
-        component.list.add( () -> {
-            MessageManager.getInstance().dispatchMessage((Telegraph)null, machine, MessageConstants.MSG_ACTOR_BASE_VELOCITY_CHANGE);
 
-        });
     }
 
     @Override
     public void init() {
         super.init();
+        StateMachine machine = new DefaultStateMachine(this, new Idle());
+        this.getEntity().add(new StateMachineComponent(machine));
+        this.getEntity().add(AssetUtils.cpy(animPrototype));
+
+        MoveChangeListenerComponent moveChangeListenerComponent = getEntity().getComponent(MoveChangeListenerComponent.class);
+        moveChangeListenerComponent.list.add( () -> {
+            MessageManager.getInstance().dispatchMessage((Telegraph)null, machine, MessageConstants.MSG_ACTOR_BASE_VELOCITY_CHANGE);
+
+        });
 
         this.getEntity().getComponent(MoveComponent.class).speed = 100f;
         VBox2dComponent component = getEntity().getComponent(VBox2dComponent.class);

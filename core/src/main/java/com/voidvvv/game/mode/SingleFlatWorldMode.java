@@ -78,7 +78,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         initECS();
         ActorConstants.init();
         this.context.init();
-
+        engine.addEntity(this.flatWorld.getEntity());
         initProtagonist();
 
         otherInit();
@@ -139,6 +139,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         engine.addSystem(new StateMachineUpdateSystem());
         engine.addSystem(new DamageSpriteBatchRender());
         engine.addSystem(new BaseStateActorAnimationSystem());
+        engine.addSystem(new VWorldActorManageSystem());
 //        engine.addSystem(new DebugRenderIteratorSystem());
         moveMapper = ComponentMapper.getFor(MoveComponent.class);
     }
@@ -217,6 +218,11 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     @Override
     public Entity getEntity() {
         return entity;
+    }
+
+    @Override
+    public Engine getEngine() {
+        return engine;
     }
 
     @Override

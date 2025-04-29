@@ -13,6 +13,7 @@ public class BattleComponentBaseSystem extends IteratingSystem {
     public BattleComponentBaseSystem() {
         super(Family.all(BattleComponent.class).get());
         battleMapper = ComponentMapper.getFor(BattleComponent.class);
+        this.priority = -1;
     }
 
     @Override
