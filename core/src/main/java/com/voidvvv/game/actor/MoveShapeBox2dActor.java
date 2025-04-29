@@ -1,6 +1,7 @@
 package com.voidvvv.game.actor;
 
 import com.badlogic.gdx.physics.box2d.World;
+import com.voidvvv.game.Main;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.battle.DefaultBattleComponent;
 import com.voidvvv.game.ecs.components.BattleEventListenerComponent;
@@ -27,6 +28,7 @@ public class MoveShapeBox2dActor extends VFlatWorldActor {
     @Override
     public void reset() {
         super.reset();
+        Main.getInstance().getGameMode().getEngine().removeEntity(this.entity);
         VBox2dComponent box2dComponent = this.entity.getComponent(VBox2dComponent.class);
         if (box2dComponent != null) {
             World world = box2dComponent.getFlatBody().getWorld();

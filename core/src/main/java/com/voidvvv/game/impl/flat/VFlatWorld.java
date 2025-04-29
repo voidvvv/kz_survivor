@@ -164,6 +164,7 @@ public class VFlatWorld implements VWorld {
         bottomFixtureDef.filter.categoryBits = BOX2D_CONST.BOTTOM_COLLIDE_CATEGORY;
         bottomFixtureDef.filter.maskBits = BOX2D_CONST.BOTTOM_COLLIDE_CATEGORY;
         bottomFixtureDef.density = 0f;
+        bottomFixtureDef.isSensor = true; // todo
         PolygonShape bottomShape = new PolygonShape();
         bottomShape.setAsBox(Box2dUnitConverter.worldToBox2d(helper.hx),
             Box2dUnitConverter.worldToBox2d(helper.hy));
