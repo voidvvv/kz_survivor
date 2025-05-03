@@ -4,8 +4,11 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.gdx.physics.box2d.*;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.box2d.CollisionPair;
+import com.voidvvv.game.box2d.ContactPairListener;
 import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.utils.ReflectUtil;
+
+import java.util.List;
 
 public class FlatWorldListener implements ContactListener {
     ComponentMapper<VBox2dComponent> box2dComponentMapper = ComponentMapper.getFor(VBox2dComponent.class);
@@ -18,10 +21,14 @@ public class FlatWorldListener implements ContactListener {
         VActor userDataB = ReflectUtil.convert(fixtureB.getBody().getUserData(), VActor.class);
 
         if (userDataA != null) {
-            box2dComponentMapper.get(userDataA.getEntity()).addStartContactFixture(CollisionPair.of(fixtureA, fixtureB));
+            List<ContactPairListener> contactPairListeners = box2dComponentMapper.get(userDataA.getEntity()).getContactPairListeners();
+//            box2dComponentMapper.get(userDataA.getEntity()).addStartContactFixture();
+            contactPairListeners.forEach(contactPairListener -> contactPairListener.contact(CollisionPair.of(fixtureA, fixtureB), true));
         }
         if (userDataB != null) {
-            box2dComponentMapper.get(userDataB.getEntity()).addStartContactFixture(CollisionPair.of(fixtureB, fixtureA));
+            List<ContactPairListener> contactPairListeners = box2dComponentMapper.get(userDataB.getEntity()).getContactPairListeners();
+//            box2dComponentMapper.get(userDataA.getEntity()).addStartContactFixture();
+            contactPairListeners.forEach(contactPairListener -> contactPairListener.contact(CollisionPair.of(fixtureB, fixtureA), true));
         }
     }
 
@@ -34,10 +41,14 @@ public class FlatWorldListener implements ContactListener {
         VActor userDataB = ReflectUtil.convert(fixtureB.getBody().getUserData(), VActor.class);
 
         if (userDataA != null) {
-            box2dComponentMapper.get(userDataA.getEntity()).addEndContactFixture(CollisionPair.of(fixtureA, fixtureB));
+            List<ContactPairListener> contactPairListeners = box2dComponentMapper.get(userDataA.getEntity()).getContactPairListeners();
+//            box2dComponentMapper.get(userDataA.getEntity()).addStartContactFixture();
+            contactPairListeners.forEach(contactPairListener -> contactPairListener.contact(CollisionPair.of(fixtureA, fixtureB), false));
         }
         if (userDataB != null) {
-            box2dComponentMapper.get(userDataB.getEntity()).addEndContactFixture(CollisionPair.of(fixtureB, fixtureA));
+            List<ContactPairListener> contactPairListeners = box2dComponentMapper.get(userDataB.getEntity()).getContactPairListeners();
+//            box2dComponentMapper.get(userDataA.getEntity()).addStartContactFixture();
+            contactPairListeners.forEach(contactPairListener -> contactPairListener.contact(CollisionPair.of(fixtureB, fixtureA), false));
         }
     }
 

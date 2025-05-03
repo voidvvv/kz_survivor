@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.base.state.Idle;
 import com.voidvvv.game.ecs.components.BaseStateActorAnimationComponent;
@@ -30,8 +31,11 @@ public class Bob extends MoveShapeBox2dActor {
         if (animPrototype == null) {
             initAnim();
         }
+    }
 
-
+    public static Bob create() {
+        Bob obtain = Pools.obtain(Bob.class);
+        return obtain;
     }
 
     @Override
@@ -48,17 +52,10 @@ public class Bob extends MoveShapeBox2dActor {
         });
 
         this.getEntity().getComponent(MoveComponent.class).speed = 100f;
-        VBox2dComponent component = getEntity().getComponent(VBox2dComponent.class);
-        component.addContactPairListener((pair, b) -> {
-            Fixture thisFixture = pair.getThisFixture();
-            if (component.getBottomFixture() == thisFixture) {
-                Gdx.app.log("Bob", "hit something! " + b);
-            }
 
-        });
     }
 
-    private void initAnim() {
+    private static void initAnim() {
         int xSplit = 32, ySplit = 32;
         AssetManager assetManager = Main.getInstance().getAssetManager();
         assetManager.load(AssetConstants.BOB_IMAGE, Texture.class);
@@ -104,7 +101,9 @@ public class Bob extends MoveShapeBox2dActor {
     }
 
     @Override
-    public void dispose() {
-        super.dispose();
+    public void reset() {
+        super.reset();
+        MoveChangeListenerComponent moveChangeListenerComponent = getEntity().getComponent(MoveChangeListenerComponent.class);
+        moveChangeListenerComponent.list.clear();
     }
 }

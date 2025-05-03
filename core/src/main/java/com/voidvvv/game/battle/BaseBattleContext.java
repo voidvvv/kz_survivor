@@ -64,6 +64,11 @@ public class BaseBattleContext implements BattleContext{
     }
 
     @Override
+    public boolean isDead(Entity entity) {
+        return false;
+    }
+
+    @Override
     public Damage createDamage(Entity from, Entity to, DamageType type, float damageVal) {
         BaseDamage damage = new BaseDamage();
         damage.setFrom(from);

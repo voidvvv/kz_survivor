@@ -42,9 +42,9 @@ public class Box2dMoveSystem extends IteratingSystem {
                 box2dComponent.getFlatBody().setLinearVelocity(Box2dUnitConverter.worldToBox2d(tmp.scl(moveComponent.speed).add(moveComponent.additionalVel)));
             }
         }
-        if (box2dComponent != null) {
-            dealWithContact(box2dComponent);
-        }
+//        if (box2dComponent != null) {
+//            dealWithContact(box2dComponent);
+//        }
         if (vRectBoundComponent != null) {
             vRectBoundComponent.position.set(Box2dUnitConverter.box2dToWorld(box2dComponent.getFlatBody().getPosition()));
         }
@@ -52,27 +52,5 @@ public class Box2dMoveSystem extends IteratingSystem {
 
     }
 
-    //
-    public void dealWithContact (VBox2dComponent box2dComponent) {
-        List<CollisionPair> startContactFixtures = box2dComponent.getStartContactFixtures();
-        List<CollisionPair> endContactFixtures = box2dComponent.getEndContactFixtures();
-        for (CollisionPair pair : startContactFixtures) {
-            List<ContactPairListener> contactPairListeners = box2dComponent.getContactPairListeners();
-            for (ContactPairListener contactPairListener : contactPairListeners) {
-                if (contactPairListener != null) {
-                    contactPairListener.contact(pair, true);
-                }
-            }
-        }
-        box2dComponent.clearStartContactFixtures();
-        for (CollisionPair pair : endContactFixtures) {
-            List<ContactPairListener> contactPairListeners = box2dComponent.getContactPairListeners();
-            for (ContactPairListener contactPairListener : contactPairListeners) {
-                if (contactPairListener != null) {
-                    contactPairListener.contact(pair, false);
-                }
-            }
-        }
-        box2dComponent.clearEndContactFixtures();
-    }
+
 }

@@ -8,13 +8,11 @@ import com.voidvvv.game.base.world.VWorldActor;
 
 public class VFlatWorldActor extends VWorldActor{
 
-    private VActorRender actorRender;
 
     public VFlatWorldActor(VActorRender actorRender) {
         if (actorRender == null) {
             throw new NullPointerException("actorRender is null");
         }
-        this.actorRender = actorRender;
     }
 
     @Override
@@ -53,14 +51,12 @@ public class VFlatWorldActor extends VWorldActor{
 
     @Override
     public void reset() {
-//        getRectBoundComponent().dispose();
-//        getvBox2dComponent().dispose();
-
+        super.reset();
     }
 
     @Override
     public void draw() {
-        actorRender.render(this, Gdx.graphics.getDeltaTime());
+
     }
 
 

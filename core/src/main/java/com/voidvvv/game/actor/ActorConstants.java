@@ -15,7 +15,7 @@ public class ActorConstants {
     public static final Map<String, VRectBoundComponent> BOX2D_INIT = new HashMap<>();
     public static final VRectBoundComponent DEFAULT_BOX2D_INIT = new VRectBoundComponent();
     public static boolean init = false;
-    public static final String ACTOR_INIT_FILE = "conf/actor_init.txt";
+    public static final String ACTOR_INIT_FILE = "conf/actor_rect_init.txt";
 
     @SuppressWarnings("NewApi")
     public static void init() {

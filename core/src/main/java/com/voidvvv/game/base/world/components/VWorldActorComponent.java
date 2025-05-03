@@ -37,6 +37,7 @@ public class VWorldActorComponent implements VComponent {
 
     private void flushActors() {
         for (VWorldActor actor : toRemove) {
+            actor.dispose();
             actors.remove(actor);
         }
         toRemove.clear();

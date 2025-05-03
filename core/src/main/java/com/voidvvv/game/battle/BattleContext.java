@@ -1,5 +1,7 @@
 package com.voidvvv.game.battle;
 
+import com.badlogic.ashley.core.Entity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,4 +14,6 @@ public interface BattleContext extends DamageFactory{
     void update(float delta);
 
     List<BattleEvent> eventList();
+
+    boolean isDead(Entity entity);
 }
