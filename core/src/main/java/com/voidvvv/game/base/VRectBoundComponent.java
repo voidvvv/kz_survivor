@@ -45,6 +45,16 @@ public class VRectBoundComponent extends VPositionComponent implements Component
     }
 
     @Override
+    public String toString() {
+        return "VRectBoundComponent{" +
+                "width=" + width +
+                ", height=" + height +
+                ", length=" + length +
+                ", position=" + position +
+                '}';
+    }
+
+    @Override
     public void dispose() {
 
         width = 0;

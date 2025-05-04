@@ -65,7 +65,9 @@ public class BaseBattleContext implements BattleContext{
 
     @Override
     public boolean isDead(Entity entity) {
-        return false;
+        DefaultBattleComponent battleComponent = ComponentMapperUtil.defaultBattleComponentComponentMapper.get(entity);
+
+        return battleComponent != null && battleComponent.getHp() <= 0;
     }
 
     @Override

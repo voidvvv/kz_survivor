@@ -33,20 +33,24 @@ public class MoveShapeBox2dActor extends VFlatWorldActor {
     public void update(float delta) {
         super.update(delta);
         Entity modeEntity = Main.getInstance().getGameMode().getEntity();
+        if (!this.isDead()) {
+            // getWorldContext().getWorld().resetVActor(this);
+            BattleContextComponent battleContextComponent = battleContextComponentMapper.get(modeEntity);
+            if (battleContextComponent == null) {
+                return;
+            }
+            BattleContext battleContext = battleContextComponent.getBattleContext();
+            if (battleContext == null) {
+                return;
+            }
+            boolean dead = battleContext.isDead(this.entity);
+            if (dead) {
+                Gdx.app.log("MoveShapeBox2dActor", "dead");
+                getWorldContext().getWorld().resetVActor(this);
+                setDead(true);
+            }
+        }
 
-        // getWorldContext().getWorld().resetVActor(this);
-        BattleContextComponent battleContextComponent = battleContextComponentMapper.get(modeEntity);
-        if (battleContextComponent == null) {
-            return;
-        }
-        BattleContext battleContext = battleContextComponent.getBattleContext();
-        if (battleContext == null) {
-            return;
-        }
-        boolean dead = battleContext.isDead(this.entity);
-        if (dead) {
-            getWorldContext().getWorld().resetVActor(this);
-        }
     }
 
     @Override

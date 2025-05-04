@@ -12,9 +12,17 @@ import com.voidvvv.game.base.state.Idle;
 
 public abstract class VWorldActor implements VActor {
     StateMachineComponent stateMachineComponent;
+    private boolean dead;
     protected float time;
 
     protected Entity entity = new Entity();
+
+    public boolean isDead () {
+        return dead;
+    }
+    public void setDead (boolean dead) {
+        this.dead = dead;
+    }
 
     public Entity getEntity() {
         return entity;

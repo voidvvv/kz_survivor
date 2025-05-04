@@ -96,6 +96,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         helper.hz = defaultRect.getWidth() / 2;
 
         engine.addEntity(slime.getEntity());
+        slime.setWorldContext(this.context);
         this.flatWorld.spawnVActor(() -> slime, helper);
 
     }
@@ -195,6 +196,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         } else {
             this.protagonist = new Bob();
         }
+        this.protagonist.setWorldContext(context);
     }
 
     @Override

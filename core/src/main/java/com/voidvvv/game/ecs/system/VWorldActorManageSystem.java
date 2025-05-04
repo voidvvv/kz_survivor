@@ -18,6 +18,10 @@ public class VWorldActorManageSystem extends IteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         VWorldActorComponent component = entity.getComponent(VWorldActorComponent.class);
+        for (VWorldActor actor : component.actors) {
+            actor.update(deltaTime);
+        }
+
         flushActors(component);
     }
 
