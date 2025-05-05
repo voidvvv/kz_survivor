@@ -14,15 +14,14 @@ import com.voidvvv.game.Main;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.state.Idle;
 import com.voidvvv.game.battle.DefaultBattleComponent;
-import com.voidvvv.game.ecs.components.BaseStateActorAnimationComponent;
-import com.voidvvv.game.ecs.components.MoveComponent;
+import com.voidvvv.game.camp.CampContext;
+import com.voidvvv.game.ecs.ComponentMapperUtil;
+import com.voidvvv.game.ecs.components.*;
 import com.voidvvv.game.battle.BaseBattleFloat;
 import com.voidvvv.game.battle.BattleComponent;
 import com.voidvvv.game.battle.DamageType;
 import com.voidvvv.game.box2d.CollisionPair;
 import com.voidvvv.game.box2d.VBox2dComponent;
-import com.voidvvv.game.ecs.components.BattleContextComponent;
-import com.voidvvv.game.ecs.components.StateMachineComponent;
 import com.voidvvv.game.utils.AssetConstants;
 import com.voidvvv.game.utils.AssetUtils;
 import com.voidvvv.game.utils.ReflectUtil;
@@ -105,7 +104,7 @@ public class Slime extends MoveShapeBox2dActor {
     void contact(CollisionPair pair, boolean b) {
         Fixture thisFixture = pair.getThisFixture();
         Fixture bottomFixture = getEntity().getComponent(VBox2dComponent.class).getBottomFixture();
-
+        CampContextComponent ccc = ComponentMapperUtil.campContextComponentMapper.get(Main.getInstance().getGameMode().getEntity());
         if (b && thisFixture == bottomFixture) {
             Fixture otherFixture = pair.getOtherFixture();
             VActor otherActor = ReflectUtil.convert(otherFixture.getBody().getUserData(), VActor.class);
@@ -122,7 +121,7 @@ public class Slime extends MoveShapeBox2dActor {
             BattleComponent thisBattleComp = this.getEntity().getComponent(DefaultBattleComponent.class);
 
 
-            if (otherBattleComp != null && thisBattleComp != null) {
+            if (otherBattleComp != null && thisBattleComp != null && ccc.getCampContext().isEnemy(this.getEntity(), otherEntity)) {
                 BaseBattleFloat armor = otherBattleComp.getArmor();
                 BaseBattleFloat attack = thisBattleComp.getAttack();
                 float damage = ((attack.finalVal + 10) / (armor.finalVal + 1));

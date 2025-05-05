@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SAXPBaseActorHandler extends DefaultHandler {
-    private final static String USER_TOKEN = "user";
+    private final static String USER_TOKEN = "actor";
     private final static String TYPE_TOKEN = "type";
     // rect-props
     private final static String RECT_PROPS_TOKEN = "rect-props";

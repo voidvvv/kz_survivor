@@ -13,9 +13,9 @@ import com.voidvvv.game.actor.Slime;
 import com.voidvvv.game.actor.utils.ActorMetaData;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.battle.*;
-import com.voidvvv.game.ecs.components.BattleContextComponent;
-import com.voidvvv.game.ecs.components.DamageValueComponent;
-import com.voidvvv.game.ecs.components.MoveComponent;
+import com.voidvvv.game.camp.CampConstants;
+import com.voidvvv.game.camp.CampContext;
+import com.voidvvv.game.ecs.components.*;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.ecs.system.*;
@@ -84,6 +84,13 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         initProtagonist();
 
         otherInit();
+        // camp init
+        initCamp();
+    }
+
+    private void initCamp() {
+        entity.add(new CampContextComponent(new CampContext()));
+        protagonist.getEntity().add(new CampComponent(CampConstants.RED));
     }
 
     private void otherInit() {
@@ -109,6 +116,9 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
             }
 
         }
+
+        slime.getEntity().add(new CampComponent(CampConstants.BLACK));
+
 
     }
     DamageValueComponent damageValueComponent;

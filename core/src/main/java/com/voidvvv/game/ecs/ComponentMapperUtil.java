@@ -6,6 +6,7 @@ import com.voidvvv.game.battle.DefaultBattleComponent;
 import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.ecs.components.BattleContextComponent;
 import com.voidvvv.game.ecs.components.BattleEventListenerComponent;
+import com.voidvvv.game.ecs.components.CampContextComponent;
 
 public class ComponentMapperUtil {
     public static final ComponentMapper<BattleComponent> battleMapper = ComponentMapper.getFor(BattleComponent.class);
@@ -21,4 +22,8 @@ public class ComponentMapperUtil {
     public static final ComponentMapper<com.voidvvv.game.ecs.components.DamageValueComponent> damageValueComponentMapper = ComponentMapper.getFor(com.voidvvv.game.ecs.components.DamageValueComponent.class);
 
     public static final ComponentMapper<com.voidvvv.game.ecs.components.StateMachineComponent> stateMachineComponentMapper = ComponentMapper.getFor(com.voidvvv.game.ecs.components.StateMachineComponent.class);
+
+    public static final ComponentMapper<CampContextComponent> campContextComponentMapper = ComponentMapper.getFor(CampContextComponent.class);
+
+    public static final ComponentMapper<com.voidvvv.game.ecs.components.CampComponent> campComponentMapper = ComponentMapper.getFor(com.voidvvv.game.ecs.components.CampComponent.class);
 }
