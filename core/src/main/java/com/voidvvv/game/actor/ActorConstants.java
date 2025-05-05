@@ -2,6 +2,7 @@ package com.voidvvv.game.actor;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.voidvvv.game.actor.utils.ActorMetaData;
 import com.voidvvv.game.actor.utils.SAXPBaseActorHandler;
 import com.voidvvv.game.base.VRectBoundComponent;
 import org.xml.sax.SAXException;
@@ -18,7 +19,9 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public class ActorConstants {
+    public static final String ACTOR_INIT_NAME = "NAME";
     public static final Map<String, VRectBoundComponent> BOX2D_INIT = new HashMap<>();
+    public static final Map<String, ActorMetaData> ACTOR_INIT_MATE_DATA = new HashMap<>();
     public static final VRectBoundComponent DEFAULT_BOX2D_INIT = new VRectBoundComponent();
     public static boolean init = false;
     public static final String ACTOR_INIT_FILE = "conf/actor_rect_init.xml";
@@ -41,13 +44,7 @@ public class ActorConstants {
             SAXParser saxParser = factory.newSAXParser();
             SAXPBaseActorHandler handler = new SAXPBaseActorHandler();
             saxParser.parse(is, handler);
-            Map<String, VRectBoundComponent> box2DInit = handler.getBOX2D_INIT();
-            for (var entry : box2DInit.entrySet()) {
-                String key = entry.getKey();
-                VRectBoundComponent value = entry.getValue();
-                System.out.println(key + " " + value);
-                BOX2D_INIT.put(key, value);
-            }
+            ACTOR_INIT_MATE_DATA.entrySet();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }  catch (ParserConfigurationException e) {

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.state.Idle;
@@ -28,10 +29,18 @@ import com.voidvvv.game.utils.ReflectUtil;
 import com.voidvvv.render.actor.SlimeRender;
 
 public class Slime extends MoveShapeBox2dActor {
+    public static final String NAME = "Slime";
+
     public static BaseStateActorAnimationComponent animPrototype;
 
     public static final ComponentMapper<BattleContextComponent> battleContextComponentMapper = ComponentMapper.getFor(BattleContextComponent.class);
-
+    public static Slime create() {
+        Slime obtain = Pools.obtain(Slime.class);
+        return obtain;
+    }
+    public String metaName () {
+        return NAME;
+    }
     public Slime() {
         super(SlimeRender.RENDER);
         if (animPrototype == null) {

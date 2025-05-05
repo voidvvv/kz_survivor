@@ -24,8 +24,11 @@ import com.voidvvv.game.utils.MessageConstants;
 import com.voidvvv.render.actor.BobRender;
 
 public class Bob extends MoveShapeBox2dActor {
+    public static final String NAME = "Bob";
     public static BaseStateActorAnimationComponent animPrototype;
-
+    public String metaName () {
+        return NAME;
+    }
     public Bob() {
         super(BobRender.actorRender);
         if (animPrototype == null) {

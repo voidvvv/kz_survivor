@@ -167,7 +167,7 @@ public class VFlatWorld implements VWorld {
         bottomFixtureDef.isSensor = true; // todo
         PolygonShape bottomShape = new PolygonShape();
         bottomShape.setAsBox(Box2dUnitConverter.worldToBox2d(helper.hx),
-            Box2dUnitConverter.worldToBox2d(helper.hy));
+            Box2dUnitConverter.worldToBox2d(helper.hz));
         bottomFixtureDef.shape = bottomShape;
         Fixture bottonFixture = body.createFixture(bottomFixtureDef);
         // face fixture
@@ -177,13 +177,13 @@ public class VFlatWorld implements VWorld {
         faceFixtureDef.density = 0f;
         faceFixtureDef.isSensor = true;
         PolygonShape faceShape = new PolygonShape();
-        faceShape.setAsBox(Box2dUnitConverter.worldToBox2d(helper.hz),
-            Box2dUnitConverter.worldToBox2d(helper.hz));
+        faceShape.setAsBox(Box2dUnitConverter.worldToBox2d(helper.hy),
+            Box2dUnitConverter.worldToBox2d(helper.hy));
         float x1 = -Box2dUnitConverter.worldToBox2d(helper.hx);
         float x2 = Box2dUnitConverter.worldToBox2d(helper.hx);
 //        float y1 = -Box2dUnitConverter.worldToBox2d(helper.hy);
         float y1 = 0f;
-        float y2 = y1 + 2 * Box2dUnitConverter.worldToBox2d(helper.hz);
+        float y2 = y1 + 2 * Box2dUnitConverter.worldToBox2d(helper.hy);
         int i = 0;
         verticesTmp[i++] = x1;
         verticesTmp[i++] = y1;

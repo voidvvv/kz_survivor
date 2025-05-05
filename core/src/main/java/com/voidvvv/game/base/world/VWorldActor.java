@@ -23,7 +23,9 @@ public abstract class VWorldActor implements VActor {
     public void setDead (boolean dead) {
         this.dead = dead;
     }
-
+    public String metaName () {
+        return "VWorldActor";
+    }
     public Entity getEntity() {
         return entity;
     }

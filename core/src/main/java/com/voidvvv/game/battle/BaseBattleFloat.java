@@ -29,6 +29,10 @@ public class BaseBattleFloat {
     }
 
     public void update () {
+        update(false);
+    }
+
+    public void update (boolean negative) {
         if (dirty) {
             float orig = originVal;
             for (BattleFloatDelta delta : deltaList) {
@@ -36,7 +40,11 @@ public class BaseBattleFloat {
                 orig *= (1 + delta.multi);
 
             }
-            finalVal = orig;
+            if (!negative && orig < 0f) {
+                finalVal = 0f;
+            } else {
+                finalVal = orig;
+            }
             dirty = false;
         }
     }

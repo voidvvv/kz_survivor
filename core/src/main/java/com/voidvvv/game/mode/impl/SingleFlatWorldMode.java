@@ -1,19 +1,18 @@
-package com.voidvvv.game.mode;
+package com.voidvvv.game.mode.impl;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.ActorConstants;
 import com.voidvvv.game.actor.Bob;
 import com.voidvvv.game.actor.Slime;
+import com.voidvvv.game.actor.utils.ActorMetaData;
 import com.voidvvv.game.base.VRectBoundComponent;
-import com.voidvvv.game.battle.BaseBattleContext;
-import com.voidvvv.game.battle.BattleEvent;
-import com.voidvvv.game.battle.BattleEventListener;
-import com.voidvvv.game.battle.Damage;
+import com.voidvvv.game.battle.*;
 import com.voidvvv.game.ecs.components.BattleContextComponent;
 import com.voidvvv.game.ecs.components.DamageValueComponent;
 import com.voidvvv.game.ecs.components.MoveComponent;
@@ -25,6 +24,9 @@ import com.voidvvv.game.ecs.system.render.EntityRenderSystem;
 import com.voidvvv.game.impl.flat.FlatWorldConfig;
 import com.voidvvv.game.impl.flat.VFlatWorld;
 import com.voidvvv.game.impl.flat.VFlatWorldActor;
+import com.voidvvv.game.mode.DamageValue;
+import com.voidvvv.game.mode.TimeLimitMode;
+import com.voidvvv.game.mode.VWorldContextGameMode;
 import com.voidvvv.game.player.Player;
 import com.voidvvv.game.player.PlayerInput;
 import com.voidvvv.game.utils.ReflectUtil;
@@ -85,19 +87,28 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     }
 
     private void otherInit() {
-        Slime slime = new Slime();
+        Slime slime = Slime.create();
         VActorSpawnHelper helper = new VActorSpawnHelper();
-        helper.initX = config.birthPlace.x - 29;
-        helper.initY = config.birthPlace.y - 50;
-        VRectBoundComponent defaultRect = ActorConstants.BOX2D_INIT.getOrDefault(slime.getClass().getName(),
-            ActorConstants.DEFAULT_BOX2D_INIT);
-        helper.hx = defaultRect.getLength() / 2;
-        helper.hy = defaultRect.getHeight() / 2;
-        helper.hz = defaultRect.getWidth() / 2;
+        helper.initX = config.birthPlace.x - 29f;
+        helper.initY = config.birthPlace.y - 50f;
+        ActorMetaData metaData = ActorConstants.ACTOR_INIT_MATE_DATA.get(Slime.NAME);
+        helper.hx = metaData.getRectProps().getLength() / 2f;
+        helper.hy = metaData.getRectProps().getHeight() / 2f;
+        helper.hz = metaData.getRectProps().getWidth() / 2f;
 
         engine.addEntity(slime.getEntity());
         slime.setWorldContext(this.context);
         this.flatWorld.spawnVActor(() -> slime, helper);
+        DefaultBattleComponent battle = slime.getEntity().getComponent(DefaultBattleComponent.class);
+        ActorMetaData.BattleProps battleProps = metaData.getBattleProps();
+        if (battle != null) {
+            if (battleProps != null) {
+                battle.init(battleProps.getHp(), 0,
+                    battleProps.getHp(), battleProps.getMp(),
+                    battleProps.getAttack(), battleProps.getDefense());
+            }
+
+        }
 
     }
     DamageValueComponent damageValueComponent;
@@ -149,54 +160,45 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     private void initProtagonist() {
         readProtagonistConfig();
+
+        VFlatWorldActor localProtagonist = this.protagonist;
+        Entity localEntity = localProtagonist.getEntity();
+        engine.addEntity(localEntity);
+        // rect & position
+        ActorMetaData metaData = ActorConstants.ACTOR_INIT_MATE_DATA.get(localProtagonist.metaName());
+
         VActorSpawnHelper helper = new VActorSpawnHelper();
         helper.initX = config.birthPlace.x;
         helper.initY = config.birthPlace.y;
-        VFlatWorldActor localProtagonist = this.protagonist;
-        engine.addEntity(localProtagonist.getEntity());
-
-        VRectBoundComponent defaultRect = ActorConstants.BOX2D_INIT.getOrDefault(localProtagonist.getClass().getName(),
-            ActorConstants.DEFAULT_BOX2D_INIT);
-
-        helper.hx = defaultRect.getLength() / 2;
-        helper.hy = defaultRect.getHeight() / 2;
-        helper.hz = defaultRect.getWidth() / 2;
+        helper.hx = metaData.getRectProps().getLength() / 2;
+        helper.hy = metaData.getRectProps().getHeight() / 2;
+        helper.hz = metaData.getRectProps().getWidth() / 2;
+        // world
         this.flatWorld.spawnVActor(() -> localProtagonist, helper);
+        this.protagonist.setWorldContext(context);
         // add protagonist to Player1
-        playerInput = new PlayerInput() {
-            @Override
-            public void move(Vector2 dir) {
-                MoveComponent mc = moveMapper.get(localProtagonist.getEntity());
-                if (mc != null) {
-                    mc.vel.set(dir);
-                }
-            }
-
-            @Override
-            public void skill1() {
-
-            }
-
-            @Override
-            public void skill2() {
-
-            }
-
-            @Override
-            public void special() {
-
-            }
-        };
+        playerInput = new SingleFlatWorldInput(protagonist);
         Player.PLAYERS[0].addInput(playerInput);
+        // battle attr
+        DefaultBattleComponent battle = localEntity.getComponent(DefaultBattleComponent.class);
+        ActorMetaData.BattleProps battleProps = metaData.getBattleProps();
+        if (battle != null) {
+            if (battleProps != null) {
+                battle.init(battleProps.getHp(), 0,
+                    battleProps.getHp(), battleProps.getMp(),
+                    battleProps.getAttack(), battleProps.getDefense());
+            }
+
+        }
     }
 
     private void readProtagonistConfig() {
         if (config.supplier != null && config.supplier.get() != null) {
             this.protagonist = config.supplier.get();
         } else {
-            this.protagonist = new Bob();
+            this.protagonist = Bob.create();
         }
-        this.protagonist.setWorldContext(context);
+
     }
 
     @Override
