@@ -68,7 +68,7 @@ public class GameScreen implements UpdateScreen, Telegraph {
             table.top();
             table.setFillParent(true);
             table.align(Align.top | Align.center);
-
+            table.row();
         }
         retryButton = new TextButton("retry",skin);
         retryButton.setVisible(false);
@@ -80,6 +80,7 @@ public class GameScreen implements UpdateScreen, Telegraph {
                 level.restart();
             }
         });
+
         table.add(retryButton);
         ui.addActor(table);
         Main.getInstance().addInputProcessor(ui);

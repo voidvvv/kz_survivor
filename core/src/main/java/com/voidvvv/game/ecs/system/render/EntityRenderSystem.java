@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.base.state.Walk;
@@ -34,7 +35,7 @@ public class EntityRenderSystem extends SpriteBatchRenderIteratorSystem{
 
 
     }
-
+    Vector2 tmpCenter = new Vector2();
     private void renderBaseStateActor(Entity entity, float deltaTime, SpriteBatch batch) {
         BaseStateActorAnimationComponent animationComponent = entity.getComponent(BaseStateActorAnimationComponent.class);
 
@@ -63,11 +64,10 @@ public class EntityRenderSystem extends SpriteBatchRenderIteratorSystem{
 
             }
         }
-        float centerX = rectBoundComponent.position.x;
-        float centerY = rectBoundComponent.position.y + rectBoundComponent.getHeight()/2f;
+        rectBoundComponent.getFaceCenter(tmpCenter);
         if (keyFrame != null) {
-            float x = centerX - keyFrame.getRegionWidth()/2f;
-            float y = centerY - keyFrame.getRegionHeight()/2f;;
+            float x = tmpCenter.x - keyFrame.getRegionWidth()/2f;
+            float y = tmpCenter.y - keyFrame.getRegionHeight()/2f;;
             batch.draw(keyFrame, x, y);
         }
     }

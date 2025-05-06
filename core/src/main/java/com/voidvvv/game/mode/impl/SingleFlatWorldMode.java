@@ -143,6 +143,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     }
     DamageValueComponent damageValueComponent;
     DebugRenderIteratorSystem debugRenderIteratorSystem = new DebugRenderIteratorSystem();
+    Vector2 tmpCenter = new Vector2();
     private void initECS() {
         engine = new Engine();
         entity = new Entity();
@@ -158,7 +159,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
                     damageValue.type = damage.damageType();
                     VRectBoundComponent targetPosition = event.getTo().getComponent(VRectBoundComponent.class);
                     if (targetPosition != null) {
-                        damageValue.position.set(targetPosition.position);
+                        targetPosition.getFaceCenter(tmpCenter);
+                        damageValue.position.set(tmpCenter);
                     }
 
                     damageValueComponent.damageValues.add(damageValue);

@@ -44,6 +44,12 @@ public class VRectBoundComponent extends VPositionComponent implements Component
 
     }
 
+    public void getFaceCenter (Vector2 v2) {
+        float centerX = this.position.x;
+        float centerY = this.position.y + this.getHeight()/2f;
+        v2.set(centerX, centerY);
+    }
+
     @Override
     public String toString() {
         return "VRectBoundComponent{" +
