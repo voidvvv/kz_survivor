@@ -2,19 +2,18 @@ package com.voidvvv.game.impl.flat;
 
 import com.badlogic.gdx.Gdx;
 import com.voidvvv.game.base.VActorMetaState;
+import com.voidvvv.game.ecs.components.MoveComponent;
 import com.voidvvv.render.actor.VActorRender;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.base.world.VWorldActor;
 
 public class VFlatWorldActor extends VWorldActor{
 
-    private VActorRender actorRender;
 
     public VFlatWorldActor(VActorRender actorRender) {
         if (actorRender == null) {
             throw new NullPointerException("actorRender is null");
         }
-        this.actorRender = actorRender;
     }
 
     @Override
@@ -23,6 +22,7 @@ public class VFlatWorldActor extends VWorldActor{
         if (getEntity().getComponent(VRectBoundComponent.class) != null) {
 
             getEntity().getComponent(VRectBoundComponent.class).init();
+            getEntity().getComponent(MoveComponent.class).init();
         }
     }
 
@@ -53,14 +53,12 @@ public class VFlatWorldActor extends VWorldActor{
 
     @Override
     public void reset() {
-//        getRectBoundComponent().dispose();
-//        getvBox2dComponent().dispose();
-
+        super.reset();
     }
 
     @Override
     public void draw() {
-        actorRender.render(this, Gdx.graphics.getDeltaTime());
+
     }
 
 

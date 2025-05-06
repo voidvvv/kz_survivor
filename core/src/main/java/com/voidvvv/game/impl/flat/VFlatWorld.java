@@ -66,6 +66,7 @@ public class VFlatWorld implements VWorld {
     public void initWorld() {
         actorComponent=new VWorldActorComponent();
         actorComponent.init();
+        this.entity.add(actorComponent);
         initBox2dWorld();
         viewPosition.set(config.birthPlace);
 
@@ -108,9 +109,10 @@ public class VFlatWorld implements VWorld {
 
     @Override
     public void dispose() {
-        disposeBox2dWorld();
         actorComponent.dispose();
         actorComponent = null;
+        disposeBox2dWorld();
+
         config = null;
     }
 
@@ -163,9 +165,10 @@ public class VFlatWorld implements VWorld {
         bottomFixtureDef.filter.categoryBits = BOX2D_CONST.BOTTOM_COLLIDE_CATEGORY;
         bottomFixtureDef.filter.maskBits = BOX2D_CONST.BOTTOM_COLLIDE_CATEGORY;
         bottomFixtureDef.density = 0f;
+//        bottomFixtureDef.isSensor = true; // todo
         PolygonShape bottomShape = new PolygonShape();
         bottomShape.setAsBox(Box2dUnitConverter.worldToBox2d(helper.hx),
-            Box2dUnitConverter.worldToBox2d(helper.hy));
+            Box2dUnitConverter.worldToBox2d(helper.hz));
         bottomFixtureDef.shape = bottomShape;
         Fixture bottonFixture = body.createFixture(bottomFixtureDef);
         // face fixture
@@ -175,13 +178,13 @@ public class VFlatWorld implements VWorld {
         faceFixtureDef.density = 0f;
         faceFixtureDef.isSensor = true;
         PolygonShape faceShape = new PolygonShape();
-        faceShape.setAsBox(Box2dUnitConverter.worldToBox2d(helper.hz),
-            Box2dUnitConverter.worldToBox2d(helper.hz));
+        faceShape.setAsBox(Box2dUnitConverter.worldToBox2d(helper.hy),
+            Box2dUnitConverter.worldToBox2d(helper.hy));
         float x1 = -Box2dUnitConverter.worldToBox2d(helper.hx);
         float x2 = Box2dUnitConverter.worldToBox2d(helper.hx);
 //        float y1 = -Box2dUnitConverter.worldToBox2d(helper.hy);
         float y1 = 0f;
-        float y2 = y1 + 2 * Box2dUnitConverter.worldToBox2d(helper.hz);
+        float y2 = y1 + 2 * Box2dUnitConverter.worldToBox2d(helper.hy);
         int i = 0;
         verticesTmp[i++] = x1;
         verticesTmp[i++] = y1;
@@ -216,11 +219,12 @@ public class VFlatWorld implements VWorld {
             box2dWorld.step(delta, 6, 2);
         }
         internalUpdate(delta);
-        actorComponent.update(delta);
+//        actorComponent.update(delta);
         for (Updateable updateable : updateables) {
             updateable.update(delta);
         }
     }
+
 
     private void internalUpdate(float delta) {
 

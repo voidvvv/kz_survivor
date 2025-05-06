@@ -12,7 +12,7 @@ import com.voidvvv.game.mode.VWorldContextGameMode;
 import com.voidvvv.render.world.WorldRender;
 import com.voidvvv.game.impl.flat.FlatWorldConfig;
 import com.voidvvv.game.mode.GameMode;
-import com.voidvvv.game.mode.SingleFlatWorldMode;
+import com.voidvvv.game.mode.impl.SingleFlatWorldMode;
 import com.voidvvv.game.utils.AssetConstants;
 import com.voidvvv.render.world.VSimpleFlatWorldRender;
 
@@ -156,5 +156,11 @@ public class FlatWorldLevel implements Level{
     @Override
     public String getLevelName() {
         return this.name;
+    }
+
+    @Override
+    public void restart() {
+        gameMode.dispose();
+        gameMode.init();
     }
 }

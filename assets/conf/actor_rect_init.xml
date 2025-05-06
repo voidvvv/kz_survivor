@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<users-conf>
+    <actor>
+        <name>Bob</name>
+        <type>com.voidvvv.game.actor.Bob</type>
+        <rect-props>
+            <width>10.0</width>
+            <height>32.0</height>
+            <length>16.0</length>
+        </rect-props>
+        <battle-pros>
+            <hp>100</hp>
+            <mp>100</mp>
+            <attack>10</attack>
+            <defense>5</defense>
+        </battle-pros>
+    </actor>
+    <actor>
+        <name>Alice</name>
+        <type>com.voidvvv.game.actor.Alice</type>
+        <rect-props>
+            <width>10.0</width>
+            <height>32.0</height>
+            <length>16.0</length>
+        </rect-props>
+        <battle-pros>
+            <hp>100</hp>
+            <mp>100</mp>
+            <attack>10</attack>
+            <defense>5</defense>
+        </battle-pros>
+    </actor>
+
+    <actor>
+        <name>Slime</name>
+        <type>com.voidvvv.game.actor.Slime</type>
+        <rect-props>
+            <width>10.0</width>
+            <height>15.0</height>
+            <length>16.0</length>
+        </rect-props>
+        <battle-pros>
+            <hp>10</hp>
+            <mp>10</mp>
+            <attack>10</attack>
+            <defense>5</defense>
+        </battle-pros>
+    </actor>
+</users-conf>

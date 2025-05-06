@@ -16,9 +16,9 @@ public class VBox2dComponent implements Component {
 
     Fixture faceFixture;
 
-    List<CollisionPair> startContactFixtures = new ArrayList<>();
-
-    List<CollisionPair> endContactFixtures = new ArrayList<>();
+//    List<CollisionPair> startContactFixtures = new ArrayList<>();
+//
+//    List<CollisionPair> endContactFixtures = new ArrayList<>();
 
     List<ContactPairListener> contactPairListeners = new ArrayList<>();
 
@@ -32,45 +32,49 @@ public class VBox2dComponent implements Component {
         }
     }
 
+    public void clearContactPairListener() {
+        contactPairListeners.clear();
+    }
+
     public void removeContactPairListener(ContactPairListener contactPairListener) {
         contactPairListeners.remove(contactPairListener);
     }
-
-    public List<CollisionPair> getStartContactFixtures() {
-        return startContactFixtures;
-    }
-
-    public List<CollisionPair> getEndContactFixtures() {
-        return endContactFixtures;
-    }
-
-    public void addStartContactFixture(CollisionPair fixture) {
-        if (!startContactFixtures.contains(fixture)) {
-            startContactFixtures.add(fixture);
-        }
-    }
-
-    public void addEndContactFixture(CollisionPair fixture) {
-        if (!endContactFixtures.contains(fixture)) {
-            endContactFixtures.add(fixture);
-        }
-    }
-
-    public void removeStartContactFixture(Fixture fixture) {
-        startContactFixtures.remove(fixture);
-    }
-
-    public void removeEndContactFixture(Fixture fixture) {
-        endContactFixtures.remove(fixture);
-    }
-
-    public void clearStartContactFixtures() {
-        startContactFixtures.clear();
-    }
-
-    public void clearEndContactFixtures() {
-        endContactFixtures.clear();
-    }
+//
+//    public List<CollisionPair> getStartContactFixtures() {
+//        return startContactFixtures;
+//    }
+//
+//    public List<CollisionPair> getEndContactFixtures() {
+//        return endContactFixtures;
+//    }
+//
+//    public void addStartContactFixture(CollisionPair fixture) {
+//        if (!startContactFixtures.contains(fixture)) {
+//            startContactFixtures.add(fixture);
+//        }
+//    }
+//
+//    public void addEndContactFixture(CollisionPair fixture) {
+//        if (!endContactFixtures.contains(fixture)) {
+//            endContactFixtures.add(fixture);
+//        }
+//    }
+//
+//    public void removeStartContactFixture(Fixture fixture) {
+//        startContactFixtures.remove(fixture);
+//    }
+//
+//    public void removeEndContactFixture(Fixture fixture) {
+//        endContactFixtures.remove(fixture);
+//    }
+//
+//    public void clearStartContactFixtures() {
+//        startContactFixtures.clear();
+//    }
+//
+//    public void clearEndContactFixtures() {
+//        endContactFixtures.clear();
+//    }
 
     public Fixture getFaceFixture() {
         return faceFixture;

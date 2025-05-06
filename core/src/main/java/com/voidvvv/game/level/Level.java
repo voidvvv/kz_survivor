@@ -17,5 +17,6 @@ public interface Level {
 
     String getLevelName();
 
+    void restart();
 
 }

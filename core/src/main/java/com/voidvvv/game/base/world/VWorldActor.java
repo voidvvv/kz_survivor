@@ -1,8 +1,10 @@
 package com.voidvvv.game.base.world;
 
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
+import com.voidvvv.game.Main;
 import com.voidvvv.game.base.StateComponentHolder;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.ecs.components.StateMachineComponent;
@@ -10,10 +12,20 @@ import com.voidvvv.game.base.state.Idle;
 
 public abstract class VWorldActor implements VActor {
     StateMachineComponent stateMachineComponent;
+    private boolean dead;
     protected float time;
 
     protected Entity entity = new Entity();
 
+    public boolean isDead () {
+        return dead;
+    }
+    public void setDead (boolean dead) {
+        this.dead = dead;
+    }
+    public String metaName () {
+        return "VWorldActor";
+    }
     public Entity getEntity() {
         return entity;
     }
@@ -41,5 +53,14 @@ public abstract class VWorldActor implements VActor {
         this.time += delta;
     }
 
+    @Override
+    public void dispose() {
+        VActor.super.dispose();
+    }
 
+    @Override
+    public void reset() {
+        Engine engine = Main.getInstance().getGameMode().getEngine();
+        engine.removeEntity(entity);
+    }
 }

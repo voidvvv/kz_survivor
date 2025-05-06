@@ -5,6 +5,12 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 public class AssetConstants {
     public static final String BOB_IMAGE = "image/actor/bob/wizard spritesheet calciumtrice.png";
 
+
+    public static final String SLIME_NORMAL_ATTACK_IMAGE = "image/actor/slime/normal/Slime1_Attack_full.png";
+    public static final String SLIME_NORMAL_DEATH_IMAGE = "image/actor/slime/normal/Slime1_Death_body.png";
+    public static final String SLIME_NORMAL_IDLE_IMAGE = "image/actor/slime/normal/Slime1_Idle_full.png";
+    public static final String SLIME_NORMAL_WALK_IMAGE = "image/actor/slime/normal/Slime1_Walk_full.png";
+
     public static final String SKIN_JSON_NEON = "ui/skin/neon/neon-ui.json";
 
     public static final String SKIN_JSON_GLOSSY = "ui/skin/glossy/glassy-ui.json";

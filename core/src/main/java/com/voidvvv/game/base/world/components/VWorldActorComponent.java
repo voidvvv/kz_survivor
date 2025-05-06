@@ -1,15 +1,17 @@
 package com.voidvvv.game.base.world.components;
 
+import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.components.VComponent;
 import com.voidvvv.game.base.world.VWorldActor;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class VWorldActorComponent implements VComponent {
-    List<VWorldActor> actors;
-    List<VWorldActor> toAdd;
-    List<VWorldActor> toRemove;
+    public List<VWorldActor> actors;
+    public List<VWorldActor> toAdd;
+    public List<VWorldActor> toRemove;
 
     @Override
     public void init() {
@@ -37,6 +39,7 @@ public class VWorldActorComponent implements VComponent {
 
     private void flushActors() {
         for (VWorldActor actor : toRemove) {
+            actor.dispose();
             actors.remove(actor);
         }
         toRemove.clear();
@@ -53,12 +56,20 @@ public class VWorldActorComponent implements VComponent {
     }
 
     private void disposeActors() {
-        actors.clear();
-        toAdd.clear();
-        toRemove.clear();
+        emptyIterator(actors);
+        emptyIterator(toAdd);
+        emptyIterator(toRemove);
         actors = null;
         toAdd = null;
         toRemove = null;
+    }
+
+    private void emptyIterator (Iterable<? extends VActor> iterable) {
+        Iterator<? extends VActor> iterator = iterable.iterator();
+        while (iterator.hasNext()) {
+            iterator.next().dispose();
+            iterator.remove();
+        }
     }
 
     public void resetActor(VWorldActor actor) {

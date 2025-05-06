@@ -30,4 +30,5 @@ public interface VActor extends Pool.Poolable {
 
     VActorMetaState getState();
 
+    String metaName();
 }

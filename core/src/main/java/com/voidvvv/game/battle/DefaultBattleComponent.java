@@ -1,5 +1,7 @@
 package com.voidvvv.game.battle;
 
+import com.voidvvv.game.battle.events.BattleEvent;
+
 public class DefaultBattleComponent implements BattleComponent {
     private float hp;
     BaseBattleFloat maxHp = new BaseBattleFloat();
@@ -14,12 +16,32 @@ public class DefaultBattleComponent implements BattleComponent {
 
     }
 
+    public void init(float hp, float mp, float maxHp, float maxMp, float attack, float armor) {
+        this.hp = hp;
+        this.mp = mp;
+        this.maxHp.originVal = maxHp;
+        this.maxMap.originVal = maxMp;
+        this.attack.originVal = attack;
+        this.armor.originVal = armor;
+
+        this.maxHp.finalVal = maxHp;
+        this.maxMap.finalVal = maxMp;
+        this.attack.finalVal = attack;
+        this.armor.finalVal = armor;
+    }
+
     @Override
     public void update(float delta) {
         maxHp.update();
         maxMap.update();
-        attack.update();
-        armor.update();
+        attack.update(true);
+        armor.update(true);
+        if (hp > maxHp.finalVal) {
+            hp = maxHp.finalVal;
+        }
+        if (mp > maxMap.finalVal) {
+            mp = maxMap.finalVal;
+        }
     }
 
     @Override

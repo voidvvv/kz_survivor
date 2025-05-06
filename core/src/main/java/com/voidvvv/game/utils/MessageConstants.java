@@ -11,6 +11,8 @@ public class MessageConstants {
     public static final int MSG_ACTOR_AFTER_BE_ATTACK;
     public static final int MSG_ACTOR_AFTER_DYING;
 
+    public static final int MSG_GAME_OVER;
+
 
     static {
         int s = 1;
@@ -23,5 +25,6 @@ public class MessageConstants {
         MSG_ACTOR_AFTER_BE_DAMAGED = s++;
         MSG_ACTOR_AFTER_BE_ATTACK = s++;
         MSG_ACTOR_AFTER_DYING = s++;
+        MSG_GAME_OVER = s++;
     }
 }

@@ -1,5 +1,6 @@
-package com.voidvvv.game.battle;
+package com.voidvvv.game.battle.events;
 
+import com.voidvvv.game.battle.BattleContext;
 import com.voidvvv.game.event.VEvent;
 
 import javax.swing.text.html.parser.Entity;

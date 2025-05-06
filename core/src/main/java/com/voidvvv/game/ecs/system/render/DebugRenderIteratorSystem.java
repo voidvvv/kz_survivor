@@ -57,12 +57,13 @@ public class DebugRenderIteratorSystem extends EntitySystem {
         }
         shapeRenderer.setColor(bottomColor);
         shapeRenderer.rect(rectBoundComponent.position.x - rectBoundComponent.getLength() / 2f,
-            rectBoundComponent.position.y - rectBoundComponent.getHeight() / 2f,
-            rectBoundComponent.getLength(), rectBoundComponent.getHeight());
+            rectBoundComponent.position.y - rectBoundComponent.getWidth() / 2f,
+            rectBoundComponent.getLength(), rectBoundComponent.getWidth());
+
         shapeRenderer.setColor(faceColor);
         shapeRenderer.rect(rectBoundComponent.position.x - rectBoundComponent.getLength() / 2f,
             rectBoundComponent.position.y,
-            rectBoundComponent.getLength(), rectBoundComponent.getWidth());
+            rectBoundComponent.getLength(), rectBoundComponent.getHeight());
     }
 
 }

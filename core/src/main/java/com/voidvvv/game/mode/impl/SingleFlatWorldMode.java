@@ -1,40 +1,53 @@
-package com.voidvvv.game.mode;
+package com.voidvvv.game.mode.impl;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.ActorConstants;
+import com.voidvvv.game.actor.Alice;
 import com.voidvvv.game.actor.Bob;
 import com.voidvvv.game.actor.Slime;
+import com.voidvvv.game.actor.utils.ActorMetaData;
 import com.voidvvv.game.base.VRectBoundComponent;
-import com.voidvvv.game.battle.BaseBattleContext;
-import com.voidvvv.game.battle.BattleEvent;
-import com.voidvvv.game.battle.BattleEventListener;
-import com.voidvvv.game.battle.Damage;
-import com.voidvvv.game.ecs.components.BattleContextComponent;
-import com.voidvvv.game.ecs.components.DamageValueComponent;
-import com.voidvvv.game.ecs.components.MoveComponent;
+import com.voidvvv.game.base.world.VWorldActor;
+import com.voidvvv.game.base.world.components.VWorldActorComponent;
+import com.voidvvv.game.battle.*;
+import com.voidvvv.game.battle.events.BattleEvent;
+import com.voidvvv.game.battle.events.Damage;
+import com.voidvvv.game.battle.events.DeadEvent;
+import com.voidvvv.game.camp.CampConstants;
+import com.voidvvv.game.camp.CampContext;
+import com.voidvvv.game.ecs.components.*;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.ecs.system.*;
 import com.voidvvv.game.ecs.system.render.DebugRenderIteratorSystem;
+import com.voidvvv.game.ecs.system.render.EntityRenderSystem;
 import com.voidvvv.game.impl.flat.FlatWorldConfig;
 import com.voidvvv.game.impl.flat.VFlatWorld;
 import com.voidvvv.game.impl.flat.VFlatWorldActor;
+import com.voidvvv.game.mode.DamageValue;
+import com.voidvvv.game.mode.TimeLimitMode;
+import com.voidvvv.game.mode.VWorldContextGameMode;
 import com.voidvvv.game.player.Player;
 import com.voidvvv.game.player.PlayerInput;
+import com.voidvvv.game.utils.MessageConstants;
 import com.voidvvv.game.utils.ReflectUtil;
-import com.voidvvv.render.other.DamageRender;
+import com.voidvvv.game.ecs.system.render.DamageSpriteBatchRender;
+
+import java.util.List;
 
 public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode {
     PlayerInput playerInput;
     WorldContext context;
     VFlatWorld flatWorld;
 
-    Entity entity = new Entity();
+    Entity entity;
 
     VFlatWorldActor protagonist;
 
@@ -43,7 +56,6 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     FlatWorldConfig config;
 
-    DamageRender damageRender;
 
     public SingleFlatWorldMode() {
         this(new FlatWorldConfig());
@@ -52,7 +64,6 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     public SingleFlatWorldMode(FlatWorldConfig config) {
         this.config = config;
         this.context = initWorld(config);
-        damageRender = new DamageRender();
     }
 
     private WorldContext initWorld(FlatWorldConfig config) {
@@ -78,32 +89,64 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         // init ECS
         initECS();
         ActorConstants.init();
+        if (context == null) {
+            context = initWorld(config);
+        }
         this.context.init();
-
+        engine.addEntity(this.flatWorld.getEntity());
         initProtagonist();
 
         otherInit();
     }
 
+
+    @Override
+    public void dispose() {
+        context.dispose();
+        context = null;
+        damageValueComponent = null;
+        engine = null;
+        entity = null;
+
+        Player.PLAYERS[0].removeInput(playerInput);
+
+    }
+
+
     private void otherInit() {
-        Slime slime = new Slime();
+        Slime slime = Slime.create();
         VActorSpawnHelper helper = new VActorSpawnHelper();
-        helper.initX = config.birthPlace.x - 29;
-        helper.initY = config.birthPlace.y - 50;
-        VRectBoundComponent defaultRect = ActorConstants.BOX2D_INIT.getOrDefault(slime.getClass().getName(),
-            ActorConstants.DEFAULT_BOX2D_INIT);
-        helper.hx = defaultRect.getLength() / 2;
-        helper.hy = defaultRect.getHeight() / 2;
-        helper.hz = defaultRect.getWidth() / 2;
+        helper.initX = config.birthPlace.x - 29f;
+        helper.initY = config.birthPlace.y - 50f;
+        ActorMetaData metaData = ActorConstants.ACTOR_INIT_MATE_DATA.get(Slime.NAME);
+        helper.hx = metaData.getRectProps().getLength() / 2f;
+        helper.hy = metaData.getRectProps().getHeight() / 2f;
+        helper.hz = metaData.getRectProps().getWidth() / 2f;
 
         engine.addEntity(slime.getEntity());
+        slime.setWorldContext(this.context);
         this.flatWorld.spawnVActor(() -> slime, helper);
+        DefaultBattleComponent battle = slime.getEntity().getComponent(DefaultBattleComponent.class);
+        ActorMetaData.BattleProps battleProps = metaData.getBattleProps();
+        if (battle != null) {
+            if (battleProps != null) {
+                battle.init(battleProps.getHp(), 0,
+                    battleProps.getHp(), battleProps.getMp(),
+                    battleProps.getAttack(), battleProps.getDefense());
+            }
+
+        }
+
+        slime.getEntity().add(new CampComponent(CampConstants.BLACK));
+
 
     }
     DamageValueComponent damageValueComponent;
     DebugRenderIteratorSystem debugRenderIteratorSystem = new DebugRenderIteratorSystem();
+    Vector2 tmpCenter = new Vector2();
     private void initECS() {
         engine = new Engine();
+        entity = new Entity();
         BaseBattleContext baseBattleContext = new BaseBattleContext();
         damageValueComponent = new DamageValueComponent();
         baseBattleContext.addGlobalListener(new BattleEventListener() {
@@ -116,7 +159,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
                     damageValue.type = damage.damageType();
                     VRectBoundComponent targetPosition = event.getTo().getComponent(VRectBoundComponent.class);
                     if (targetPosition != null) {
-                        damageValue.position.set(targetPosition.position);
+                        targetPosition.getFaceCenter(tmpCenter);
+                        damageValue.position.set(tmpCenter);
                     }
 
                     damageValueComponent.damageValues.add(damageValue);
@@ -130,13 +174,19 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         });
         entity.add(new BattleContextComponent(baseBattleContext));
         entity.add(damageValueComponent);
+        entity.add(new CampContextComponent(new CampContext()));
+
         engine.addEntity(entity);
+        engine.addSystem(debugRenderIteratorSystem);
         engine.addSystem(new BattleContextUpdateSystem());
         engine.addSystem(new BattleComponentBaseSystem());
         engine.addSystem(new Box2dMoveSystem());
         engine.addSystem(new MovementComponentSystem());
         engine.addSystem(new DamageValueSystem(0.5f));
         engine.addSystem(new StateMachineUpdateSystem());
+        engine.addSystem(new DamageSpriteBatchRender());
+//        engine.addSystem(new EntityRenderSystem());
+        engine.addSystem(new VWorldActorManageSystem());
 //        engine.addSystem(new DebugRenderIteratorSystem());
         moveMapper = ComponentMapper.getFor(MoveComponent.class);
     }
@@ -145,53 +195,66 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     private void initProtagonist() {
         readProtagonistConfig();
+
+        VFlatWorldActor localProtagonist = this.protagonist;
+        protagonist.getEntity().add(new CampComponent(CampConstants.RED));
+
+        Entity localEntity = localProtagonist.getEntity();
+        engine.addEntity(localEntity);
+        // rect & position
+        ActorMetaData metaData = ActorConstants.ACTOR_INIT_MATE_DATA.get(localProtagonist.metaName());
+
         VActorSpawnHelper helper = new VActorSpawnHelper();
         helper.initX = config.birthPlace.x;
         helper.initY = config.birthPlace.y;
-        VFlatWorldActor localProtagonist = this.protagonist;
-        engine.addEntity(localProtagonist.getEntity());
-
-        VRectBoundComponent defaultRect = ActorConstants.BOX2D_INIT.getOrDefault(localProtagonist.getClass().getName(),
-            ActorConstants.DEFAULT_BOX2D_INIT);
-
-        helper.hx = defaultRect.getLength() / 2;
-        helper.hy = defaultRect.getHeight() / 2;
-        helper.hz = defaultRect.getWidth() / 2;
+        helper.hx = metaData.getRectProps().getLength() / 2;
+        helper.hy = metaData.getRectProps().getHeight() / 2;
+        helper.hz = metaData.getRectProps().getWidth() / 2;
+        // world
         this.flatWorld.spawnVActor(() -> localProtagonist, helper);
+        this.protagonist.setWorldContext(context);
         // add protagonist to Player1
-        playerInput = new PlayerInput() {
-            @Override
-            public void move(Vector2 dir) {
-                MoveComponent mc = moveMapper.get(localProtagonist.getEntity());
-                if (mc != null) {
-                    mc.vel.set(dir);
-                }
-            }
-
-            @Override
-            public void skill1() {
-
-            }
-
-            @Override
-            public void skill2() {
-
-            }
-
-            @Override
-            public void special() {
-
-            }
-        };
+        playerInput = new SingleFlatWorldInput(protagonist);
         Player.PLAYERS[0].addInput(playerInput);
+        // battle attr
+        DefaultBattleComponent battle = localEntity.getComponent(DefaultBattleComponent.class);
+        ActorMetaData.BattleProps battleProps = metaData.getBattleProps();
+        if (battle != null) {
+            if (battleProps != null) {
+                battle.init(battleProps.getHp(), 0,
+                    battleProps.getHp(), battleProps.getMp(),
+                    battleProps.getAttack(), battleProps.getDefense());
+            }
+
+        }
+
+        BattleEventListenerComponent eventListenerComponent =
+            protagonist.getEntity().getComponent(BattleEventListenerComponent.class);
+        if (eventListenerComponent != null) {
+            eventListenerComponent.addListener(new BattleEventListener() {
+                @Override
+                public void afterPassiveEvent(BattleEvent event) {
+
+                }
+
+                @Override
+                public void afterActiveEvent(BattleEvent event) {
+                    if (DeadEvent.class.isAssignableFrom(event.getClass())) {
+                        // this actor dead
+                        MessageManager.getInstance().dispatchMessage(MessageConstants.MSG_GAME_OVER);
+                    }
+                }
+            });
+        }
     }
 
     private void readProtagonistConfig() {
         if (config.supplier != null && config.supplier.get() != null) {
             this.protagonist = config.supplier.get();
         } else {
-            this.protagonist = new Bob();
+            this.protagonist = Alice.create();
         }
+
     }
 
     @Override
@@ -203,14 +266,6 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         context.getWorld().update(delta);
     }
 
-    @Override
-    public void dispose() {
-        context.dispose();
-        Player.PLAYERS[0].removeInput(playerInput);
-
-        engine = null;
-        entity = null;
-    }
 
     @Override
     public Entity getEntity() {
@@ -218,8 +273,20 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     }
 
     @Override
+    public Engine getEngine() {
+        return engine;
+    }
+
+    EntityRenderSystem renderSystem = new EntityRenderSystem();
+    @Override
     public void render() {
-        damageRender.render(damageValueComponent);
+        SpriteBatch spriteBatch = Main.getInstance().getDrawManager().getBaseBatch();
+        spriteBatch.setProjectionMatrix(Main.getInstance().getCameraManager().getMainCamera().combined);
+        spriteBatch.begin();
+
+        renderSystem.render(getContext().getWorld().getEntity(),0f, spriteBatch);
+
+        spriteBatch.end();
     }
 
     @Override
