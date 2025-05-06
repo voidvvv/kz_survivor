@@ -58,7 +58,7 @@ public class Bob extends MoveShapeBox2dActor {
 
     }
 
-    private static void initAnim() {
+    protected void initAnim() {
         int xSplit = 32, ySplit = 32;
         AssetManager assetManager = Main.getInstance().getAssetManager();
         assetManager.load(AssetConstants.BOB_IMAGE, Texture.class);

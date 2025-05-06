@@ -63,10 +63,11 @@ public class EntityRenderSystem extends SpriteBatchRenderIteratorSystem{
 
             }
         }
-
+        float centerX = rectBoundComponent.position.x;
+        float centerY = rectBoundComponent.position.y + rectBoundComponent.getHeight()/2f;
         if (keyFrame != null) {
-            float x = rectBoundComponent.position.x - keyFrame.getRegionWidth()/2f;
-            float y = rectBoundComponent.position.y;
+            float x = centerX - keyFrame.getRegionWidth()/2f;
+            float y = centerY - keyFrame.getRegionHeight()/2f;;
             batch.draw(keyFrame, x, y);
         }
     }

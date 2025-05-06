@@ -54,7 +54,13 @@ public class FlatWorldListener implements ContactListener {
 
     @Override
     public void preSolve(Contact contact, Manifold manifold) {
-
+        Fixture fixtureA = contact.getFixtureA();
+        Fixture fixtureB = contact.getFixtureB();
+        VActor userDataA = ReflectUtil.convert(fixtureA.getBody().getUserData(), VActor.class);
+        VActor userDataB = ReflectUtil.convert(fixtureB.getBody().getUserData(), VActor.class);
+        if (userDataA != null && userDataB != null) {
+            contact.setEnabled(false);
+        }
     }
 
     @Override

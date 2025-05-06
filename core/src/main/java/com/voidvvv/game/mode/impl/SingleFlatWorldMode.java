@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.ActorConstants;
+import com.voidvvv.game.actor.Alice;
 import com.voidvvv.game.actor.Bob;
 import com.voidvvv.game.actor.Slime;
 import com.voidvvv.game.actor.utils.ActorMetaData;
@@ -249,7 +250,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         if (config.supplier != null && config.supplier.get() != null) {
             this.protagonist = config.supplier.get();
         } else {
-            this.protagonist = Bob.create();
+            this.protagonist = Alice.create();
         }
 
     }
