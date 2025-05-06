@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.ActorConstants;
@@ -12,6 +13,8 @@ import com.voidvvv.game.actor.Bob;
 import com.voidvvv.game.actor.Slime;
 import com.voidvvv.game.actor.utils.ActorMetaData;
 import com.voidvvv.game.base.VRectBoundComponent;
+import com.voidvvv.game.base.world.VWorldActor;
+import com.voidvvv.game.base.world.components.VWorldActorComponent;
 import com.voidvvv.game.battle.*;
 import com.voidvvv.game.battle.events.BattleEvent;
 import com.voidvvv.game.battle.events.Damage;
@@ -35,6 +38,8 @@ import com.voidvvv.game.player.PlayerInput;
 import com.voidvvv.game.utils.MessageConstants;
 import com.voidvvv.game.utils.ReflectUtil;
 import com.voidvvv.game.ecs.system.render.DamageSpriteBatchRender;
+
+import java.util.List;
 
 public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode {
     PlayerInput playerInput;
@@ -177,7 +182,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         engine.addSystem(new DamageValueSystem(0.5f));
         engine.addSystem(new StateMachineUpdateSystem());
         engine.addSystem(new DamageSpriteBatchRender());
-        engine.addSystem(new EntityRenderSystem());
+//        engine.addSystem(new EntityRenderSystem());
         engine.addSystem(new VWorldActorManageSystem());
 //        engine.addSystem(new DebugRenderIteratorSystem());
         moveMapper = ComponentMapper.getFor(MoveComponent.class);
@@ -269,8 +274,16 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         return engine;
     }
 
+    EntityRenderSystem renderSystem = new EntityRenderSystem();
     @Override
     public void render() {
+        SpriteBatch spriteBatch = Main.getInstance().getDrawManager().getBaseBatch();
+        spriteBatch.setProjectionMatrix(Main.getInstance().getCameraManager().getMainCamera().combined);
+        spriteBatch.begin();
+
+        renderSystem.render(getContext().getWorld().getEntity(),0f, spriteBatch);
+
+        spriteBatch.end();
     }
 
     @Override
