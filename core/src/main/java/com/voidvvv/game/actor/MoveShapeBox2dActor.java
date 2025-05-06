@@ -9,6 +9,7 @@ import com.voidvvv.game.Main;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.battle.BattleContext;
 import com.voidvvv.game.battle.DefaultBattleComponent;
+import com.voidvvv.game.battle.events.DeadEvent;
 import com.voidvvv.game.ecs.components.*;
 import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.impl.flat.VFlatWorldActor;
@@ -30,6 +31,12 @@ public class MoveShapeBox2dActor extends VFlatWorldActor {
     }
 
     @Override
+    public void init() {
+        super.init();
+        this.setDead(false);
+    }
+
+    @Override
     public void update(float delta) {
         super.update(delta);
         Entity modeEntity = Main.getInstance().getGameMode().getEntity();
@@ -46,7 +53,7 @@ public class MoveShapeBox2dActor extends VFlatWorldActor {
             boolean dead = battleContext.isDead(this.entity);
             if (dead) {
                 Gdx.app.log("MoveShapeBox2dActor", "dead");
-                getWorldContext().getWorld().resetVActor(this);
+                battleContext.addEvent(new DeadEvent(this.getEntity()));
                 setDead(true);
             }
         }
@@ -56,6 +63,7 @@ public class MoveShapeBox2dActor extends VFlatWorldActor {
     @Override
     public void reset() {
         super.reset();
+
         VBox2dComponent box2dComponent = this.entity.getComponent(VBox2dComponent.class);
         if (box2dComponent != null) {
             World world = box2dComponent.getFlatBody().getWorld();

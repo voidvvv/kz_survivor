@@ -1,6 +1,9 @@
-package com.voidvvv.game.battle;
+package com.voidvvv.game.battle.events;
 
 import com.badlogic.ashley.core.Entity;
+import com.voidvvv.game.battle.BattleContext;
+import com.voidvvv.game.battle.DamageType;
+import com.voidvvv.game.battle.DefaultBattleComponent;
 
 public class BaseDamage implements Damage{
     BattleContext battleContext;

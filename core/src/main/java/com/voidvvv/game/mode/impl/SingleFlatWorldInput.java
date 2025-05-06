@@ -1,6 +1,7 @@
 package com.voidvvv.game.mode.impl;
 
 import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.voidvvv.game.ecs.components.MoveComponent;
 import com.voidvvv.game.impl.flat.VFlatWorldActor;
@@ -26,6 +27,7 @@ public class SingleFlatWorldInput implements PlayerInput {
 
     @Override
     public void move(Vector2 dir) {
+        Gdx.app.log("SingleFlatWorldInput", "move");
         boolean dead = localProtagonist.isDead();
         if (dead) {
             return;

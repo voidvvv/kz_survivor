@@ -1,5 +1,7 @@
 package com.voidvvv.game.battle;
 
+import com.voidvvv.game.battle.events.BattleEvent;
+
 public class DefaultBattleComponent implements BattleComponent {
     private float hp;
     BaseBattleFloat maxHp = new BaseBattleFloat();

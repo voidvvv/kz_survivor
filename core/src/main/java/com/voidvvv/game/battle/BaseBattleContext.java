@@ -1,7 +1,9 @@
 package com.voidvvv.game.battle;
 
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
+import com.voidvvv.game.battle.events.BaseDamage;
+import com.voidvvv.game.battle.events.BattleEvent;
+import com.voidvvv.game.battle.events.Damage;
 import com.voidvvv.game.ecs.ComponentMapperUtil;
 import com.voidvvv.game.ecs.components.BattleEventListenerComponent;
 
@@ -38,8 +40,11 @@ public class BaseBattleContext implements BattleContext{
             Entity to = event.getTo();
             event.apply();
             BattleEventListenerComponent fromListener = ComponentMapperUtil.eventListenerComponentComponentMapper.get(from);
-            BattleEventListenerComponent toListener = ComponentMapperUtil.eventListenerComponentComponentMapper.get(to);
+            BattleEventListenerComponent toListener = null;
+            if (to != null) {
+                toListener = ComponentMapperUtil.eventListenerComponentComponentMapper.get(to);
 
+            }
             if (fromListener != null) {
                 for (BattleEventListener listener : fromListener.getListeners()) {
                     listener.afterActiveEvent(event);

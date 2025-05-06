@@ -70,26 +70,6 @@ public class Slime extends MoveShapeBox2dActor {
             animPrototype.idle_animation_mirror = AssetConstants.makeCommonAnimation(idle_pic_mirror[0]);
             animPrototype.idle_animation_mirror.setPlayMode(Animation.PlayMode.LOOP);
         }
-
-        //animPrototype.spell_animation = AssetConstants.makeCommonAnimation(base_pic[1]);
-        ////            spell_animation.setPlayMode(Animation.PlayMode.LOOP);
-        //            animPrototype.spell_animation_mirror = AssetConstants.makeCommonAnimation(base_pic_mirror[1]);
-        ////            spell_animation_mirror.setPlayMode(Animation.PlayMode.LOOP);
-        //
-        //            animPrototype.walk_animation = AssetConstants.makeCommonAnimation(base_pic[2]);
-        //            animPrototype.walk_animation.setPlayMode(Animation.PlayMode.LOOP);
-        //            animPrototype.walk_animation_mirror = AssetConstants.makeCommonAnimation(base_pic_mirror[2]);
-        //            animPrototype.walk_animation_mirror.setPlayMode(Animation.PlayMode.LOOP);
-        //
-        //            animPrototype.attack_animation = AssetConstants.makeCommonAnimation(base_pic[3]);
-        //            animPrototype.attack_animation.setPlayMode(Animation.PlayMode.NORMAL);
-        //            animPrototype.attack_animation_mirror = AssetConstants.makeCommonAnimation(base_pic_mirror[3]);
-        //            animPrototype.attack_animation_mirror.setPlayMode(Animation.PlayMode.NORMAL);
-        //
-        //            animPrototype.dying_animation = AssetConstants.makeCommonAnimation(base_pic[4]);
-        ////            dying_animation.setPlayMode(Animation.PlayMode.LOOP);
-        //            animPrototype.dying_animation_mirror = AssetConstants.makeCommonAnimation(base_pic_mirror[4]);
-        ////            dying_animation_mirror.setPlayMode(Animation.PlayMode.LOOP);
     }
 
 

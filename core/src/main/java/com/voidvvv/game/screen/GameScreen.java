@@ -1,10 +1,17 @@
 package com.voidvvv.game.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Layout;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -15,14 +22,19 @@ import com.voidvvv.game.manager.CameraManager;
 import com.voidvvv.game.mode.TimeLimitMode;
 import com.voidvvv.game.ui.SimpleTimer;
 import com.voidvvv.game.utils.AssetConstants;
+import com.voidvvv.game.utils.MessageConstants;
 
 import java.util.function.Supplier;
 
-public class GameScreen implements UpdateScreen {
+public class GameScreen implements UpdateScreen, Telegraph {
     public static Supplier<Level> NEXT_LEVEL = null;
     Level level;
 
     Stage ui;
+
+    Button retryButton;
+
+    boolean gameOver = false;
 
     public GameScreen() {
 
@@ -32,22 +44,44 @@ public class GameScreen implements UpdateScreen {
     public void show() {
         initLevel();
         initUI();
+        initMessage();
+    }
+
+    private void initMessage() {
+        MessageManager.getInstance().addListener(this, MessageConstants.MSG_GAME_OVER);
+    }
+    private void disposeMessage() {
+        MessageManager.getInstance().removeListener(this, MessageConstants.MSG_GAME_OVER);
     }
 
     private void initUI() {
         AssetManager assetManager = Main.getInstance().getAssetManager();
         ui = new Stage(Main.getInstance().getCameraManager().getScreenViewport(),
             Main.getInstance().getDrawManager().getBaseBatch());
+        Skin skin = assetManager.get(AssetConstants.STAR_SOLDIER, Skin.class);
+        Table table = new Table(skin);
         if (TimeLimitMode.class.isAssignableFrom(Main.getInstance().getGameMode().getClass())) {
-            Table table = new Table(assetManager.get(AssetConstants.STAR_SOLDIER, Skin.class));
+
             TimeLimitMode tm = (TimeLimitMode) Main.getInstance().getGameMode();
-            SimpleTimer timer = new SimpleTimer((int) tm.getTimeLeft(), assetManager.get(AssetConstants.STAR_SOLDIER, Skin.class));
+            SimpleTimer timer = new SimpleTimer((int) tm.getTimeLeft(), skin);
             table.add(timer);
             table.top();
             table.setFillParent(true);
             table.align(Align.top | Align.center);
-            ui.addActor(table);
+
         }
+        retryButton = new TextButton("retry",skin);
+        retryButton.setVisible(false);
+        retryButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                retryButton.setVisible(false);
+                gameOver = false;
+                level.restart();
+            }
+        });
+        table.add(retryButton);
+        ui.addActor(table);
         Main.getInstance().addInputProcessor(ui);
     }
 
@@ -56,6 +90,7 @@ public class GameScreen implements UpdateScreen {
             ui.dispose();
             Main.getInstance().removeInputProcessor(ui);
             ui = null;
+            retryButton = null;
         }
     }
 
@@ -85,8 +120,10 @@ public class GameScreen implements UpdateScreen {
 
     @Override
     public void update(float delta) {
-        if (level != null) {
-            level.update(delta);
+        if (!gameOver) {
+            if (level != null) {
+                level.update(delta);
+            }
         }
         if (ui != null) {
             ui.act(delta);
@@ -122,9 +159,18 @@ public class GameScreen implements UpdateScreen {
     public void dispose() {
         level.dispose();
         disposeUI();
+        disposeMessage();
         level = null;
     }
 
 
-
+    @Override
+    public boolean handleMessage(Telegram msg) {
+        if (msg.message == MessageConstants.MSG_GAME_OVER) {
+            this.gameOver = true;
+            retryButton.setVisible(true);
+            return true;
+        }
+        return false;
+    }
 }

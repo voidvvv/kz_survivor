@@ -3,9 +3,9 @@ package com.voidvvv.game.mode.impl;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.ActorConstants;
 import com.voidvvv.game.actor.Bob;
@@ -13,6 +13,9 @@ import com.voidvvv.game.actor.Slime;
 import com.voidvvv.game.actor.utils.ActorMetaData;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.battle.*;
+import com.voidvvv.game.battle.events.BattleEvent;
+import com.voidvvv.game.battle.events.Damage;
+import com.voidvvv.game.battle.events.DeadEvent;
 import com.voidvvv.game.camp.CampConstants;
 import com.voidvvv.game.camp.CampContext;
 import com.voidvvv.game.ecs.components.*;
@@ -29,6 +32,7 @@ import com.voidvvv.game.mode.TimeLimitMode;
 import com.voidvvv.game.mode.VWorldContextGameMode;
 import com.voidvvv.game.player.Player;
 import com.voidvvv.game.player.PlayerInput;
+import com.voidvvv.game.utils.MessageConstants;
 import com.voidvvv.game.utils.ReflectUtil;
 import com.voidvvv.game.ecs.system.render.DamageSpriteBatchRender;
 
@@ -37,7 +41,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     WorldContext context;
     VFlatWorld flatWorld;
 
-    Entity entity = new Entity();
+    Entity entity;
 
     VFlatWorldActor protagonist;
 
@@ -79,19 +83,29 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         // init ECS
         initECS();
         ActorConstants.init();
+        if (context == null) {
+            context = initWorld(config);
+        }
         this.context.init();
         engine.addEntity(this.flatWorld.getEntity());
         initProtagonist();
 
         otherInit();
-        // camp init
-        initCamp();
     }
 
-    private void initCamp() {
-        entity.add(new CampContextComponent(new CampContext()));
-        protagonist.getEntity().add(new CampComponent(CampConstants.RED));
+
+    @Override
+    public void dispose() {
+        context.dispose();
+        context = null;
+        damageValueComponent = null;
+        engine = null;
+        entity = null;
+
+        Player.PLAYERS[0].removeInput(playerInput);
+
     }
+
 
     private void otherInit() {
         Slime slime = Slime.create();
@@ -125,6 +139,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     DebugRenderIteratorSystem debugRenderIteratorSystem = new DebugRenderIteratorSystem();
     private void initECS() {
         engine = new Engine();
+        entity = new Entity();
         BaseBattleContext baseBattleContext = new BaseBattleContext();
         damageValueComponent = new DamageValueComponent();
         baseBattleContext.addGlobalListener(new BattleEventListener() {
@@ -151,6 +166,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         });
         entity.add(new BattleContextComponent(baseBattleContext));
         entity.add(damageValueComponent);
+        entity.add(new CampContextComponent(new CampContext()));
+
         engine.addEntity(entity);
         engine.addSystem(debugRenderIteratorSystem);
         engine.addSystem(new BattleContextUpdateSystem());
@@ -172,6 +189,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         readProtagonistConfig();
 
         VFlatWorldActor localProtagonist = this.protagonist;
+        protagonist.getEntity().add(new CampComponent(CampConstants.RED));
+
         Entity localEntity = localProtagonist.getEntity();
         engine.addEntity(localEntity);
         // rect & position
@@ -200,6 +219,25 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
             }
 
         }
+
+        BattleEventListenerComponent eventListenerComponent =
+            protagonist.getEntity().getComponent(BattleEventListenerComponent.class);
+        if (eventListenerComponent != null) {
+            eventListenerComponent.addListener(new BattleEventListener() {
+                @Override
+                public void afterPassiveEvent(BattleEvent event) {
+
+                }
+
+                @Override
+                public void afterActiveEvent(BattleEvent event) {
+                    if (DeadEvent.class.isAssignableFrom(event.getClass())) {
+                        // this actor dead
+                        MessageManager.getInstance().dispatchMessage(MessageConstants.MSG_GAME_OVER);
+                    }
+                }
+            });
+        }
     }
 
     private void readProtagonistConfig() {
@@ -220,14 +258,6 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         context.getWorld().update(delta);
     }
 
-    @Override
-    public void dispose() {
-        context.dispose();
-        Player.PLAYERS[0].removeInput(playerInput);
-
-        engine = null;
-        entity = null;
-    }
 
     @Override
     public Entity getEntity() {

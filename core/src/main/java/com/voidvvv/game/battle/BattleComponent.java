@@ -2,6 +2,7 @@ package com.voidvvv.game.battle;
 
 import com.badlogic.ashley.core.Component;
 import com.voidvvv.game.base.components.VComponent;
+import com.voidvvv.game.battle.events.BattleEvent;
 
 public interface BattleComponent extends VComponent, Component {
     float getHp();

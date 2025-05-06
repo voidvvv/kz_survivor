@@ -16,7 +16,10 @@ public class MoveComponent implements VComponent, Component {
 
     @Override
     public void init() {
+        vel.set(0,0);
+        preVel.set(0,0);
         face.set(0,0);
+        additionalVel.set(0,0);
     }
 
     @Override

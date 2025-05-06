@@ -1,6 +1,6 @@
-package com.voidvvv.game.battle;
+package com.voidvvv.game.battle.events;
 
-import com.badlogic.gdx.math.Vector2;
+import com.voidvvv.game.battle.DamageType;
 
 public interface Damage extends BattleEvent{
     float damageVal();

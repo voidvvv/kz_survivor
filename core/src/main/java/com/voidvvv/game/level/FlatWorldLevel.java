@@ -157,4 +157,10 @@ public class FlatWorldLevel implements Level{
     public String getLevelName() {
         return this.name;
     }
+
+    @Override
+    public void restart() {
+        gameMode.dispose();
+        gameMode.init();
+    }
 }

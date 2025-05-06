@@ -109,9 +109,10 @@ public class VFlatWorld implements VWorld {
 
     @Override
     public void dispose() {
-        disposeBox2dWorld();
         actorComponent.dispose();
         actorComponent = null;
+        disposeBox2dWorld();
+
         config = null;
     }
 
