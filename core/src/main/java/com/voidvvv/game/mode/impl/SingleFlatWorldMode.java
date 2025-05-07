@@ -30,7 +30,6 @@ import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.ecs.system.*;
 import com.voidvvv.game.ecs.system.render.DebugRenderIteratorSystem;
 import com.voidvvv.game.ecs.system.render.EntityRenderSystem;
-import com.voidvvv.game.ecs.system.render.SimpleAnimateRenderSystem;
 import com.voidvvv.game.impl.flat.FlatWorldConfig;
 import com.voidvvv.game.impl.flat.VFlatWorld;
 import com.voidvvv.game.impl.flat.VFlatWorldActor;
@@ -285,8 +284,6 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     }
 
     EntityRenderSystem renderSystem = new EntityRenderSystem();
-    SimpleAnimateRenderSystem simpleAnimateRenderSystem = new SimpleAnimateRenderSystem();
-    Family simpleAnimateFamily = Family.all(SimpleAnimateComponent.class).get();
     @Override
     public void render() {
         SpriteBatch spriteBatch = Main.getInstance().getDrawManager().getBaseBatch();
@@ -294,13 +291,6 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         spriteBatch.begin();
 
         renderSystem.render(getContext().getWorld().getEntity(),0f, spriteBatch);
-        ImmutableArray<Entity> entities = getEngine().getEntitiesFor(simpleAnimateFamily);
-
-        for (int i = 0; i < entities.size(); i++) {
-            Entity entity = entities.get(i);
-            simpleAnimateRenderSystem.render(entity, 0f, spriteBatch);
-        }
-
         spriteBatch.end();
     }
 

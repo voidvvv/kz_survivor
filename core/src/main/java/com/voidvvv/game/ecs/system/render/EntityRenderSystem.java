@@ -2,6 +2,7 @@ package com.voidvvv.game.ecs.system.render;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -9,9 +10,7 @@ import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.base.state.Walk;
 import com.voidvvv.game.base.world.components.VWorldActorComponent;
-import com.voidvvv.game.ecs.components.BaseStateActorAnimationComponent;
-import com.voidvvv.game.ecs.components.MoveComponent;
-import com.voidvvv.game.ecs.components.StateMachineComponent;
+import com.voidvvv.game.ecs.components.*;
 
 public class EntityRenderSystem extends SpriteBatchRenderIteratorSystem{
 
@@ -30,6 +29,23 @@ public class EntityRenderSystem extends SpriteBatchRenderIteratorSystem{
             BaseStateActorAnimationComponent animationComponent = localEntity.getComponent(BaseStateActorAnimationComponent.class);
             if (animationComponent != null) {
                 renderBaseStateActor(localEntity, deltaTime, batch);
+            }
+            SimpleAnimateComponent simpleAnimateComponent = localEntity.getComponent(SimpleAnimateComponent.class);
+            if (simpleAnimateComponent != null) {
+                Animation<TextureRegion> animation = simpleAnimateComponent.animation;
+                TimeComponent timeComponent = entity.getComponent(TimeComponent.class);
+                float time = 0f;
+                if (timeComponent != null) {
+                    time = timeComponent.time;
+                }
+                TextureRegion keyFrame = animation.getKeyFrame(time);
+                VRectBoundComponent rectBoundComponent = localEntity.getComponent(VRectBoundComponent.class);
+                if (rectBoundComponent != null) {
+                    rectBoundComponent.getFaceCenter(tmpCenter);
+                }
+                tmpCenter.x -= keyFrame.getRegionWidth() / 2f;
+                tmpCenter.y -= keyFrame.getRegionHeight() / 2f;
+                batch.draw(keyFrame, tmpCenter.x, tmpCenter.y);
             }
         }
 
