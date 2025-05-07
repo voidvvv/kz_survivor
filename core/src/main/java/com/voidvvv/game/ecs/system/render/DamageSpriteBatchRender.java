@@ -43,7 +43,7 @@ public class DamageSpriteBatchRender extends SpriteBatchRenderIteratorSystem {
             float liveTime = damageValue.liveTime;
             float maxTime = DamageValueComponent.maxTime;
             float percent = (liveTime / maxTime);
-            float volatileV = MathUtils.sin(percent * MathUtils.PI);
+            float volatileV = MathUtils.sin(percent * MathUtils.PI * 1.5f);
             bitmapFont.draw(batch, String.valueOf(damage), tmp.x, tmp.y + volatileV*20f);
         }
 //        baseBatch.end();

@@ -50,7 +50,7 @@ public class CastLightBoom implements Skill {
         helper.hx = META_DATE.getRectProps().getLength() / 2f;
         helper.hy = META_DATE.getRectProps().getHeight() / 2f;
         helper.hz = META_DATE.getRectProps().getWidth() / 2f;
-        lightBoom.initSpeed = 100f;
+        lightBoom.initSpeed = 300f;
         VRectBoundComponent ownerPosition = owner.getComponent(VRectBoundComponent.class);
         if (ownerPosition != null) {
             helper.initX = ownerPosition.position.x;
