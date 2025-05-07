@@ -27,6 +27,8 @@ public class MoveShapeBox2dActor extends VFlatWorldActor {
         this.getEntity().add(new BattleEventListenerComponent());
         this.getEntity().add(new DefaultBattleComponent());
         this.getEntity().add(new MoveChangeListenerComponent());
+        this.getEntity().add(new ContactTypeComponent());
+
 //        this.getEntity().add(new StateMachineComponent());
     }
 
@@ -75,5 +77,8 @@ public class MoveShapeBox2dActor extends VFlatWorldActor {
 //            box2dComponent.clearStartContactFixtures();
             box2dComponent.clearContactPairListener();
         }
+        MoveChangeListenerComponent moveChangeListenerComponent = getEntity().getComponent(MoveChangeListenerComponent.class);
+        moveChangeListenerComponent.list.clear();
+
     }
 }

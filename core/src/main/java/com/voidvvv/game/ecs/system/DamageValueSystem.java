@@ -10,12 +10,9 @@ import com.voidvvv.game.mode.DamageValue;
 import java.util.Iterator;
 
 public class DamageValueSystem extends IteratingSystem {
-    float maxTime = 1f;
-    public DamageValueSystem(float maxTime) {
+
+    public DamageValueSystem() {
         super(Family.all(DamageValueComponent.class).get());
-        if (maxTime > 0f) {
-            this.maxTime = maxTime;
-        }
     }
 
     @Override
@@ -27,7 +24,7 @@ public class DamageValueSystem extends IteratingSystem {
         while (iterator.hasNext()) {
             DamageValue damageValue = iterator.next();
             damageValue.liveTime += deltaTime;
-            if (damageValue.liveTime > maxTime) {
+            if (damageValue.liveTime > DamageValueComponent.maxTime) {
                 iterator.remove();
             }
         }

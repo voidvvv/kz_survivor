@@ -21,6 +21,8 @@ public class AssetConstants {
 
     public static final String MAP_TEST_01 = "map/test/act_game_02.tmx";
 
+    public static final String LIGHT_BOOM_IMG = "image/bullet/light_boom.png";
+
 
     public static <T> Animation<T> makeCommonAnimation (T... arr) {
         return new Animation<>(1f/arr.length, arr);

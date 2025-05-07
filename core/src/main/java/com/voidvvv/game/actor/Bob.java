@@ -18,6 +18,8 @@ import com.voidvvv.game.ecs.components.MoveChangeListenerComponent;
 import com.voidvvv.game.ecs.components.MoveComponent;
 import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.ecs.components.StateMachineComponent;
+import com.voidvvv.game.ecs.components.skill.MainSkillComponent;
+import com.voidvvv.game.skill.CastLightBoom;
 import com.voidvvv.game.utils.AssetConstants;
 import com.voidvvv.game.utils.AssetUtils;
 import com.voidvvv.game.utils.MessageConstants;
@@ -55,7 +57,9 @@ public class Bob extends MoveShapeBox2dActor {
         });
 
         this.getEntity().getComponent(MoveComponent.class).speed = 100f;
-
+        CastLightBoom castLightBoom = new CastLightBoom(getWorldContext());
+        castLightBoom.setOwner(this.getEntity());
+        this.getEntity().add(new MainSkillComponent(castLightBoom));
     }
 
     protected void initAnim() {
@@ -106,7 +110,7 @@ public class Bob extends MoveShapeBox2dActor {
     @Override
     public void reset() {
         super.reset();
-        MoveChangeListenerComponent moveChangeListenerComponent = getEntity().getComponent(MoveChangeListenerComponent.class);
-        moveChangeListenerComponent.list.clear();
+        this.getEntity().remove(MainSkillComponent.class);
+
     }
 }

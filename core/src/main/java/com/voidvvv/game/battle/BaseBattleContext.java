@@ -1,6 +1,7 @@
 package com.voidvvv.game.battle;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
 import com.voidvvv.game.battle.events.BaseDamage;
 import com.voidvvv.game.battle.events.BattleEvent;
 import com.voidvvv.game.battle.events.Damage;
@@ -83,6 +84,7 @@ public class BaseBattleContext implements BattleContext{
         damage.setDamageType(type);
         damage.setDamageVal(damageVal);
         addEvent(damage);
+        Gdx.app.log("BaseBattleContext", "createDamage: " + damageVal);
         return damage;
     }
 }

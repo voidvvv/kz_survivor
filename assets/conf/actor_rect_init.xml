@@ -40,10 +40,21 @@
             <length>16.0</length>
         </rect-props>
         <battle-pros>
-            <hp>10</hp>
+            <hp>100</hp>
             <mp>10</mp>
             <attack>10</attack>
             <defense>5</defense>
         </battle-pros>
     </actor>
+
+    <actor>
+        <name>LightBoom</name>
+        <type>com.voidvvv.game.actor.bulltes.LightBoom</type>
+        <rect-props>
+            <width>10.0</width>
+            <height>10.0</height>
+            <length>10.0</length>
+        </rect-props>
+    </actor>
+
 </users-conf>
