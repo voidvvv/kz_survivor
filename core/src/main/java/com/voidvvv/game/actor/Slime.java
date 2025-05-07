@@ -13,13 +13,12 @@ import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.state.Idle;
-import com.voidvvv.game.battle.DefaultBattleComponent;
+import com.voidvvv.game.battle.*;
+import com.voidvvv.game.battle.events.BattleEvent;
+import com.voidvvv.game.battle.events.DeadEvent;
 import com.voidvvv.game.camp.CampContext;
 import com.voidvvv.game.ecs.ComponentMapperUtil;
 import com.voidvvv.game.ecs.components.*;
-import com.voidvvv.game.battle.BaseBattleFloat;
-import com.voidvvv.game.battle.BattleComponent;
-import com.voidvvv.game.battle.DamageType;
 import com.voidvvv.game.box2d.CollisionPair;
 import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.utils.AssetConstants;
@@ -70,6 +69,21 @@ public class Slime extends MoveShapeBox2dActor {
             animPrototype.idle_animation_mirror = AssetConstants.makeCommonAnimation(idle_pic_mirror[0]);
             animPrototype.idle_animation_mirror.setPlayMode(Animation.PlayMode.LOOP);
         }
+
+        getEntity().getComponent(BattleEventListenerComponent.class)
+            .addListener(new BattleEventListener() {
+                @Override
+                public void afterPassiveEvent(BattleEvent event) {
+
+                }
+
+                @Override
+                public void afterActiveEvent(BattleEvent event) {
+                    if (DeadEvent.class.isAssignableFrom(event.getClass())) {
+                        getWorldContext().getWorld().resetVActor(Slime.this);
+                    }
+                }
+            });
     }
 
 

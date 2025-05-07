@@ -1,5 +1,6 @@
 package com.voidvvv.game.actor.bulltes;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,16 +10,25 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.base.world.VWorldActor;
+import com.voidvvv.game.battle.BaseBattleFloat;
+import com.voidvvv.game.battle.BattleComponent;
+import com.voidvvv.game.battle.DamageType;
+import com.voidvvv.game.battle.DefaultBattleComponent;
 import com.voidvvv.game.box2d.CollisionPair;
 import com.voidvvv.game.box2d.VBox2dComponent;
+import com.voidvvv.game.ecs.components.BattleContextComponent;
+import com.voidvvv.game.ecs.components.CampComponent;
 import com.voidvvv.game.ecs.components.ContactTypeComponent;
 import com.voidvvv.game.ecs.components.SimpleAnimateComponent;
 import com.voidvvv.game.utils.AssetConstants;
 import com.voidvvv.game.utils.ReflectUtil;
 import com.voidvvv.render.actor.VActorRender;
 
-public class LightBoom extends BaseBullet{
+public class LightBoom extends BaseBullet {
+    public static final ComponentMapper<BattleContextComponent> battleContextComponentMapper = ComponentMapper.getFor(BattleContextComponent.class);
+
     public static SimpleAnimateComponent simpleAnimateComponent;
+
     public LightBoom() {
         if (simpleAnimateComponent == null) {
             initAnimate();
@@ -63,7 +73,25 @@ public class LightBoom extends BaseBullet{
 
         Entity otherEntity = otherActor.getEntity();
         ContactTypeComponent component = otherEntity.getComponent(ContactTypeComponent.class);
-        if (otherEntity != owner && (component == null || component.type == ContactTypeComponent.CREATURE)) {
+        CampComponent campComponent = otherEntity.getComponent(CampComponent.class);
+        if (// hit other
+            otherEntity != owner
+                // creature
+                && (component == null || component.type == ContactTypeComponent.CREATURE)
+                // enemy
+                && (campComponent != null && campComponent.getCampSign() != owner.getComponent(CampComponent.class).getCampSign())
+        ) {
+            BattleComponent otherBattleComp = otherEntity.getComponent(DefaultBattleComponent.class);
+            BattleComponent ownerComponent = owner.getComponent(DefaultBattleComponent.class);
+            Entity gameModeEntity = Main.getInstance().getGameMode().getEntity();
+            BattleContextComponent battleContextComponent = battleContextComponentMapper.get(gameModeEntity);
+            if (battleContextComponent != null && otherBattleComp != null && ownerComponent != null) {
+                BaseBattleFloat armor = otherBattleComp.getArmor();
+                BaseBattleFloat attack = ownerComponent.getAttack();
+                float damage = 50f +  (((attack.finalVal + 10) / (armor.finalVal + 1)));
+
+                battleContextComponent.getBattleContext().createDamage(owner, otherEntity, DamageType.PHISICAL, damage);
+            }
             getWorldContext().getWorld().resetVActor(this);
         }
 
