@@ -117,10 +117,14 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
 
     private void otherInit() {
+        spawnSlime(config.birthPlace.x - 29f, config.birthPlace.y - 50f);
+    }
+
+    public void spawnSlime (float x, float y) {
         Slime slime = Slime.create();
         VActorSpawnHelper helper = new VActorSpawnHelper();
-        helper.initX = config.birthPlace.x - 29f;
-        helper.initY = config.birthPlace.y - 50f;
+        helper.initX = x;
+        helper.initY = y;
         ActorMetaData metaData = ActorConstants.ACTOR_INIT_MATE_DATA.get(Slime.NAME);
         helper.hx = metaData.getRectProps().getLength() / 2f;
         helper.hy = metaData.getRectProps().getHeight() / 2f;
@@ -141,9 +145,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         }
 
         slime.getEntity().add(new CampComponent(CampConstants.BLACK));
-
-
     }
+
     DamageValueComponent damageValueComponent;
     DebugRenderIteratorSystem debugRenderIteratorSystem = new DebugRenderIteratorSystem();
     Vector2 tmpCenter = new Vector2();
@@ -185,7 +188,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         engine.addSystem(new BattleComponentBaseSystem());
         engine.addSystem(new Box2dMoveSystem());
         engine.addSystem(new MovementComponentSystem());
-        engine.addSystem(new DamageValueSystem(0.5f));
+        engine.addSystem(new DamageValueSystem());
         engine.addSystem(new StateMachineUpdateSystem());
         engine.addSystem(new DamageSpriteBatchRender());
 //        engine.addSystem(new EntityRenderSystem());
