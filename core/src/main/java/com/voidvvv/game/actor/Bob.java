@@ -106,7 +106,5 @@ public class Bob extends MoveShapeBox2dActor {
     @Override
     public void reset() {
         super.reset();
-        MoveChangeListenerComponent moveChangeListenerComponent = getEntity().getComponent(MoveChangeListenerComponent.class);
-        moveChangeListenerComponent.list.clear();
     }
 }

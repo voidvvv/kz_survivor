@@ -11,9 +11,9 @@ public class VFlatWorldActor extends VWorldActor{
 
 
     public VFlatWorldActor(VActorRender actorRender) {
-        if (actorRender == null) {
-            throw new NullPointerException("actorRender is null");
-        }
+    }
+
+    public VFlatWorldActor() {
     }
 
     @Override
@@ -22,6 +22,9 @@ public class VFlatWorldActor extends VWorldActor{
         if (getEntity().getComponent(VRectBoundComponent.class) != null) {
 
             getEntity().getComponent(VRectBoundComponent.class).init();
+            getEntity().getComponent(MoveComponent.class).init();
+        }
+        if (getEntity().getComponent(MoveComponent.class) != null) {
             getEntity().getComponent(MoveComponent.class).init();
         }
     }
