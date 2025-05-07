@@ -9,11 +9,11 @@ import com.voidvvv.game.base.StateComponentHolder;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.ecs.components.StateMachineComponent;
 import com.voidvvv.game.base.state.Idle;
+import com.voidvvv.game.ecs.components.TimeComponent;
 
 public abstract class VWorldActor implements VActor {
     StateMachineComponent stateMachineComponent;
     private boolean dead;
-    protected float time;
 
     protected Entity entity = new Entity();
 
@@ -26,6 +26,10 @@ public abstract class VWorldActor implements VActor {
     public String metaName () {
         return "VWorldActor";
     }
+    public VWorldActor() {
+        this.entity.add(new TimeComponent());
+    }
+
     public Entity getEntity() {
         return entity;
     }
@@ -50,7 +54,6 @@ public abstract class VWorldActor implements VActor {
 
     @Override
     public void update(float delta) {
-        this.time += delta;
     }
 
     @Override

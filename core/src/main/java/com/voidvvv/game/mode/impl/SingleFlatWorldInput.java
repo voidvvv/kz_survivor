@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.voidvvv.game.ecs.components.MoveComponent;
+import com.voidvvv.game.ecs.components.skill.MainSkillComponent;
 import com.voidvvv.game.impl.flat.VFlatWorldActor;
 import com.voidvvv.game.player.PlayerInput;
 
@@ -41,7 +42,10 @@ public class SingleFlatWorldInput implements PlayerInput {
 
     @Override
     public void skill1() {
-
+        MainSkillComponent component = localProtagonist.getEntity().getComponent(MainSkillComponent.class);
+        if (component != null) {
+            component.skill.cast();
+        }
     }
 
     @Override
