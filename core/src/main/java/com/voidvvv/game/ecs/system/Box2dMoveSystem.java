@@ -23,13 +23,16 @@ public class Box2dMoveSystem extends IteratingSystem {
     private ComponentMapper<MoveComponent> moveMapper = null;
     private ComponentMapper<VBox2dComponent> box2dMapper = null;
     private ComponentMapper<VRectBoundComponent> rectBoundComponentComponentMapper = null;
+
     public Box2dMoveSystem() {
         super(Family.all(VBox2dComponent.class, MoveComponent.class).get());
         moveMapper = ComponentMapper.getFor(MoveComponent.class);
         box2dMapper = ComponentMapper.getFor(VBox2dComponent.class);
         rectBoundComponentComponentMapper = ComponentMapper.getFor(VRectBoundComponent.class);
     }
+
     Vector2 tmp = new Vector2();
+
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         MoveComponent moveComponent = moveMapper.get(entity);
@@ -41,7 +44,9 @@ public class Box2dMoveSystem extends IteratingSystem {
             if (box2dComponent != null) {
                 box2dComponent.getFlatBody().setLinearVelocity(Box2dUnitConverter.worldToBox2d(tmp.scl(moveComponent.speed).add(moveComponent.additionalVel)));
             }
+            moveComponent.additionalVel.set(0, 0);
         }
+
 //        if (box2dComponent != null) {
 //            dealWithContact(box2dComponent);
 //        }

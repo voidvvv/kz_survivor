@@ -1,6 +1,7 @@
 package com.voidvvv.game.skill;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.ActorConstants;
@@ -9,6 +10,7 @@ import com.voidvvv.game.actor.utils.ActorMetaData;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.WorldContext;
+import com.voidvvv.game.ecs.components.MoveComponent;
 
 
 public class CastLightBoom implements Skill {
@@ -45,12 +47,19 @@ public class CastLightBoom implements Skill {
 
     @Override
     public void cast() {
+        LightBoom lightBoom = createLightBoom();
+        lightBoom.getEntity().getComponent(MoveComponent.class).vel.set(direction);
+    }
+    Vector2 direction = new Vector2(1, 0);
+    float speed = 300f;
+    public LightBoom createLightBoom () {
         LightBoom lightBoom = LightBoom.create();
         VActorSpawnHelper helper = Pools.obtain(VActorSpawnHelper.class);
         helper.hx = META_DATE.getRectProps().getLength() / 2f;
         helper.hy = META_DATE.getRectProps().getHeight() / 2f;
         helper.hz = META_DATE.getRectProps().getWidth() / 2f;
-        lightBoom.initSpeed = 300f;
+        lightBoom.initSpeed = speed;
+
         VRectBoundComponent ownerPosition = owner.getComponent(VRectBoundComponent.class);
         if (ownerPosition != null) {
             helper.initX = ownerPosition.position.x;
@@ -62,6 +71,7 @@ public class CastLightBoom implements Skill {
         worldContext.getWorld().spawnVActor(() -> {
             return lightBoom;
         }, helper);
+        return lightBoom;
     }
 
     @Override
