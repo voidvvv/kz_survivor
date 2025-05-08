@@ -50,7 +50,12 @@ public class VWorldActorManageSystem extends IteratingSystem {
             VRectBoundComponent c1 = o1.getEntity().getComponent(VRectBoundComponent.class);
             VRectBoundComponent c2 = o2.getEntity().getComponent(VRectBoundComponent.class);
             if (c1 != null && c2 != null) {
-                return (int)c2.position.y - (int)c1.position.y;
+                // (int)c2.position.y - (int)c1.position.y
+                return Float.compare(c2.position.y, c1.position.y);
+            } else if (c1 != null){
+                return -1;
+            } else if (c2 != null) {
+                return 1;
             } else {
                 return 0;
             }

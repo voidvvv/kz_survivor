@@ -27,6 +27,7 @@ import com.voidvvv.game.camp.CampConstants;
 import com.voidvvv.game.ecs.components.BattleEventListenerComponent;
 import com.voidvvv.game.ecs.components.BehaviorTreeComponent;
 import com.voidvvv.game.ecs.components.CampComponent;
+import com.voidvvv.game.ecs.components.MoveComponent;
 import com.voidvvv.game.ecs.components.sign.EnemySignComponent;
 
 public class SimpleSlimeGenerateStrategy extends IntervalSystem {
@@ -105,6 +106,8 @@ public class SimpleSlimeGenerateStrategy extends IntervalSystem {
                 }
             });
         slime.getEntity().add(Pools.obtain(EnemySignComponent.class));
+        slime.getEntity().getComponent(MoveComponent.class)
+            .speed = 81.5f;
         return slime;
     }
 

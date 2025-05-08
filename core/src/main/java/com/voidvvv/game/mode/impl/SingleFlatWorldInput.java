@@ -42,10 +42,10 @@ public class SingleFlatWorldInput implements PlayerInput {
 
     @Override
     public void skill1() {
-        MainSkillComponent component = localProtagonist.getEntity().getComponent(MainSkillComponent.class);
-        if (component != null) {
-            component.skill.cast();
-        }
+//        MainSkillComponent component = localProtagonist.getEntity().getComponent(MainSkillComponent.class);
+//        if (component != null) {
+//            component.skill.cast();
+//        }
     }
 
     @Override

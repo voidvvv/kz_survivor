@@ -91,7 +91,9 @@ public class LightBoom extends BaseBullet {
             getWorldContext().getWorld().resetVActor(this);
             return;
         }
-
+        if (!otherActor.ready) {
+            return;
+        }
         Entity otherEntity = otherActor.getEntity();
         ContactTypeComponent component = otherEntity.getComponent(ContactTypeComponent.class);
         CampComponent campComponent = otherEntity.getComponent(CampComponent.class);

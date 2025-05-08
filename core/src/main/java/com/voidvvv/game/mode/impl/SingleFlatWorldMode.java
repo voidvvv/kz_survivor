@@ -179,6 +179,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         // behavior tree
         engine.addSystem(new BehaviorTreeUpdateSystem(0.15f));
 
+        engine.addSystem(new ConstantCastSkill());
         moveMapper = ComponentMapper.getFor(MoveComponent.class);
     }
 
