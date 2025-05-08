@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
@@ -24,21 +25,32 @@ import com.voidvvv.game.utils.AssetConstants;
 import com.voidvvv.game.utils.ReflectUtil;
 import com.voidvvv.render.actor.VActorRender;
 
+import java.security.SecureRandom;
+import java.util.Random;
+import java.util.random.RandomGenerator;
+
 public class LightBoom extends BaseBullet {
     public static final ComponentMapper<BattleContextComponent> battleContextComponentMapper = ComponentMapper.getFor(BattleContextComponent.class);
 
     public static SimpleAnimateComponent simpleAnimateComponent;
 
+    public long randomNum = 0L;
     public LightBoom() {
         if (simpleAnimateComponent == null) {
             initAnimate();
         }
         Gdx.app.log("LightBoom", "LightBoom constructor");
+        this.randomNum = RandomGenerator.getDefault().nextLong();
     }
 
     public static LightBoom create() {
         Gdx.app.log("LightBoom", "LightBoom create");
         LightBoom obtain = Pools.obtain(LightBoom.class);
+        boolean contains = Main.getInstance().getGameMode().getEngine().getEntities().contains(obtain.getEntity(), true);
+        if (contains) {
+            Gdx.app.log("LightBoom", "error detect! " + obtain.randomNum);
+        }
+        Gdx.app.log("LightBoom", "LightBoom create " + obtain.randomNum);
         return obtain;
     }
 
@@ -112,4 +124,10 @@ public class LightBoom extends BaseBullet {
 
     }
 
+
+    @Override
+    public void reset() {
+        super.reset();
+        Gdx.app.log("LightBoom", "LightBoom reset " + this.randomNum);
+    }
 }

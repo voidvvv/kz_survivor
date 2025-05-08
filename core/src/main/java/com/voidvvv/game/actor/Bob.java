@@ -47,8 +47,10 @@ public class Bob extends MoveShapeBox2dActor {
     public void init() {
         super.init();
         StateMachine machine = new DefaultStateMachine(this, new Idle());
-        this.getEntity().add(new StateMachineComponent(machine));
-        this.getEntity().add(AssetUtils.cpy(animPrototype));
+        StateMachineComponent stateMachineComponent = Pools.obtain(StateMachineComponent.class);
+        stateMachineComponent.setStateMachine(machine);
+        this.getEntity().add(stateMachineComponent);
+        this.getEntity().add(animPrototype);
 
         MoveChangeListenerComponent moveChangeListenerComponent = getEntity().getComponent(MoveChangeListenerComponent.class);
         moveChangeListenerComponent.list.add( () -> {

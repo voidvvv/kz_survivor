@@ -3,12 +3,14 @@ package com.voidvvv.game.box2d;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Pool;
 
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VBox2dComponent implements Component {
+public class VBox2dComponent implements Component, Pool.Poolable {
 
     Body flatBody;
 
@@ -105,4 +107,15 @@ public class VBox2dComponent implements Component {
     }
 
 
+    @Override
+    public void reset() {
+        World world = this.getFlatBody().getWorld();
+        world.destroyBody(this.getFlatBody());
+        this.setBottomFixture(null);
+        this.setFaceFixture(null);
+        this.setFlatBody(null);
+//            box2dComponent.clearEndContactFixtures();
+//            box2dComponent.clearStartContactFixtures();
+        this.clearContactPairListener();
+    }
 }

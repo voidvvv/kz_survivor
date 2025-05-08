@@ -80,7 +80,7 @@ public class Slime extends MoveShapeBox2dActor {
         this.getEntity().getComponent(MoveComponent.class).speed = 100f;
         getEntity().getComponent(VBox2dComponent.class).addContactPairListener(this::contact);
 
-        this.getEntity().add(AssetUtils.cpy(animPrototype));
+        this.getEntity().add(animPrototype);
         StateMachine machine = new DefaultStateMachine(this, new Idle());
         this.getEntity().add(new StateMachineComponent(machine));
 

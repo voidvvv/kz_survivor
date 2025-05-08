@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.actor.ActorConstants;
 import com.voidvvv.game.actor.Slime;
 import com.voidvvv.game.actor.utils.ActorMetaData;
@@ -76,8 +77,9 @@ public class SimpleSlimeGenerateStrategy extends IntervalSystem {
             }
 
         }
-
-        slime.getEntity().add(new CampComponent(CampConstants.BLACK));
+        CampComponent obtain = Pools.obtain(CampComponent.class);
+        obtain.setCampSign(CampConstants.BLACK);
+        slime.getEntity().add(obtain);
         slime.getEntity().getComponent(BattleEventListenerComponent.class)
             .addListener(new BattleEventListener() {
                 @Override
@@ -94,7 +96,7 @@ public class SimpleSlimeGenerateStrategy extends IntervalSystem {
                     }
                 }
             });
-        slime.getEntity().add(new EnemySignComponent());
+        slime.getEntity().add(Pools.obtain(EnemySignComponent.class));
         return slime;
     }
 
