@@ -2,8 +2,9 @@ package com.voidvvv.game.base;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pool;
 
-public class VRectBoundComponent extends VPositionComponent implements Component {
+public class VRectBoundComponent extends VPositionComponent implements Component, Pool.Poolable {
     private float width; // z len
     private float height; // y len
     private float length; // x len
@@ -68,4 +69,11 @@ public class VRectBoundComponent extends VPositionComponent implements Component
         length = 0;
     }
 
+    @Override
+    public void reset() {
+        width = 0;
+        height = 0;
+        length = 0;
+        position.set(0, 0);
+    }
 }

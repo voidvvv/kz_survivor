@@ -19,14 +19,7 @@ public class VFlatWorldActor extends VWorldActor{
     @Override
     public void init() {
         super.init();
-        if (getEntity().getComponent(VRectBoundComponent.class) != null) {
 
-            getEntity().getComponent(VRectBoundComponent.class).init();
-            getEntity().getComponent(MoveComponent.class).init();
-        }
-        if (getEntity().getComponent(MoveComponent.class) != null) {
-            getEntity().getComponent(MoveComponent.class).init();
-        }
     }
 
     @Override

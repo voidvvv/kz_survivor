@@ -220,7 +220,10 @@ public class VFlatWorld implements VWorld {
 
     @Override
     public void resetVActor(VWorldActor actor) {
-        this.actorComponent.resetActor(actor);
+        if (actor.ready) {
+            actor.ready = false;
+            this.actorComponent.resetActor(actor);
+        }
     }
 
     @Override

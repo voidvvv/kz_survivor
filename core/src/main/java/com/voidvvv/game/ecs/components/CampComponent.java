@@ -6,6 +6,9 @@ import com.voidvvv.game.camp.CampContext;
 public class CampComponent implements Component {
     private long campSign;
 
+    public CampComponent() {
+    }
+
     public CampComponent(long campSign) {
         this.campSign = campSign;
     }

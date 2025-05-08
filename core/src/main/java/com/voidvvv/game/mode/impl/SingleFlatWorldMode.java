@@ -9,6 +9,7 @@ import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.ActorConstants;
 import com.voidvvv.game.actor.Alice;
@@ -28,6 +29,7 @@ import com.voidvvv.game.ecs.components.*;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.ecs.system.*;
+import com.voidvvv.game.ecs.system.debug.ConstantCastSkill;
 import com.voidvvv.game.ecs.system.render.DebugRenderIteratorSystem;
 import com.voidvvv.game.ecs.system.render.EntityRenderSystem;
 import com.voidvvv.game.ecs.system.simple.SimpleSlimeGenerateStrategy;
@@ -151,7 +153,9 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
             }
         });
-        entity.add(new BattleContextComponent(baseBattleContext));
+        BattleContextComponent obtain = Pools.obtain(BattleContextComponent.class);
+        obtain.setBattleContext(baseBattleContext);
+        entity.add(obtain);
         entity.add(damageValueComponent);
         entity.add(new CampContextComponent(new CampContext()));
 
@@ -171,6 +175,9 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
         // autogenerate slime
         engine.addSystem(new SimpleSlimeGenerateStrategy(context));
+
+        // for debug
+        engine.addSystem(new ConstantCastSkill());
 
         moveMapper = ComponentMapper.getFor(MoveComponent.class);
     }

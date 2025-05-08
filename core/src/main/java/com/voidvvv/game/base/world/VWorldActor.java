@@ -4,7 +4,9 @@ package com.voidvvv.game.base.world;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
+import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.base.StateComponentHolder;
 import com.voidvvv.game.base.VActor;
@@ -65,9 +67,10 @@ public abstract class VWorldActor implements VActor {
     public void dispose() {
         VActor.super.dispose();
     }
-
+    public boolean ready = true;
     @Override
     public void reset() {
+        ready = true;
         unload();
         Engine engine = Main.getInstance().getGameMode().getEngine();
         engine.removeEntity(entity);
@@ -75,5 +78,10 @@ public abstract class VWorldActor implements VActor {
     }
 
     protected void unload() {
+        ImmutableArray<Component> components = entity.getComponents();
+        for (int i = 0; i < components.size(); i++) {
+            Component component = components.get(i);
+            Pools.free(component);
+        }
     }
 }

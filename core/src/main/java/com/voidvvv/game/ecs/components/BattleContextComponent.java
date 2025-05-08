@@ -10,6 +10,13 @@ public class BattleContextComponent implements Component {
         this.battleContext = battleContext;
     }
 
+    public void setBattleContext(BattleContext battleContext) {
+        this.battleContext = battleContext;
+    }
+
+    public BattleContextComponent() {
+    }
+
     public BattleContext getBattleContext() {
         return battleContext;
     }

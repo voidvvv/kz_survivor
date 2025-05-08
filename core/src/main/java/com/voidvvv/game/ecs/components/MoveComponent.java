@@ -2,9 +2,10 @@ package com.voidvvv.game.ecs.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pool;
 import com.voidvvv.game.base.components.VComponent;
 
-public class MoveComponent implements VComponent, Component {
+public class MoveComponent implements VComponent, Component, Pool.Poolable {
     public final Vector2 vel = new Vector2();
     public final Vector2 preVel = new Vector2();
     public float speed;
@@ -29,5 +30,10 @@ public class MoveComponent implements VComponent, Component {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public void reset() {
+        init();
     }
 }

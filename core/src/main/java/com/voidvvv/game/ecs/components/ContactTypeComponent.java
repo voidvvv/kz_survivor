@@ -1,8 +1,9 @@
 package com.voidvvv.game.ecs.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.utils.Pool;
 
-public class ContactTypeComponent implements Component {
+public class ContactTypeComponent implements Component, Pool.Poolable {
     public static final int CREATURE = 0;
     public static final int WALL = 1;
     public static final int BULLET = 2;
@@ -14,5 +15,10 @@ public class ContactTypeComponent implements Component {
 
     public ContactTypeComponent() {
         this(CREATURE);
+    }
+
+    @Override
+    public void reset() {
+        type = CREATURE;
     }
 }

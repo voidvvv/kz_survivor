@@ -3,6 +3,7 @@ package com.voidvvv.game.ecs.system;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.base.world.VWorldActor;
@@ -26,6 +27,7 @@ public class VWorldActorManageSystem extends IteratingSystem {
     }
 
     private void flushActors(VWorldActorComponent component) {
+        Gdx.app.log("VWorldActorManageSystem", "============= flushActors start ==========");
         for (VWorldActor actor : component.toRemove) {
             actor.dispose();
             component.actors.remove(actor);
@@ -37,6 +39,8 @@ public class VWorldActorManageSystem extends IteratingSystem {
         }
         component.toAdd.clear();
         component.actors.sort(VActorComparator.INSTANCE);
+        Gdx.app.log("VWorldActorManageSystem", "============= flushActors end ==========");
+
     }
 
     public static class VActorComparator implements Comparator<VActor> {

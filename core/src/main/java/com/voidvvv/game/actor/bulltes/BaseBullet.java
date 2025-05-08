@@ -3,6 +3,7 @@ package com.voidvvv.game.actor.bulltes;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.battle.DefaultBattleComponent;
 import com.voidvvv.game.box2d.CollisionPair;
@@ -28,10 +29,12 @@ public class BaseBullet extends VFlatWorldActor {
     @Override
     public void init() {
         super.init();
-        this.getEntity().add(new MoveComponent());
-        this.getEntity().add(new VBox2dComponent());
-        this.getEntity().add(new VRectBoundComponent());
-        this.getEntity().add(new ContactTypeComponent(ContactTypeComponent.BULLET));
+        this.getEntity().add(Pools.obtain(MoveComponent.class));
+        this.getEntity().add(Pools.obtain(VBox2dComponent.class));
+        this.getEntity().add(Pools.obtain(VRectBoundComponent.class));
+        ContactTypeComponent obtain = Pools.obtain(ContactTypeComponent.class);
+        obtain.type = ContactTypeComponent.BULLET;
+        this.getEntity().add(obtain);
 
         this.getEntity().getComponent(MoveComponent.class).speed = initSpeed;
         getEntity().getComponent(VBox2dComponent.class).addContactPairListener(this::contact);
@@ -60,17 +63,6 @@ public class BaseBullet extends VFlatWorldActor {
     public void unload() {
         super.unload();
         owner = null;
-        VBox2dComponent box2dComponent = this.entity.getComponent(VBox2dComponent.class);
-        if (box2dComponent != null) {
-            World world = box2dComponent.getFlatBody().getWorld();
-            world.destroyBody(box2dComponent.getFlatBody());
-            box2dComponent.setBottomFixture(null);
-            box2dComponent.setFaceFixture(null);
-            box2dComponent.setFlatBody(null);
-//            box2dComponent.clearEndContactFixtures();
-//            box2dComponent.clearStartContactFixtures();
-            box2dComponent.clearContactPairListener();
-        }
     }
 
 }
