@@ -1,6 +1,7 @@
 package com.voidvvv.game.base.world;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.math.Rectangle;
 import com.voidvvv.game.base.Updateable;
 
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.function.Supplier;
 
 public interface VWorld {
     void initWorld();
+
+    Rectangle boundingBox();
 
     void dispose();
     List<? extends VWorldActor> allActors();

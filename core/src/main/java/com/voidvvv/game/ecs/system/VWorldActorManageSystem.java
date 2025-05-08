@@ -32,7 +32,7 @@ public class VWorldActorManageSystem extends IteratingSystem {
         }
         component.toRemove.clear();
         for (VWorldActor actor : component.toAdd) {
-            actor.init();
+//            actor.init();
             component.actors.add(actor);
         }
         component.toAdd.clear();

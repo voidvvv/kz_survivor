@@ -1,6 +1,7 @@
 package com.voidvvv.game.base.world;
 
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
@@ -11,8 +12,12 @@ import com.voidvvv.game.ecs.components.StateMachineComponent;
 import com.voidvvv.game.base.state.Idle;
 import com.voidvvv.game.ecs.components.TimeComponent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class VWorldActor implements VActor {
     StateMachineComponent stateMachineComponent;
+    List<Class<? extends Component>> needToBeUnbind = new ArrayList<>();
     private boolean dead;
 
     protected Entity entity = new Entity();
@@ -63,7 +68,12 @@ public abstract class VWorldActor implements VActor {
 
     @Override
     public void reset() {
+        unload();
         Engine engine = Main.getInstance().getGameMode().getEngine();
         engine.removeEntity(entity);
+        entity.removeAll();
+    }
+
+    protected void unload() {
     }
 }

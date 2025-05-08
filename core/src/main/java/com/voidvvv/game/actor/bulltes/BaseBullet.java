@@ -23,15 +23,16 @@ public class BaseBullet extends VFlatWorldActor {
     public BaseBullet() {
         super();
 
-        this.getEntity().add(new MoveComponent());
-        this.getEntity().add(new VBox2dComponent());
-        this.getEntity().add(new VRectBoundComponent());
-        this.getEntity().add(new ContactTypeComponent(ContactTypeComponent.BULLET));
     }
 
     @Override
     public void init() {
         super.init();
+        this.getEntity().add(new MoveComponent());
+        this.getEntity().add(new VBox2dComponent());
+        this.getEntity().add(new VRectBoundComponent());
+        this.getEntity().add(new ContactTypeComponent(ContactTypeComponent.BULLET));
+
         this.getEntity().getComponent(MoveComponent.class).speed = initSpeed;
         getEntity().getComponent(VBox2dComponent.class).addContactPairListener(this::contact);
         this.getEntity().getComponent(MoveComponent.class).vel.set(dir);
@@ -56,8 +57,8 @@ public class BaseBullet extends VFlatWorldActor {
     }
 
     @Override
-    public void reset() {
-        super.reset();
+    public void unload() {
+        super.unload();
         owner = null;
         VBox2dComponent box2dComponent = this.entity.getComponent(VBox2dComponent.class);
         if (box2dComponent != null) {
