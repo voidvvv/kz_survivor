@@ -2,6 +2,7 @@ package com.voidvvv.game.actor;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.assets.AssetManager;
@@ -33,6 +34,7 @@ public class Slime extends MoveShapeBox2dActor {
 
     public static final ComponentMapper<BattleContextComponent> battleContextComponentMapper = ComponentMapper.getFor(BattleContextComponent.class);
     public static Slime create() {
+        Gdx.app.log("Slime", "Slime create");
         Slime obtain = Pools.obtain(Slime.class);
         return obtain;
     }
@@ -41,12 +43,11 @@ public class Slime extends MoveShapeBox2dActor {
     }
     public Slime() {
         super(SlimeRender.RENDER);
+        Gdx.app.log("Slime", "Slime constructor");
+
         if (animPrototype == null) {
             initAnim();
         }
-        this.getEntity().add(AssetUtils.cpy(animPrototype));
-        StateMachine machine = new DefaultStateMachine(this, new Idle());
-        this.getEntity().add(new StateMachineComponent(machine));
 
     }
 
@@ -78,20 +79,10 @@ public class Slime extends MoveShapeBox2dActor {
         super.init();
         this.getEntity().getComponent(MoveComponent.class).speed = 100f;
         getEntity().getComponent(VBox2dComponent.class).addContactPairListener(this::contact);
-        getEntity().getComponent(BattleEventListenerComponent.class)
-            .addListener(new BattleEventListener() {
-                @Override
-                public void afterPassiveEvent(BattleEvent event) {
 
-                }
-
-                @Override
-                public void afterActiveEvent(BattleEvent event) {
-                    if (DeadEvent.class.isAssignableFrom(event.getClass())) {
-                        getWorldContext().getWorld().resetVActor(Slime.this);
-                    }
-                }
-            });
+        this.getEntity().add(AssetUtils.cpy(animPrototype));
+        StateMachine machine = new DefaultStateMachine(this, new Idle());
+        this.getEntity().add(new StateMachineComponent(machine));
 
     }
 

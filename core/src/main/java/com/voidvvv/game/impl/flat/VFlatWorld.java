@@ -38,6 +38,8 @@ public class VFlatWorld implements VWorld {
 
     FlatWorldConfig config;
 
+    public Rectangle boundingBox = new Rectangle();
+
     Entity entity = new Entity();
 
     public final Vector2 viewPosition = new Vector2();
@@ -73,8 +75,14 @@ public class VFlatWorld implements VWorld {
 
     }
 
+    @Override
+    public Rectangle boundingBox() {
+        return this.boundingBox;
+    }
+
     private void initWalls() {
-        Rectangle boundingBox = config.boundingBox;
+        boundingBox.set(config.boundingBox);
+
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(boundingBox.x, boundingBox.y);
@@ -135,6 +143,7 @@ public class VFlatWorld implements VWorld {
     @Override
     public <T extends VWorldActor> T spawnVActor(Supplier<T> actorSup, VActorSpawnHelper helper) {
         T actor = actorSup.get();
+        actor.setWorldContext(worldContext);
         actor.init();
         if (!VFlatWorldActor.class.isAssignableFrom(actor.getClass())) {
             return actor;

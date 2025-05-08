@@ -30,6 +30,7 @@ import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.ecs.system.*;
 import com.voidvvv.game.ecs.system.render.DebugRenderIteratorSystem;
 import com.voidvvv.game.ecs.system.render.EntityRenderSystem;
+import com.voidvvv.game.ecs.system.simple.SimpleSlimeGenerateStrategy;
 import com.voidvvv.game.impl.flat.FlatWorldConfig;
 import com.voidvvv.game.impl.flat.VFlatWorld;
 import com.voidvvv.game.impl.flat.VFlatWorldActor;
@@ -116,35 +117,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
 
     private void otherInit() {
-        spawnSlime(config.birthPlace.x - 29f, config.birthPlace.y - 50f);
-    }
-
-    public Slime spawnSlime (float x, float y) {
-        Slime slime = Slime.create();
-        VActorSpawnHelper helper = new VActorSpawnHelper();
-        helper.initX = x;
-        helper.initY = y;
-        ActorMetaData metaData = ActorConstants.ACTOR_INIT_MATE_DATA.get(Slime.NAME);
-        helper.hx = metaData.getRectProps().getLength() / 2f;
-        helper.hy = metaData.getRectProps().getHeight() / 2f;
-        helper.hz = metaData.getRectProps().getWidth() / 2f;
-
-        engine.addEntity(slime.getEntity());
-        slime.setWorldContext(this.context);
-        this.flatWorld.spawnVActor(() -> slime, helper);
-        DefaultBattleComponent battle = slime.getEntity().getComponent(DefaultBattleComponent.class);
-        ActorMetaData.BattleProps battleProps = metaData.getBattleProps();
-        if (battle != null) {
-            if (battleProps != null) {
-                battle.init(battleProps.getHp(), 0,
-                    battleProps.getHp(), battleProps.getMp(),
-                    battleProps.getAttack(), battleProps.getDefense());
-            }
-
-        }
-
-        slime.getEntity().add(new CampComponent(CampConstants.BLACK));
-        return slime;
+//        spawnSlime(config.birthPlace.x - 29f, config.birthPlace.y - 50f);
     }
 
     DamageValueComponent damageValueComponent;
@@ -195,6 +168,10 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         engine.addSystem(new VWorldActorManageSystem());
         engine.addSystem(new TimeUpdateSystem());
 //        engine.addSystem(new DebugRenderIteratorSystem());
+
+        // autogenerate slime
+        engine.addSystem(new SimpleSlimeGenerateStrategy(context));
+
         moveMapper = ComponentMapper.getFor(MoveComponent.class);
     }
 
@@ -218,7 +195,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         helper.hy = metaData.getRectProps().getHeight() / 2;
         helper.hz = metaData.getRectProps().getWidth() / 2;
         // world
-        this.protagonist.setWorldContext(context);
+//        this.protagonist.setWorldContext(context);
         this.flatWorld.spawnVActor(() -> localProtagonist, helper);
         // add protagonist to Player1
         playerInput = new SingleFlatWorldInput(protagonist);
