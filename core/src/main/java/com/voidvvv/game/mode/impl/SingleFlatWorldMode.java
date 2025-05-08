@@ -92,11 +92,12 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     public void init() {
         Main.getInstance().setGameMode(this);
         // init ECS
-        initECS();
+
         ActorConstants.init();
         if (context == null) {
             context = initWorld(config);
         }
+        initECS();
         this.context.init();
         engine.addEntity(this.flatWorld.getEntity());
         initProtagonist();
@@ -175,9 +176,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
         // autogenerate slime
         engine.addSystem(new SimpleSlimeGenerateStrategy(context));
-
-        // for debug
-        engine.addSystem(new ConstantCastSkill());
+        // behavior tree
+        engine.addSystem(new BehaviorTreeUpdateSystem(0.15f));
 
         moveMapper = ComponentMapper.getFor(MoveComponent.class);
     }
@@ -188,7 +188,9 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         readProtagonistConfig();
 
         VFlatWorldActor localProtagonist = this.protagonist;
-        protagonist.getEntity().add(new CampComponent(CampConstants.RED));
+        CampComponent obtain = Pools.obtain(CampComponent.class);
+        obtain.setCampSign(CampConstants.RED);
+        protagonist.getEntity().add(obtain);
 
         Entity localEntity = localProtagonist.getEntity();
         engine.addEntity(localEntity);

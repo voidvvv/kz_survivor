@@ -6,6 +6,8 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IntervalSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.btree.BehaviorTree;
+import com.badlogic.gdx.ai.btree.utils.BehaviorTreeLibrary;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -20,8 +22,10 @@ import com.voidvvv.game.battle.BattleEventListener;
 import com.voidvvv.game.battle.DefaultBattleComponent;
 import com.voidvvv.game.battle.events.BattleEvent;
 import com.voidvvv.game.battle.events.DeadEvent;
+import com.voidvvv.game.bt.BasicAttackTask;
 import com.voidvvv.game.camp.CampConstants;
 import com.voidvvv.game.ecs.components.BattleEventListenerComponent;
+import com.voidvvv.game.ecs.components.BehaviorTreeComponent;
 import com.voidvvv.game.ecs.components.CampComponent;
 import com.voidvvv.game.ecs.components.sign.EnemySignComponent;
 
@@ -50,7 +54,11 @@ public class SimpleSlimeGenerateStrategy extends IntervalSystem {
         float x = MathUtils.random(rectangle.x, rectangle.x + rectangle.width);
         float y = MathUtils.random(rectangle.y, rectangle.y + rectangle.height);
         // create
-        spawnSlime(x, y);
+        Slime slime = spawnSlime(x, y);
+        // add behavior
+        BehaviorTreeComponent btComponent = Pools.obtain(BehaviorTreeComponent.class);
+        btComponent.tree = new BehaviorTree(new BasicAttackTask(), slime);
+        slime.getEntity().add(btComponent);
     }
 
 
