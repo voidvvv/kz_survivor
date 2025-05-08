@@ -33,16 +33,17 @@ public class LightBoom extends BaseBullet {
         if (simpleAnimateComponent == null) {
             initAnimate();
         }
-        this.getEntity().add(simpleAnimateComponent);
         Gdx.app.log("LightBoom", "LightBoom constructor");
     }
 
     public static LightBoom create() {
         Gdx.app.log("LightBoom", "LightBoom create");
-        return Pools.obtain(LightBoom.class);
+        LightBoom obtain = Pools.obtain(LightBoom.class);
+        return obtain;
     }
 
     private void initAnimate() {
+
         Main.getInstance().getAssetManager().load(AssetConstants.LIGHT_BOOM_IMG, Texture.class);
         Main.getInstance().getAssetManager().finishLoading();
         Texture texture = Main.getInstance().getAssetManager().get(AssetConstants.LIGHT_BOOM_IMG, Texture.class);
@@ -50,10 +51,18 @@ public class LightBoom extends BaseBullet {
         simpleAnimateComponent = new SimpleAnimateComponent();
         simpleAnimateComponent.animation = new Animation<>(0.1f, split[0]);
         simpleAnimateComponent.animation.setPlayMode(Animation.PlayMode.NORMAL);
+
     }
 
     @Override
     protected void endHitOther(CollisionPair collisionPair) {
+
+    }
+
+    @Override
+    public void init() {
+        super.init();
+        this.getEntity().add(simpleAnimateComponent);
 
     }
 

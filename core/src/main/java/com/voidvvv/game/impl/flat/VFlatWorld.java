@@ -135,6 +135,7 @@ public class VFlatWorld implements VWorld {
     @Override
     public <T extends VWorldActor> T spawnVActor(Supplier<T> actorSup, VActorSpawnHelper helper) {
         T actor = actorSup.get();
+        actor.init();
         if (!VFlatWorldActor.class.isAssignableFrom(actor.getClass())) {
             return actor;
         }

@@ -119,7 +119,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         spawnSlime(config.birthPlace.x - 29f, config.birthPlace.y - 50f);
     }
 
-    public void spawnSlime (float x, float y) {
+    public Slime spawnSlime (float x, float y) {
         Slime slime = Slime.create();
         VActorSpawnHelper helper = new VActorSpawnHelper();
         helper.initX = x;
@@ -144,6 +144,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         }
 
         slime.getEntity().add(new CampComponent(CampConstants.BLACK));
+        return slime;
     }
 
     DamageValueComponent damageValueComponent;
@@ -217,8 +218,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         helper.hy = metaData.getRectProps().getHeight() / 2;
         helper.hz = metaData.getRectProps().getWidth() / 2;
         // world
-        this.flatWorld.spawnVActor(() -> localProtagonist, helper);
         this.protagonist.setWorldContext(context);
+        this.flatWorld.spawnVActor(() -> localProtagonist, helper);
         // add protagonist to Player1
         playerInput = new SingleFlatWorldInput(protagonist);
         Player.PLAYERS[0].addInput(playerInput);
@@ -266,10 +267,11 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     @Override
     public void update(float delta) {
         this.setTimeLeft(getTimeLeft() - delta);
-        engine.update(delta);
         Vector2 position = protagonist.getEntity().getComponent(VRectBoundComponent.class).position;
         flatWorld.viewPosition.lerp(position, 0.05f);
         context.getWorld().update(delta);
+        engine.update(delta);
+
     }
 
 

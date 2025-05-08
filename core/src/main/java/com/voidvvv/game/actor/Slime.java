@@ -70,6 +70,14 @@ public class Slime extends MoveShapeBox2dActor {
             animPrototype.idle_animation_mirror.setPlayMode(Animation.PlayMode.LOOP);
         }
 
+    }
+
+
+    @Override
+    public void init() {
+        super.init();
+        this.getEntity().getComponent(MoveComponent.class).speed = 100f;
+        getEntity().getComponent(VBox2dComponent.class).addContactPairListener(this::contact);
         getEntity().getComponent(BattleEventListenerComponent.class)
             .addListener(new BattleEventListener() {
                 @Override
@@ -84,14 +92,7 @@ public class Slime extends MoveShapeBox2dActor {
                     }
                 }
             });
-    }
 
-
-    @Override
-    public void init() {
-        super.init();
-        this.getEntity().getComponent(MoveComponent.class).speed = 100f;
-        getEntity().getComponent(VBox2dComponent.class).addContactPairListener(this::contact);
     }
 
 

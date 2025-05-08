@@ -21,13 +21,6 @@ public class MoveShapeBox2dActor extends VFlatWorldActor {
     public MoveShapeBox2dActor(VActorRender actorRender) {
         super(actorRender);
 
-        this.getEntity().add(new MoveComponent());
-        this.getEntity().add(new VBox2dComponent());
-        this.getEntity().add(new VRectBoundComponent());
-        this.getEntity().add(new BattleEventListenerComponent());
-        this.getEntity().add(new DefaultBattleComponent());
-        this.getEntity().add(new MoveChangeListenerComponent());
-        this.getEntity().add(new ContactTypeComponent());
 
 //        this.getEntity().add(new StateMachineComponent());
     }
@@ -36,6 +29,14 @@ public class MoveShapeBox2dActor extends VFlatWorldActor {
     public void init() {
         super.init();
         this.setDead(false);
+        this.getEntity().add(new MoveComponent());
+        this.getEntity().add(new VBox2dComponent());
+        this.getEntity().add(new VRectBoundComponent());
+        this.getEntity().add(new BattleEventListenerComponent());
+        this.getEntity().add(new DefaultBattleComponent());
+        this.getEntity().add(new MoveChangeListenerComponent());
+        this.getEntity().add(new ContactTypeComponent());
+
     }
 
     @Override
@@ -63,8 +64,8 @@ public class MoveShapeBox2dActor extends VFlatWorldActor {
     }
 
     @Override
-    public void reset() {
-        super.reset();
+    public void unload() {
+        super.unload();
 
         VBox2dComponent box2dComponent = this.entity.getComponent(VBox2dComponent.class);
         if (box2dComponent != null) {
