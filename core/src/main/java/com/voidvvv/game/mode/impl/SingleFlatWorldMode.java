@@ -175,7 +175,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 //        engine.addSystem(new EntityRenderSystem());
         engine.addSystem(new VWorldActorManageSystem());
         engine.addSystem(new TimeUpdateSystem());
-//        engine.addSystem(new DebugRenderIteratorSystem());
+        engine.addSystem(debugRenderIteratorSystem);
 
         // autogenerate slime
         engine.addSystem(new SimpleSlimeGenerateStrategy(context));

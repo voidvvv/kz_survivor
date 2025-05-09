@@ -12,20 +12,35 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.base.VRectBoundComponent;
 
+import java.io.IOException;
+import java.util.Properties;
+
 public class DebugRenderIteratorSystem extends EntitySystem {
     Family family;
     ShapeRenderer shapeRenderer;
+
+    public boolean debug = false;
 
     public DebugRenderIteratorSystem() {
         super(Integer.MAX_VALUE);
         this.family = Family.all(VRectBoundComponent.class).get();
         this.shapeRenderer = Main.getInstance().getDrawManager().getShapeRenderer();
+        Properties properties = Main.getInstance().getMainProperties();
+        debug = Boolean.parseBoolean(properties.getProperty("render.debug", "false"));
+
     }
 
     public DebugRenderIteratorSystem(Family family) {
         super(Integer.MAX_VALUE);
         this.family = family;
         this.shapeRenderer = Main.getInstance().getDrawManager().getShapeRenderer();
+        Properties properties = new Properties();
+        try {
+            properties.load(Gdx.files.internal("conf/game.properties").read());
+        } catch (IOException e) {
+
+        }
+        debug = Boolean.parseBoolean(properties.getProperty("render.debug", "false"));
     }
 
     public DebugRenderIteratorSystem(Family family, ShapeRenderer shapeRenderer) {

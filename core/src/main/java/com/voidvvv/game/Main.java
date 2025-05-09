@@ -16,10 +16,15 @@ import com.voidvvv.game.screen.GameScreen;
 import com.voidvvv.game.screen.StartScreen;
 import com.voidvvv.game.screen.UpdateScreen;
 
+import java.io.IOException;
+import java.util.Properties;
+
 import static com.voidvvv.game.player.Player.PLAYERS;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends Game {
+
+    Properties mainProperties;
     private CameraManager cameraManager;
     private DrawManager drawManager;
     private AssetManager assetManager;
@@ -43,9 +48,14 @@ public class Main extends Game {
         this.gameMode = gameMode;
     }
 
+    public Properties getMainProperties() {
+        return mainProperties;
+    }
+
     // singleton instance
     private static Main instance;
     private Main() {
+        mainProperties = new Properties();
         // private constructor to prevent instantiation
         cameraManager = new CameraManager();
         drawManager = new DrawManager();
@@ -107,6 +117,13 @@ public class Main extends Game {
         assetManager.setLoader(TiledMap.class,new TmxMapLoader());
         assetManager.load("font/yizi.fnt", BitmapFont.class);
         assetManager.finishLoading();
+        // init main properties
+        try {
+            mainProperties.load(Gdx.files.internal("conf/game.properties").read());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         cameraManager.init();
         drawManager.init();
         initScreens();
