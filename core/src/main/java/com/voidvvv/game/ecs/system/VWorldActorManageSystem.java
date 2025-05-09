@@ -28,16 +28,17 @@ public class VWorldActorManageSystem extends IteratingSystem {
 
     private void flushActors(VWorldActorComponent component) {
         Gdx.app.log("VWorldActorManageSystem", "============= flushActors start ==========");
-        for (VWorldActor actor : component.toRemove) {
-            actor.dispose();
-            component.actors.remove(actor);
-        }
-        component.toRemove.clear();
         for (VWorldActor actor : component.toAdd) {
 //            actor.init();
             component.actors.add(actor);
         }
         component.toAdd.clear();
+        for (VWorldActor actor : component.toRemove) {
+            actor.dispose();
+            component.actors.remove(actor);
+        }
+        component.toRemove.clear();
+
         component.actors.sort(VActorComparator.INSTANCE);
         Gdx.app.log("VWorldActorManageSystem", "============= flushActors end ==========");
 
