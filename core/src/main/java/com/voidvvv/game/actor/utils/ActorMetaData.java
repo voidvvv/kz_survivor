@@ -1,5 +1,7 @@
 package com.voidvvv.game.actor.utils;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class ActorMetaData {
 //            <name>Bob</name>
 //        <type>com.voidvvv.game.actor.Bob</type>
@@ -19,6 +21,8 @@ public class ActorMetaData {
     private Class type;
     private RectProps rectProps;
     private BattleProps battleProps;
+
+    private MoveProps moveProps;
 
     public static class RectProps {
         private float width;
@@ -87,6 +91,19 @@ public class ActorMetaData {
         public void setDefense(float defense) {
             this.defense = defense;
         }
+    }
+
+    public static class MoveProps {
+        public float speed;
+        public Vector2 dir = new Vector2();
+    }
+
+    public MoveProps getMoveProps() {
+        return moveProps;
+    }
+
+    public void setMoveProps(MoveProps moveProps) {
+        this.moveProps = moveProps;
     }
 
     public String getName() {

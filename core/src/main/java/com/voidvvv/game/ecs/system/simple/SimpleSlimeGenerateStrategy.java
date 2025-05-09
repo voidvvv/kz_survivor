@@ -29,6 +29,8 @@ import com.voidvvv.game.ecs.components.BehaviorTreeComponent;
 import com.voidvvv.game.ecs.components.CampComponent;
 import com.voidvvv.game.ecs.components.MoveComponent;
 import com.voidvvv.game.ecs.components.sign.EnemySignComponent;
+import com.voidvvv.game.impl.flat.VFlatWorldActor;
+import com.voidvvv.game.utils.MetaDataActorPools;
 
 public class SimpleSlimeGenerateStrategy extends IntervalSystem {
     Family family;
@@ -65,27 +67,13 @@ public class SimpleSlimeGenerateStrategy extends IntervalSystem {
 
     public Slime spawnSlime (float x, float y) {
         Gdx.app.log("SimpleSlimeGenerateStrategy", "spawn slime at : " + x + " " + y);
-        Slime slime = Slime.create();
+        Slime slime = (Slime) MetaDataActorPools.obtain("Slime");
         VActorSpawnHelper helper = new VActorSpawnHelper();
         helper.initX = x;
         helper.initY = y;
-        ActorMetaData metaData = ActorConstants.ACTOR_INIT_MATE_DATA.get(Slime.NAME);
-        helper.hx = metaData.getRectProps().getLength() / 2f;
-        helper.hy = metaData.getRectProps().getHeight() / 2f;
-        helper.hz = metaData.getRectProps().getWidth() / 2f;
 
         getEngine().addEntity(slime.getEntity());
         worldContext.getWorld().spawnVActor(() -> slime, helper);
-        DefaultBattleComponent battle = slime.getEntity().getComponent(DefaultBattleComponent.class);
-        ActorMetaData.BattleProps battleProps = metaData.getBattleProps();
-        if (battle != null) {
-            if (battleProps != null) {
-                battle.init(battleProps.getHp(), 0,
-                    battleProps.getHp(), battleProps.getMp(),
-                    battleProps.getAttack(), battleProps.getDefense());
-            }
-
-        }
         CampComponent obtain = Pools.obtain(CampComponent.class);
         obtain.setCampSign(CampConstants.BLACK);
         slime.getEntity().add(obtain);

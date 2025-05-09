@@ -43,6 +43,7 @@ import com.voidvvv.game.mode.VWorldContextGameMode;
 import com.voidvvv.game.player.Player;
 import com.voidvvv.game.player.PlayerInput;
 import com.voidvvv.game.utils.MessageConstants;
+import com.voidvvv.game.utils.MetaDataActorPools;
 import com.voidvvv.game.utils.ReflectUtil;
 import com.voidvvv.game.ecs.system.render.DamageSpriteBatchRender;
 
@@ -93,8 +94,6 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     public void init() {
         Main.getInstance().setGameMode(this);
         // init ECS
-
-        ActorConstants.init();
         if (context == null) {
             context = initWorld(config);
         } else  {
@@ -206,31 +205,16 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         Entity localEntity = localProtagonist.getEntity();
         engine.addEntity(localEntity);
         // rect & position
-        ActorMetaData metaData = ActorConstants.ACTOR_INIT_MATE_DATA.get(localProtagonist.metaName());
-
         VActorSpawnHelper helper = new VActorSpawnHelper();
         helper.initX = config.birthPlace.x;
         helper.initY = config.birthPlace.y;
-        helper.hx = metaData.getRectProps().getLength() / 2;
-        helper.hy = metaData.getRectProps().getHeight() / 2;
-        helper.hz = metaData.getRectProps().getWidth() / 2;
         // world
 //        this.protagonist.setWorldContext(context);
         this.flatWorld.spawnVActor(() -> localProtagonist, helper);
         // add protagonist to Player1
         playerInput = new SingleFlatWorldInput(protagonist);
         Player.PLAYERS[0].addInput(playerInput);
-        // battle attr
-        DefaultBattleComponent battle = localEntity.getComponent(DefaultBattleComponent.class);
-        ActorMetaData.BattleProps battleProps = metaData.getBattleProps();
-        if (battle != null) {
-            if (battleProps != null) {
-                battle.init(battleProps.getHp(), 0,
-                    battleProps.getHp(), battleProps.getMp(),
-                    battleProps.getAttack(), battleProps.getDefense());
-            }
 
-        }
 
         BattleEventListenerComponent eventListenerComponent =
             protagonist.getEntity().getComponent(BattleEventListenerComponent.class);
@@ -256,7 +240,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         if (config.supplier != null && config.supplier.get() != null) {
             this.protagonist = config.supplier.get();
         } else {
-            this.protagonist = Alice.create();
+            this.protagonist = (VFlatWorldActor) MetaDataActorPools.obtain("Alice");
         }
 
     }
@@ -292,9 +276,9 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
         renderSystem.render(getContext().getWorld().getEntity(),0f, spriteBatch);
         damageSpriteBatchRender.render(spriteBatch);
+
         spriteBatch.end();
-
-
+        // debug rectangle
         debugRenderIteratorSystem.render();
     }
 

@@ -26,6 +26,10 @@ public class SAXPBaseActorHandler extends DefaultHandler {
     private final static String ATTACK_TOKEN = "attack";
     private final static String DEFENCE_TOKEN = "defense";
 
+    // move token
+    private final static String MOVE_TOKEN = "move-props";
+    private final static String SPEED_TOKEN = "speed";
+    private final static String DIR_TOKEN = "dir";
 
     private final static String NAME_TOKEN = "name";
 
@@ -35,6 +39,8 @@ public class SAXPBaseActorHandler extends DefaultHandler {
     String currentName;
     ActorMetaData.BattleProps battleProps;
     ActorMetaData.RectProps rectProps;
+    ActorMetaData.MoveProps moveProps;
+
     ActorMetaData metaData;
     @Override
     public void startDocument() throws SAXException {
@@ -55,6 +61,7 @@ public class SAXPBaseActorHandler extends DefaultHandler {
     boolean rectStatus = false;
     boolean battleStatus = false;
     boolean userStatus = false;
+    boolean moveStatus = false;
     @Override
     public void startElement(String uri, String lName, String qName, Attributes attr) throws SAXException {
 
@@ -71,6 +78,10 @@ public class SAXPBaseActorHandler extends DefaultHandler {
             metaData = new ActorMetaData();
             userStatus = true;
         }
+        if (MOVE_TOKEN.equalsIgnoreCase(qName) && userStatus) {
+            moveProps = new ActorMetaData.MoveProps();
+            moveStatus = true;
+        }
         elementValue = new StringBuilder();
     }
 
@@ -86,6 +97,10 @@ public class SAXPBaseActorHandler extends DefaultHandler {
         if (qName.equalsIgnoreCase(BATTLE_PROPS_TOKEN) && userStatus && battleStatus) {
             metaData.setBattleProps(battleProps);
             battleStatus = false;
+        }
+        if (qName.equalsIgnoreCase(MOVE_TOKEN) && userStatus && moveStatus) {
+            metaData.setMoveProps(moveProps);
+            moveStatus = false;
         }
         if (qName.equalsIgnoreCase(TYPE_TOKEN) && userStatus) {
             Class<?> aClass = null;
@@ -118,6 +133,16 @@ public class SAXPBaseActorHandler extends DefaultHandler {
         }
         if (DEFENCE_TOKEN.equalsIgnoreCase(qName) && battleStatus) {
             battleProps.setDefense(Integer.parseInt(elementValue.toString()));
+        }
+        // move
+        if (SPEED_TOKEN.equalsIgnoreCase(qName) && moveStatus) {
+            moveProps.speed = Float.parseFloat(elementValue.toString());
+        }
+        if (DIR_TOKEN.equalsIgnoreCase(qName) && moveStatus) {
+            String[] split = elementValue.toString().split(",");
+            if (split.length == 2) {
+                moveProps.dir.set(Float.parseFloat(split[0]), Float.parseFloat(split[1])).nor();
+            }
         }
 
         if (USER_TOKEN.equalsIgnoreCase(qName) && userStatus) {

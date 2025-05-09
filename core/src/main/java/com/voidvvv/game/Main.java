@@ -15,6 +15,7 @@ import com.voidvvv.game.screen.GameOverScreen;
 import com.voidvvv.game.screen.GameScreen;
 import com.voidvvv.game.screen.StartScreen;
 import com.voidvvv.game.screen.UpdateScreen;
+import com.voidvvv.game.utils.MetaDataActorPools;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -120,6 +121,7 @@ public class Main extends Game {
         // init main properties
         try {
             mainProperties.load(Gdx.files.internal("conf/game.properties").read());
+            MetaDataActorPools.init();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
