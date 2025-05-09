@@ -20,9 +20,7 @@ import java.util.stream.Stream;
 
 public class ActorConstants {
     public static final String ACTOR_INIT_NAME = "NAME";
-    public static final Map<String, VRectBoundComponent> BOX2D_INIT = new HashMap<>();
     public static final Map<String, ActorMetaData> ACTOR_INIT_MATE_DATA = new HashMap<>();
-    public static final VRectBoundComponent DEFAULT_BOX2D_INIT = new VRectBoundComponent();
     public static boolean init = false;
     public static final String ACTOR_INIT_FILE = "conf/actor_rect_init.xml";
 //    public static final String ACTOR_INIT_FILE = "conf/actor_rect_init.txt";
@@ -33,9 +31,6 @@ public class ActorConstants {
             return;
         }
         init = true;
-        DEFAULT_BOX2D_INIT.setLength(10);
-        DEFAULT_BOX2D_INIT.setWidth(10);
-        DEFAULT_BOX2D_INIT.setHeight(10);
         FileHandle internal = Gdx.files.internal(ACTOR_INIT_FILE);
 
 

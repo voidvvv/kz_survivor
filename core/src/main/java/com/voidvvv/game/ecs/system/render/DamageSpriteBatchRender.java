@@ -1,7 +1,9 @@
 package com.voidvvv.game.ecs.system.render;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -15,23 +17,45 @@ import com.voidvvv.game.ecs.components.DamageValueComponent;
 import com.voidvvv.game.manager.CameraManager;
 import com.voidvvv.game.mode.DamageValue;
 
-public class DamageSpriteBatchRender extends SpriteBatchRenderIteratorSystem {
+public class DamageSpriteBatchRender{
     Vector2 tmp = new Vector2();
+    static final Family family = Family.all(DamageValueComponent.class).get();
 
-    public DamageSpriteBatchRender() {
-        super(Family.all(DamageValueComponent.class).get());
+    Engine engine;
+
+    public static boolean renderDamage = true;
+    public DamageSpriteBatchRender(Engine engine) {
+        super();
+        this.engine = engine;
+        renderDamage = Boolean.parseBoolean(Main.getInstance().getMainProperties().getProperty("render.damage_value", "false"));
     }
 
-    public void render(DamageValueComponent damageValueComponent, SpriteBatch batch) {
-        BitmapFont bitmapFont = Main.getInstance().getAssetManager().get("font/yizi.fnt", BitmapFont.class);
-        bitmapFont.setColor(Color.RED);
+    public void render (SpriteBatch batch) {
+        if (!renderDamage) {
+            return;
+        }
+        ImmutableArray<Entity> entities = engine.getEntitiesFor(family);
         CameraManager cameraManager = Main.getInstance().getCameraManager();
-//        SpriteBatch baseBatch = Main.getInstance().getDrawManager().getBaseBatch();
+
+        batch.setProjectionMatrix(cameraManager.getScreenViewport().getCamera().combined);
 
         Viewport worldViewPort = cameraManager.getWorldViewPort();
         Viewport screenViewport = cameraManager.getScreenViewport();
+        for (int i = 0; i < entities.size(); i++) {
+            Entity entity = entities.get(i);
+            DamageValueComponent damageValueComponent = ComponentMapperUtil.damageValueComponentMapper.get(entity);
+            if (damageValueComponent != null) {
+                render(damageValueComponent, batch, worldViewPort, screenViewport);
+            }
+        }
+    }
 
-        batch.setProjectionMatrix(cameraManager.getScreenViewport().getCamera().combined);
+    public void render(DamageValueComponent damageValueComponent, SpriteBatch batch, Viewport worldViewPort, Viewport screenViewport) {
+        BitmapFont bitmapFont = Main.getInstance().getAssetManager().get("font/yizi.fnt", BitmapFont.class);
+        bitmapFont.setColor(Color.RED);
+//        SpriteBatch baseBatch = Main.getInstance().getDrawManager().getBaseBatch();
+
+
 //        baseBatch.begin();
         for (int i = 0; i < damageValueComponent.damageValues.size(); i++) {
             DamageValue damageValue = damageValueComponent.damageValues.get(i);
@@ -49,11 +73,10 @@ public class DamageSpriteBatchRender extends SpriteBatchRenderIteratorSystem {
 //        baseBatch.end();
     }
 
-    @Override
-    public void render(Entity entity, float deltaTime, SpriteBatch batch) {
-        DamageValueComponent damageValueComponent = ComponentMapperUtil.damageValueComponentMapper.get(entity);
-        if (damageValueComponent != null) {
-            render(damageValueComponent, batch);
-        }
-    }
+//    public void render(Entity entity, SpriteBatch batch) {
+//        DamageValueComponent damageValueComponent = ComponentMapperUtil.damageValueComponentMapper.get(entity);
+//        if (damageValueComponent != null) {
+//            render(damageValueComponent, batch);
+//        }
+//    }
 }

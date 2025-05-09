@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.base.Updateable;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
@@ -164,12 +165,21 @@ public class VFlatWorld implements VWorld {
         bd.fixedRotation = true;
         Body body = this.box2dWorld.createBody(bd);
         VBox2dComponent vBox2dComponent = box2dMapper.get(entity);
+        if (vBox2dComponent == null) {
+            entity.add(vBox2dComponent = Pools.obtain(VBox2dComponent.class));
+        }
         vBox2dComponent.setFlatBody(body);
 
         VRectBoundComponent rectBoundComponent = rectBoundComponentComponentMapper.get(entity);
-        rectBoundComponent.setHeight(helper.hy*2);
-        rectBoundComponent.setWidth(helper.hz*2);
-        rectBoundComponent.setLength(helper.hx*2);
+        if (rectBoundComponent != null) {
+            helper.hy = rectBoundComponent.getHeight() / 2f;
+            helper.hx = rectBoundComponent.getLength() / 2f;
+            helper.hz = rectBoundComponent.getWidth() / 2f;
+        } else {
+            helper.hy = 0.5f;
+            helper.hx = 0.5f;
+            helper.hz = 0.5f;
+        }
         // bottom fixture
         FixtureDef bottomFixtureDef = new FixtureDef();
         bottomFixtureDef.filter.categoryBits = BOX2D_CONST.BOTTOM_COLLIDE_CATEGORY;

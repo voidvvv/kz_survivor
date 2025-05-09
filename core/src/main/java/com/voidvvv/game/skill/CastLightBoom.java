@@ -12,6 +12,7 @@ import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.ecs.components.MoveComponent;
+import com.voidvvv.game.utils.MetaDataActorPools;
 
 
 public class CastLightBoom implements Skill {
@@ -46,11 +47,12 @@ public class CastLightBoom implements Skill {
         this.owner = owner;
     }
 
+    int maxCount = 4;
     @Override
     public void cast() {
-        for (int x = 0; x < 8; x++) {
-            float percent = x / 8f;
-            float angle = percent * MathUtils.PI*2;
+        for (int x = 0; x < maxCount; x++) {
+            float percent = x / (float)maxCount;
+            float angle = percent * MathUtils.PI*2f;
             direction.set(MathUtils.cos(angle), MathUtils.sin(angle));
             LightBoom lightBoom = createLightBoom();
             lightBoom.getEntity().getComponent(MoveComponent.class).vel.set(direction);
@@ -61,13 +63,13 @@ public class CastLightBoom implements Skill {
     float speed = 300f;
 
     public LightBoom createLightBoom() {
-        LightBoom lightBoom = LightBoom.create();
+        LightBoom lightBoom = (LightBoom) MetaDataActorPools.obtain("LightBoom");
 
 
         VActorSpawnHelper helper = Pools.obtain(VActorSpawnHelper.class);
-        helper.hx = META_DATE.getRectProps().getLength() / 2f;
-        helper.hy = META_DATE.getRectProps().getHeight() / 2f;
-        helper.hz = META_DATE.getRectProps().getWidth() / 2f;
+//        helper.hx = META_DATE.getRectProps().getLength() / 2f;
+//        helper.hy = META_DATE.getRectProps().getHeight() / 2f;
+//        helper.hz = META_DATE.getRectProps().getWidth() / 2f;
         lightBoom.initSpeed = speed;
 
         VRectBoundComponent ownerPosition = owner.getComponent(VRectBoundComponent.class);

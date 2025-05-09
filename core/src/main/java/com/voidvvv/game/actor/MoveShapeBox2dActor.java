@@ -30,12 +30,13 @@ public class MoveShapeBox2dActor extends VFlatWorldActor {
     public void init() {
         super.init();
         this.setDead(false);
-        this.getEntity().add(Pools.obtain(MoveComponent.class));
+//        this.getEntity().add(Pools.obtain(MoveComponent.class));
         this.getEntity().add(Pools.obtain(VBox2dComponent.class));
-        this.getEntity().add(Pools.obtain(VRectBoundComponent.class));
+//        this.getEntity().add(Pools.obtain(VRectBoundComponent.class));
         this.getEntity().add(Pools.obtain(BattleEventListenerComponent.class));
-        this.getEntity().add(Pools.obtain(DefaultBattleComponent.class));
+//        this.getEntity().add(Pools.obtain(DefaultBattleComponent.class));
         this.getEntity().add(Pools.obtain(MoveChangeListenerComponent.class));
+
         this.getEntity().add(Pools.obtain(ContactTypeComponent.class));
 
     }
