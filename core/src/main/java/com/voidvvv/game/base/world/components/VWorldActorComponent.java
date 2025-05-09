@@ -1,5 +1,6 @@
 package com.voidvvv.game.base.world.components;
 
+import com.badlogic.gdx.Gdx;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.components.VComponent;
 import com.voidvvv.game.base.world.VWorldActor;
@@ -56,9 +57,14 @@ public class VWorldActorComponent implements VComponent {
     }
 
     private void disposeActors() {
+        Gdx.app.log("VWorldActorComponent", "emptyIterator actor");
         emptyIterator(actors);
+        Gdx.app.log("VWorldActorComponent", "emptyIterator toAdd");
+
         emptyIterator(toAdd);
-        emptyIterator(toRemove);
+        Gdx.app.log("VWorldActorComponent", "emptyIterator toRemove");
+
+        toRemove.clear(); // to remove actor is already in actors. so there is no need to dispose them repeatedly.
         actors = null;
         toAdd = null;
         toRemove = null;

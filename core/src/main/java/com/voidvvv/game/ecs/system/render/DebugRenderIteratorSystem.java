@@ -1,5 +1,6 @@
 package com.voidvvv.game.ecs.system.render;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
@@ -7,6 +8,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.voidvvv.game.Main;
@@ -15,42 +17,38 @@ import com.voidvvv.game.base.VRectBoundComponent;
 import java.io.IOException;
 import java.util.Properties;
 
-public class DebugRenderIteratorSystem extends EntitySystem {
+public class DebugRenderIteratorSystem{
     Family family;
     ShapeRenderer shapeRenderer;
 
     public boolean debug = false;
 
+    Engine engine;
+
+
+    public Engine getEngine() {
+        return engine;
+    }
+
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+    }
+
     public DebugRenderIteratorSystem() {
-        super(Integer.MAX_VALUE);
+        this(Family.all(VRectBoundComponent.class).get());
+    }
+
+    public DebugRenderIteratorSystem(Family family) {
         this.family = Family.all(VRectBoundComponent.class).get();
         this.shapeRenderer = Main.getInstance().getDrawManager().getShapeRenderer();
         Properties properties = Main.getInstance().getMainProperties();
         debug = Boolean.parseBoolean(properties.getProperty("render.debug", "false"));
-
     }
 
-    public DebugRenderIteratorSystem(Family family) {
-        super(Integer.MAX_VALUE);
-        this.family = family;
-        this.shapeRenderer = Main.getInstance().getDrawManager().getShapeRenderer();
-        Properties properties = new Properties();
-        try {
-            properties.load(Gdx.files.internal("conf/game.properties").read());
-        } catch (IOException e) {
-
+    public void render () {
+        if (!debug) {
+            return;
         }
-        debug = Boolean.parseBoolean(properties.getProperty("render.debug", "false"));
-    }
-
-    public DebugRenderIteratorSystem(Family family, ShapeRenderer shapeRenderer) {
-        super(Integer.MAX_VALUE);
-        this.family = family;
-        this.shapeRenderer = shapeRenderer;
-    }
-
-    @Override
-    public void update(float deltaTime) {
         ImmutableArray<Entity> entities = getEngine().getEntitiesFor(this.family);
         Gdx.gl.glEnable(Gdx.gl.GL_BLEND);
         Gdx.gl.glBlendFunc(Gdx.gl.GL_SRC_ALPHA, Gdx.gl.GL_ONE_MINUS_SRC_ALPHA);
@@ -58,14 +56,14 @@ public class DebugRenderIteratorSystem extends EntitySystem {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for (int i = 0; i < entities.size(); i++) {
             Entity entity = entities.get(i);
-            render(entity, deltaTime);
+            render(entity);
         }
         shapeRenderer.end();
         Gdx.gl.glDisable(Gdx.gl.GL_BLEND);
     }
     Color bottomColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
     Color faceColor = new Color(1f, 0.5f, 0.5f, 0.5f);
-    public void render(Entity entity, float deltaTime) {
+    public void render(Entity entity) {
         VRectBoundComponent rectBoundComponent = entity.getComponent(VRectBoundComponent.class);
         if (rectBoundComponent == null) {
             return;

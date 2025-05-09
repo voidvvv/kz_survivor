@@ -81,7 +81,6 @@ public class GameScreen implements UpdateScreen, Telegraph {
                 level.restart();
             }
         });
-
         table.add(retryButton);
         ui.addActor(table);
         Main.getInstance().addInputProcessor(ui);
