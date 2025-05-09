@@ -80,6 +80,9 @@ public class LightBoom extends BaseBullet {
 
     @Override
     protected void beginHitOther(CollisionPair collisionPair) {
+        if (!this.ready) {
+            return;
+        }
         Fixture thisFixture = collisionPair.getThisFixture();
         if (thisFixture == entity.getComponent(VBox2dComponent.class).getFaceFixture()) {
             return;

@@ -10,7 +10,7 @@ public class ConstantCastSkill extends IntervalIteratingSystem {
 
 
     public ConstantCastSkill() {
-        super(Family.all(MainSkillComponent.class).get(), 1.5f);
+        super(Family.all(MainSkillComponent.class).get(), 0.15f);
         // super();
     }
 

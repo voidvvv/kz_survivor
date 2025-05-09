@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -108,9 +109,11 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     @Override
     public void dispose() {
+        Gdx.app.log("SingleFlatWorldMode", "dispose");
         context.dispose();
         context = null;
         damageValueComponent = null;
+        engine.removeAllEntities();
         engine = null;
         entity = null;
 

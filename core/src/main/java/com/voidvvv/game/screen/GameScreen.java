@@ -63,7 +63,7 @@ public class GameScreen implements UpdateScreen, Telegraph {
         if (TimeLimitMode.class.isAssignableFrom(Main.getInstance().getGameMode().getClass())) {
 
             TimeLimitMode tm = (TimeLimitMode) Main.getInstance().getGameMode();
-            SimpleTimer timer = new SimpleTimer((int) tm.getTimeLeft(), skin);
+            SimpleTimer timer = new SimpleTimer(tm, skin);
             table.add(timer);
             table.top();
             table.setFillParent(true);

@@ -8,12 +8,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.StringBuilder;
+import com.voidvvv.game.mode.TimeLimitMode;
 
 
 public class SimpleTimer extends Label {
     private float total;
 
     private float remain;
+
+    TimeLimitMode timeLimitMode;
 
     public float getTotal() {
         return total;
@@ -31,16 +34,17 @@ public class SimpleTimer extends Label {
         this.remain = remain;
     }
 
-    public SimpleTimer(int total, Skin skin) {
-        super(convertToMinutes(total), skin);
-        this.total = total;
+    public SimpleTimer(TimeLimitMode mode, Skin skin) {
+        super(convertToMinutes((int) mode.getTimeLeft()), skin);
+        this.total = mode.getTimeLimit();
         this.remain = total;
+        this.timeLimitMode = mode;
         this.setAlignment(Align.center);
     }
     @Override
     public void act(float delta) {
         super.act(delta);
-        remain -= delta;
+        remain = (int) timeLimitMode.getTimeLeft();
         this.setText(convertToMinutes((int) remain));
     }
 

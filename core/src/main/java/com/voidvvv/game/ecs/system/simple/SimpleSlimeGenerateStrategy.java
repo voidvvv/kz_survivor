@@ -43,7 +43,7 @@ public class SimpleSlimeGenerateStrategy extends IntervalSystem {
     protected void updateInterval() {
         ImmutableArray<Entity> entities = getEngine().getEntitiesFor(family);
         int size = entities.size();
-        if (size <= 5) {
+        if (size <= 25) {
             generateSlime();
         }
     }
@@ -107,7 +107,7 @@ public class SimpleSlimeGenerateStrategy extends IntervalSystem {
             });
         slime.getEntity().add(Pools.obtain(EnemySignComponent.class));
         slime.getEntity().getComponent(MoveComponent.class)
-            .speed = 81.5f;
+            .speed = 71.5f;
         return slime;
     }
 

@@ -67,9 +67,9 @@ public class FlatWorldListener implements ContactListener {
         if (IS_BULLET(ctc1) || IS_BULLET(ctc2)) {
             contact.setEnabled(false);
         }
-        if (CREATURE_WITH_BULLET(ctc1, ctc2) || CREATURE_WITH_CREATURE(ctc1, ctc2)) {
-            contact.setEnabled(false);
-        }
+//        if (CREATURE_WITH_BULLET(ctc1, ctc2) || CREATURE_WITH_CREATURE(ctc1, ctc2)) {
+//            contact.setEnabled(false);
+//        }
     }
 
     private boolean CREATURE_WITH_CREATURE(ContactTypeComponent ctc1, ContactTypeComponent ctc2) {
