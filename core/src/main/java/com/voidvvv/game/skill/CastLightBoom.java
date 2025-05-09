@@ -47,11 +47,12 @@ public class CastLightBoom implements Skill {
         this.owner = owner;
     }
 
+    int maxCount = 4;
     @Override
     public void cast() {
-        for (int x = 0; x < 8; x++) {
-            float percent = x / 8f;
-            float angle = percent * MathUtils.PI*2;
+        for (int x = 0; x < maxCount; x++) {
+            float percent = x / (float)maxCount;
+            float angle = percent * MathUtils.PI*2f;
             direction.set(MathUtils.cos(angle), MathUtils.sin(angle));
             LightBoom lightBoom = createLightBoom();
             lightBoom.getEntity().getComponent(MoveComponent.class).vel.set(direction);
