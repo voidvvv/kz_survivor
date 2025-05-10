@@ -1,6 +1,7 @@
 package com.voidvvv.game.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
@@ -20,9 +21,11 @@ import com.voidvvv.game.level.FlatWorldLevel;
 import com.voidvvv.game.level.Level;
 import com.voidvvv.game.manager.CameraManager;
 import com.voidvvv.game.mode.TimeLimitMode;
+import com.voidvvv.game.mode.impl.Transcript;
 import com.voidvvv.game.ui.SimpleTimer;
 import com.voidvvv.game.utils.AssetConstants;
 import com.voidvvv.game.utils.MessageConstants;
+import com.voidvvv.game.utils.ReflectUtil;
 
 import java.util.function.Supplier;
 
@@ -169,8 +172,10 @@ public class GameScreen implements UpdateScreen, Telegraph {
     @Override
     public boolean handleMessage(Telegram msg) {
         if (msg.message == MessageConstants.MSG_GAME_OVER) {
-            this.gameOver = true;
-            retryButton.setVisible(true);
+            Transcript extraInfo = ReflectUtil.convert(msg.extraInfo, Transcript.class);
+            GameOverScreen gameOverScreen = (GameOverScreen) Main.getInstance().getGameOverScreen();
+            gameOverScreen.transcript = extraInfo;
+            Main.getInstance().setScreen(gameOverScreen);
             return true;
         }
         return false;
