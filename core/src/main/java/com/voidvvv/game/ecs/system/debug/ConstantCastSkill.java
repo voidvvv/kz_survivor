@@ -10,15 +10,15 @@ public class ConstantCastSkill extends IntervalIteratingSystem {
 
 
     public ConstantCastSkill() {
-        super(Family.all(MainSkillComponent.class).get(), 0.15f);
+        super(Family.all(MainSkillComponent.class).get(), 0.01f);
         // super();
     }
 
     @Override
     protected void processEntity(Entity entity) {
         MainSkillComponent component = entity.getComponent(MainSkillComponent.class);
-        if (component != null) {
-            component.skill.cast();
+        if (component != null && component.skill != null) {
+            component.skill.update(getInterval());
         }
     }
 }
