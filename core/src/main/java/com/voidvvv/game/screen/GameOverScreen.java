@@ -10,13 +10,22 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.voidvvv.game.Main;
+import com.voidvvv.game.mode.impl.Transcript;
+import com.voidvvv.game.mode.impl.TranscriptComponent;
 import com.voidvvv.game.utils.AssetConstants;
 
 public class GameOverScreen implements UpdateScreen {
     Stage ui;
+    public Transcript transcript;
+
+    Label damageLabel;
+    Label killedLabel;
 
     @Override
     public void update(float delta) {
+        damageLabel.setText("Damage: " + (long)transcript.totalDamage);
+        killedLabel.setText("Kills: " + (long)transcript.totalKills);
+
         ui.act(delta);
     }
 
@@ -29,7 +38,8 @@ public class GameOverScreen implements UpdateScreen {
 
         Table table = new Table(Main.getInstance().getAssetManager().get(AssetConstants.STAR_SOLDIER, Skin.class));
         table.setFillParent(true);
-        Label label = new Label("game over", Main.getInstance().getAssetManager().get(AssetConstants.STAR_SOLDIER, Skin.class));
+        Skin skin = Main.getInstance().getAssetManager().get(AssetConstants.STAR_SOLDIER, Skin.class);
+        Label label = new Label("game over", skin);
         table.add(label);
         table.row();
         Button btn = new TextButton("play agin", Main.getInstance().getAssetManager().get(AssetConstants.STAR_SOLDIER, Skin.class));
@@ -41,8 +51,18 @@ public class GameOverScreen implements UpdateScreen {
         });
         table.add(btn);
         table.center();
+        table.row();
+        damageLabel = new Label("Damage: ", skin);
+        killedLabel = new Label("Kills: ", skin);
+        table.add(damageLabel);
+        table.row();
+        table.add(killedLabel);
+
         ui.addActor(table);
         Main.getInstance().addInputProcessor(ui);
+        if (transcript == null) {
+            transcript = new Transcript();
+        }
     }
 
     private void loadAsset() {
