@@ -8,8 +8,12 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.ActorConstants;
@@ -42,6 +46,7 @@ import com.voidvvv.game.mode.TimeLimitMode;
 import com.voidvvv.game.mode.VWorldContextGameMode;
 import com.voidvvv.game.player.Player;
 import com.voidvvv.game.player.PlayerInput;
+import com.voidvvv.game.utils.AssetConstants;
 import com.voidvvv.game.utils.MessageConstants;
 import com.voidvvv.game.utils.MetaDataActorPools;
 import com.voidvvv.game.utils.ReflectUtil;
@@ -62,6 +67,9 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
 
     FlatWorldConfig config;
+
+    // stage to show game over
+    Stage stage;
 
 
     public SingleFlatWorldMode() {
@@ -112,6 +120,10 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     @Override
     public void dispose() {
+        stage.dispose();
+        Main.getInstance().removeInputProcessor(stage);
+        stage = null;
+
         Gdx.app.log("SingleFlatWorldMode", "dispose");
         context.dispose();
         damageValueComponent = null;
@@ -122,13 +134,23 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         entity = null;
 
         Player.PLAYERS[0].removeInput(playerInput);
+        MessageManager.getInstance().removeListener(this, MessageConstants.MSG_ACTOR_DEAD);
 
     }
 
 
     private void otherInit() {
+        // register message listener
+        MessageManager.getInstance().addListener(this, MessageConstants.MSG_ACTOR_DEAD);
 //        spawnSlime(config.birthPlace.x - 29f, config.birthPlace.y - 50f);
         damageSpriteBatchRender = new DamageSpriteBatchRender(engine);
+        AssetManager assetManager = Main.getInstance().getAssetManager();
+        Skin skin = assetManager.get(AssetConstants.STAR_SOLDIER, Skin.class);
+
+        stage = new Stage(Main.getInstance().getCameraManager().getScreenViewport()
+            , Main.getInstance().getDrawManager().getBaseBatch());
+        Main.getInstance().addInputProcessor(stage);
+        stage.addActor(new TranscriptStageActor(skin, protagonist.getEntity()));
     }
 
     DamageValueComponent damageValueComponent;
@@ -217,7 +239,6 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         playerInput = new SingleFlatWorldInput(protagonist);
         Player.PLAYERS[0].addInput(playerInput);
 
-
         BattleEventListenerComponent eventListenerComponent =
             protagonist.getEntity().getComponent(BattleEventListenerComponent.class);
         if (eventListenerComponent != null) {
@@ -236,6 +257,27 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
                 }
             });
         }
+        TranscriptComponent pTranscript = Pools.obtain(TranscriptComponent.class);
+        protagonist.getEntity().add(pTranscript);
+        if (eventListenerComponent != null) {
+            eventListenerComponent.addListener(new BattleEventListener() {
+                @Override
+                public void afterPassiveEvent(BattleEvent event) {
+                }
+
+                @Override
+                public void afterActiveEvent(BattleEvent event) {
+                    if (Damage.class.isAssignableFrom(event.getClass())) {
+                        Damage damage = (Damage) event;
+                        if (damage.getFrom() == protagonist.getEntity()) {
+                            pTranscript.transcript.totalDamage += damage.damageVal();
+
+                        }
+                    }
+                }
+            });
+        }
+
     }
 
     private void readProtagonistConfig() {
@@ -249,12 +291,15 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     @Override
     public void update(float delta) {
+        if (timeLeft <= 0f) {
+            return;
+        }
         this.setTimeLeft(getTimeLeft() - delta);
         Vector2 position = protagonist.getEntity().getComponent(VRectBoundComponent.class).position;
         flatWorld.viewPosition.lerp(position, 0.05f);
         context.getWorld().update(delta);
         engine.update(delta);
-
+        stage.act(delta);
     }
 
 
@@ -282,10 +327,30 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         spriteBatch.end();
         // debug rectangle
         debugRenderIteratorSystem.render();
+        stage.draw();
+        // if time up, show game over
+        if (timeLeft <= 0f) {
+
+        }
     }
 
     @Override
     public boolean handleMessage(Telegram msg) {
+        if (msg.message == MessageConstants.MSG_ACTOR_DEAD) {
+            DeadEvent dead = ReflectUtil.convert(msg.extraInfo, DeadEvent.class);
+            if (dead != null) {
+                Entity from = dead.getFrom();
+                if (from != null && from != protagonist.getEntity()) {
+                    TranscriptComponent transcript = protagonist.getEntity().getComponent(TranscriptComponent.class);
+                    if (transcript != null) {
+                        transcript.transcript.totalKills += 1;
+                    }
+                }
+            }
+            return true;
+        }
+
+
         return false;
     }
 

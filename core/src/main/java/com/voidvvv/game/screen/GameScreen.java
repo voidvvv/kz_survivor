@@ -56,9 +56,10 @@ public class GameScreen implements UpdateScreen, Telegraph {
 
     private void initUI() {
         AssetManager assetManager = Main.getInstance().getAssetManager();
+        Skin skin = assetManager.get(AssetConstants.STAR_SOLDIER, Skin.class);
+
         ui = new Stage(Main.getInstance().getCameraManager().getScreenViewport(),
             Main.getInstance().getDrawManager().getBaseBatch());
-        Skin skin = assetManager.get(AssetConstants.STAR_SOLDIER, Skin.class);
         Table table = new Table(skin);
         if (TimeLimitMode.class.isAssignableFrom(Main.getInstance().getGameMode().getClass())) {
 
