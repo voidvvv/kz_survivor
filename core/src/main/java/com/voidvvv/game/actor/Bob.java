@@ -59,9 +59,12 @@ public class Bob extends MoveShapeBox2dActor {
         });
 
         this.getEntity().getComponent(MoveComponent.class).speed = 100f;
-        CastLightBoom castLightBoom = new CastLightBoom(getWorldContext());
+        CastLightBoom castLightBoom = Pools.obtain(CastLightBoom.class);
+        castLightBoom.setWorldContext(getWorldContext());
         castLightBoom.setOwner(this.getEntity());
-        this.getEntity().add(new MainSkillComponent(castLightBoom));
+        MainSkillComponent mainSkillComponent = Pools.obtain(MainSkillComponent.class);
+        mainSkillComponent.skill = castLightBoom;
+        this.getEntity().add(mainSkillComponent);
     }
 
     protected void initAnim() {

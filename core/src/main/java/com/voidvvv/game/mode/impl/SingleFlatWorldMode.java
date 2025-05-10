@@ -53,7 +53,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     PlayerInput playerInput;
     WorldContext context;
     VFlatWorld flatWorld;
-
+    BaseBattleContext baseBattleContext;
     Entity entity;
 
     VFlatWorldActor protagonist;
@@ -138,7 +138,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         engine = new Engine();
         debugRenderIteratorSystem.setEngine(engine);
         entity = new Entity();
-        BaseBattleContext baseBattleContext = new BaseBattleContext();
+        baseBattleContext = new BaseBattleContext();
         damageValueComponent = new DamageValueComponent();
         baseBattleContext.addGlobalListener(new BattleEventListener() {
             @Override
@@ -163,6 +163,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
             }
         });
+        baseBattleContext.addGlobalListener(new DeadEventMessageSendListener());
+
         BattleContextComponent obtain = Pools.obtain(BattleContextComponent.class);
         obtain.setBattleContext(baseBattleContext);
         entity.add(obtain);
