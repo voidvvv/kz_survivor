@@ -115,6 +115,11 @@ public class Main extends Game {
     @Override
     public void create() {
         Gdx.input.setInputProcessor(input);
+        if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
+            PLAYERS[0] = DesktopPlayer.PLAYER_1;
+            this.addInputProcessor(DesktopPlayer.PLAYER_1);
+        }
+
         assetManager.setLoader(TiledMap.class,new TmxMapLoader());
         assetManager.load("font/yizi.fnt", BitmapFont.class);
         assetManager.finishLoading();
@@ -125,21 +130,11 @@ public class Main extends Game {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        lastFrameTime = System.nanoTime();
 
         cameraManager.init();
         drawManager.init();
         initScreens();
-        lastFrameTime = System.nanoTime();
-
-        if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
-            PLAYERS[0] = DesktopPlayer.PLAYER_1;
-            this.addInputProcessor(DesktopPlayer.PLAYER_1);
-        }
-
-//        Thread thread = new Thread(asyncGameRunnable);
-//        thread.setName("KZ_Survivor GameMain");
-//        thread.setDaemon(true);
-//        thread.start();
     }
 
     private void initScreens() {
