@@ -115,6 +115,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         initProtagonist();
 
         otherInit();
+        gameover = false;
     }
 
 
@@ -138,19 +139,22 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     }
 
-
+//    TranscriptStageActor transcriptStageActor;
     private void otherInit() {
         // register message listener
         MessageManager.getInstance().addListener(this, MessageConstants.MSG_ACTOR_DEAD);
 //        spawnSlime(config.birthPlace.x - 29f, config.birthPlace.y - 50f);
         damageSpriteBatchRender = new DamageSpriteBatchRender(engine);
         AssetManager assetManager = Main.getInstance().getAssetManager();
-        Skin skin = assetManager.get(AssetConstants.STAR_SOLDIER, Skin.class);
+//        Skin skin = assetManager.get(AssetConstants.STAR_SOLDIER, Skin.class);
 
         stage = new Stage(Main.getInstance().getCameraManager().getScreenViewport()
             , Main.getInstance().getDrawManager().getBaseBatch());
         Main.getInstance().addInputProcessor(stage);
-        stage.addActor(new TranscriptStageActor(skin, protagonist.getEntity()));
+//        transcriptStageActor = new TranscriptStageActor(skin, protagonist.getEntity());
+//        stage.addActor(transcriptStageActor);
+//        transcriptStageActor.setVisible(false);
+        this.timeLeft = this.timeLimit;
     }
 
     DamageValueComponent damageValueComponent;
@@ -252,7 +256,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
                 public void afterActiveEvent(BattleEvent event) {
                     if (DeadEvent.class.isAssignableFrom(event.getClass())) {
                         // this actor dead
-                        MessageManager.getInstance().dispatchMessage(MessageConstants.MSG_GAME_OVER);
+                        gameover = true;
                     }
                 }
             });
@@ -288,10 +292,14 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         }
 
     }
-
+    boolean gameover = false;
     @Override
     public void update(float delta) {
-        if (timeLeft <= 0f) {
+
+        if (timeLeft <= 0f || gameover) {
+//            transcriptStageActor.setVisible(true);
+            MessageManager.getInstance().dispatchMessage(MessageConstants.MSG_GAME_OVER, protagonist.getEntity().getComponent(TranscriptComponent.class).transcript);
+
             return;
         }
         this.setTimeLeft(getTimeLeft() - delta);

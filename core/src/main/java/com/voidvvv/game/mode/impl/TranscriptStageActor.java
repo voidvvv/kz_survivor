@@ -22,7 +22,7 @@ public class TranscriptStageActor extends Table {
         add(damageLabel);
         row();
         add(killedLabel);
-        align(Align.center | Align.left);
+        align(Align.center);
         setFillParent(true);
     }
 

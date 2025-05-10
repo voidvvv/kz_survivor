@@ -8,7 +8,6 @@ public class TranscriptComponent implements Component, Pool.Poolable {
 
     @Override
     public void reset() {
-        transcript.totalDamage = 0;
-        transcript.totalKills = 0;
+        transcript = new Transcript();
     }
 }

@@ -10,10 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.voidvvv.game.Main;
+import com.voidvvv.game.mode.impl.TranscriptComponent;
 import com.voidvvv.game.utils.AssetConstants;
 
 public class GameOverScreen implements UpdateScreen {
     Stage ui;
+    public TranscriptComponent transcriptComponent;
 
     @Override
     public void update(float delta) {
