@@ -24,12 +24,15 @@ public class CastLightBoom implements Skill, Pool.Poolable {
     Entity owner;
 
     float maxInterval = 0.5f;
-
+    float[] maxInterValArr = {1.5f, 1.2f, 0.8f, 0.65f, 0.5f};
     float currentInterval = 0f;
 
     int maxRow = 2;
+    int[] maxRowArr = {1, 2, 3, 4, 5};
 
     int cntPerRow = 2;
+    int[] cntPerRowArr = {1, 2, 3, 4, 5};
+    int level = 1;
 
     List<ContinuousCastLightBoom> continuousCastLightBooms = new ArrayList<>();
 
@@ -59,17 +62,19 @@ public class CastLightBoom implements Skill, Pool.Poolable {
 
     @Override
     public void cast() {
-        for (int x = 0; x < maxRow; x++) {
-            float percent = x / (float) maxRow;
+        float localMaxRow = maxRowArr[level];
+        int localCntPerRow = cntPerRowArr[level];
+        for (int x = 0; x < localMaxRow; x++) {
+            float percent = x / (float) localMaxRow;
             float angle = percent * MathUtils.PI*2f;
             direction.set(MathUtils.cos(angle), MathUtils.sin(angle));
-            if (cntPerRow == 1) {
+            if (localCntPerRow == 1) {
                 LightBoom lightBoom = createLightBoom();
                 lightBoom.getEntity().getComponent(MoveComponent.class).vel.set(direction);
             } else {
                 ContinuousCastLightBoom continueCast = Pools.obtain(ContinuousCastLightBoom.class);
                 continueCast.maxInterval = 0.075f;
-                continueCast.maxCnt = cntPerRow;
+                continueCast.maxCnt = localCntPerRow;
                 continueCast.currentInterval = 0f;
                 continueCast.currentCnt = 0;
                 continueCast.dir.set(direction);
@@ -114,14 +119,15 @@ public class CastLightBoom implements Skill, Pool.Poolable {
 
     @Override
     public void upgrade() {
-
+        level++;
+        level = Math.min(level, maxInterValArr.length - 1);
     }
 
     @Override
     public void update(float delta) {
         currentInterval -= delta;
         if (currentInterval <= 0f) {
-            currentInterval = maxInterval;
+            currentInterval = maxInterValArr[level];
             cast();
         }
         castContinuously(delta);
@@ -147,6 +153,7 @@ public class CastLightBoom implements Skill, Pool.Poolable {
 
     @Override
     public void reset() {
+        level = 1;
         maxInterval = 0.5f;
         currentInterval = 0f;
         maxRow = 4;

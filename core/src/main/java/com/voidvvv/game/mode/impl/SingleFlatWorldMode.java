@@ -349,10 +349,12 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
             if (dead != null) {
                 Entity from = dead.getFrom();
                 if (from != null && from != protagonist.getEntity()) {
+                    // update transcript
                     TranscriptComponent transcript = protagonist.getEntity().getComponent(TranscriptComponent.class);
                     if (transcript != null) {
                         transcript.transcript.totalKills += 1;
                     }
+                    // update exp
                 }
             }
             return true;
