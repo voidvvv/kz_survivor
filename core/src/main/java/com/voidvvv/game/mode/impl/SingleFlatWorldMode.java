@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.assets.AssetManager;
@@ -33,6 +34,7 @@ import com.voidvvv.game.camp.CampContext;
 import com.voidvvv.game.ecs.components.*;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.WorldContext;
+import com.voidvvv.game.ecs.exp.ExpComponent;
 import com.voidvvv.game.ecs.system.*;
 import com.voidvvv.game.ecs.system.debug.ConstantCastSkill;
 import com.voidvvv.game.ecs.system.render.DebugRenderIteratorSystem;
@@ -52,7 +54,7 @@ import com.voidvvv.game.utils.MetaDataActorPools;
 import com.voidvvv.game.utils.ReflectUtil;
 import com.voidvvv.game.ecs.system.render.DamageSpriteBatchRender;
 
-import java.util.List;
+import java.util.*;
 
 public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode {
     PlayerInput playerInput;
@@ -70,6 +72,10 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     // stage to show game over
     Stage stage;
+
+    UpgradeUIStage upgradeStage;
+
+    Deque<UpgradeEvent> upgradeEventList = new ArrayDeque<>();
 
 
     public SingleFlatWorldMode() {
@@ -121,6 +127,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     @Override
     public void dispose() {
+
+        upgradeEventList.clear();
         stage.dispose();
         Main.getInstance().removeInputProcessor(stage);
         stage = null;
@@ -146,7 +154,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 //        spawnSlime(config.birthPlace.x - 29f, config.birthPlace.y - 50f);
         damageSpriteBatchRender = new DamageSpriteBatchRender(engine);
         AssetManager assetManager = Main.getInstance().getAssetManager();
-//        Skin skin = assetManager.get(AssetConstants.STAR_SOLDIER, Skin.class);
+        Skin skin = assetManager.get(AssetConstants.STAR_SOLDIER, Skin.class);
 
         stage = new Stage(Main.getInstance().getCameraManager().getScreenViewport()
             , Main.getInstance().getDrawManager().getBaseBatch());
@@ -155,6 +163,17 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 //        stage.addActor(transcriptStageActor);
 //        transcriptStageActor.setVisible(false);
         this.timeLeft = this.timeLimit;
+
+        upgradeStage = new UpgradeUIStage(protagonist.getEntity(), () -> {
+            this.upgrading = false;
+            if (originProcessor == null) {
+                throw new IllegalStateException("originProcessor is null");
+            }
+            Gdx.input.setInputProcessor(originProcessor);
+            originProcessor = null;
+        }, skin);
+
+
     }
 
     DamageValueComponent damageValueComponent;
@@ -281,6 +300,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
                 }
             });
         }
+        protagonist.getEntity().add(Pools.obtain(ExpComponent.class));
 
     }
 
@@ -293,13 +313,17 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     }
     boolean gameover = false;
+    boolean upgrading = false;
     @Override
     public void update(float delta) {
+        if (upgrading) {
+            upgradeStage.act(delta);
+            return;
+        }
 
         if (timeLeft <= 0f || gameover) {
 //            transcriptStageActor.setVisible(true);
             MessageManager.getInstance().dispatchMessage(MessageConstants.MSG_GAME_OVER, protagonist.getEntity().getComponent(TranscriptComponent.class).transcript);
-
             return;
         }
         this.setTimeLeft(getTimeLeft() - delta);
@@ -308,6 +332,19 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         context.getWorld().update(delta);
         engine.update(delta);
         stage.act(delta);
+
+        if (upgradeEventList!=null && !upgradeEventList.isEmpty()) {
+            ExpComponent expComponent = upgradeEventList.pop().entity.getComponent(ExpComponent.class);
+            if (expComponent != null) {
+                expComponent.exp = 0;
+                expComponent.level += 1;
+                // trigger upgrade event
+                originProcessor = Gdx.input.getInputProcessor();
+                Gdx.input.setInputProcessor(null);
+                upgradeStage.init();
+                upgrading = true;
+            }
+        }
     }
 
 
@@ -340,8 +377,11 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         if (timeLeft <= 0f) {
 
         }
+        if (upgrading) {
+            upgradeStage.draw();
+        }
     }
-
+    InputProcessor originProcessor = null;
     @Override
     public boolean handleMessage(Telegram msg) {
         if (msg.message == MessageConstants.MSG_ACTOR_DEAD) {
@@ -355,6 +395,14 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
                         transcript.transcript.totalKills += 1;
                     }
                     // update exp
+                    ExpComponent expComponent = protagonist.getEntity().getComponent(ExpComponent.class);
+                    if (expComponent != null) {
+                        expComponent.exp += 10; // todo compute exp by dead enemy
+                        if (expComponent.exp >= expComponent.level) {
+                            UpgradeEvent ue = new UpgradeEvent(protagonist.getEntity());
+                            upgradeEventList.push(ue);
+                        }
+                    }
                 }
             }
             return true;
