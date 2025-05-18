@@ -16,4 +16,6 @@ public interface BattleContext extends DamageFactory{
     List<BattleEvent> eventList();
 
     boolean isDead(Entity entity);
+
+    void addGlobalListener(BattleEventListener listener);
 }
