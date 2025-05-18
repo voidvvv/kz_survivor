@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.voidvvv.game.Main;
+import com.voidvvv.game.ecs.components.skill.MainSkillComponent;
 
 public class UpgradeUIStage extends Stage {
     TextButton skill01;
@@ -45,6 +46,8 @@ public class UpgradeUIStage extends Stage {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("UpgradeUIStage", "Skill 01 clicked");
                 // Handle skill 01 click
+                actorEntity.getComponent(MainSkillComponent.class)
+                    .skill.upgrade();
                 afterConfirm.run();
             }
         });
@@ -53,6 +56,8 @@ public class UpgradeUIStage extends Stage {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("UpgradeUIStage", "skill02 clicked");
                 // Handle skill 01 click
+                actorEntity.getComponent(MainSkillComponent.class)
+                    .skill.upgrade();
                 afterConfirm.run();
             }
         });
@@ -61,6 +66,8 @@ public class UpgradeUIStage extends Stage {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("UpgradeUIStage", "skill03 clicked");
                 // Handle skill 01 click
+                actorEntity.getComponent(MainSkillComponent.class)
+                        .skill.upgrade();
                 afterConfirm.run();
             }
         });
