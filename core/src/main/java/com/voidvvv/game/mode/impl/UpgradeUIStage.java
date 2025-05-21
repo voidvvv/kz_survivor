@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.ecs.components.skill.MainSkillComponent;
 
@@ -20,8 +21,9 @@ public class UpgradeUIStage extends Stage {
 
     Runnable afterConfirm;
 
-    public UpgradeUIStage(Entity actorEntity, Runnable afterConfirm, Skin skin) {
-        super();
+    public UpgradeUIStage(Entity actorEntity, Runnable afterConfirm, Skin skin
+    , Batch batch, Viewport viewport) {
+        super(viewport, batch);
         skill01 = new TextButton("Skill 01", skin);
         skill02 = new TextButton("Skill 02", skin);
         skill03 = new TextButton("Skill 03", skin);

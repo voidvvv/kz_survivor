@@ -171,7 +171,9 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
             }
             Gdx.input.setInputProcessor(originProcessor);
             originProcessor = null;
-        }, skin);
+        }, skin,
+            Main.getInstance().getDrawManager().getBaseBatch(),
+            Main.getInstance().getCameraManager().getScreenViewport());
 
 
     }
