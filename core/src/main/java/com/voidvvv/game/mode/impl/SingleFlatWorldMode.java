@@ -400,7 +400,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
                     ExpComponent expComponent = protagonist.getEntity().getComponent(ExpComponent.class);
                     if (expComponent != null) {
                         expComponent.exp += 10; // todo compute exp by dead enemy
-                        if (expComponent.exp >= expComponent.level * 10f) {
+                        if (expComponent.exp >= expComponent.level * 50f) {
                             UpgradeEvent ue = new UpgradeEvent(protagonist.getEntity());
                             upgradeEventList.push(ue);
                         }

@@ -31,6 +31,7 @@ public class UpgradeUIStage extends Stage {
         this.actorEntity = actorEntity;
         this.afterConfirm = afterConfirm;
 
+
         addActor(skill01);
         addActor(skill02);
         addActor(skill03);
