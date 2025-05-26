@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.base.VRectBoundComponent;
 
+import java.util.ArrayList;
+
 public class DrawManager implements BaseManager{
     SpriteBatch baseBatch;
 

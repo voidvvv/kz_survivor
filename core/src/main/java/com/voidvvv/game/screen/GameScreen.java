@@ -140,7 +140,7 @@ public class GameScreen implements UpdateScreen, Telegraph {
         Gdx.app.postRunnable(() -> {
             Main.getInstance().getCameraManager().getScreenViewport().update(width, height, true);
             Main.getInstance().getCameraManager().getWorldViewPort().update(width, height, false);
-
+            Main.getInstance().getCameraManager().get_3dViewPort().update(width, height, false);
         });
         //        timer.setPosition(Gdx.graphics.getWidth()/2f  - 20,Gdx.graphics.getHeight() - 20);
     }
