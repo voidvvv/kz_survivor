@@ -2,6 +2,7 @@ package com.voidvvv.game;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -16,6 +17,7 @@ import com.voidvvv.game.screen.GameScreen;
 import com.voidvvv.game.screen.StartScreen;
 import com.voidvvv.game.screen.UpdateScreen;
 import com.voidvvv.game.utils.MetaDataActorPools;
+import com.voidvvv.render.u3d.ThreeDimensionRender;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -139,6 +141,7 @@ public class Main extends Game {
 
     private void initScreens() {
         this.setScreen(startScreen);
+//        this.setScreen(new ThreeDimensionRender());
     }
 
     @Override
@@ -150,6 +153,8 @@ public class Main extends Game {
 
     @Override
     public void render() {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
         update();
 
         super.render();

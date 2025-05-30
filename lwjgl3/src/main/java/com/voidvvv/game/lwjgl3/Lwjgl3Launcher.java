@@ -3,9 +3,13 @@ package com.voidvvv.game.lwjgl3;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.voidvvv.game.Main;
+import com.voidvvv.render.u3d.ThreeDGame;
 
 // test
-/** Launches the desktop (LWJGL3) application. */
+
+/**
+ * Launches the desktop (LWJGL3) application.
+ */
 public class Lwjgl3Launcher {
     public static void main(String[] args) {
         if (StartupHelper.startNewJvmIfRequired()) return; // This handles macOS support and helps on Windows.
@@ -14,6 +18,8 @@ public class Lwjgl3Launcher {
 
     private static Lwjgl3Application createApplication() {
         return new Lwjgl3Application(Main.getInstance(), getDefaultConfiguration());
+//        return new Lwjgl3Application(new ThreeDGame(), getDefaultConfiguration());
+
     }
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {

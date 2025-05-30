@@ -53,6 +53,7 @@ import com.voidvvv.game.utils.MessageConstants;
 import com.voidvvv.game.utils.MetaDataActorPools;
 import com.voidvvv.game.utils.ReflectUtil;
 import com.voidvvv.game.ecs.system.render.DamageSpriteBatchRender;
+import com.voidvvv.render.u3d.ThreeDimensionRender;
 
 import java.util.*;
 
@@ -122,6 +123,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
         otherInit();
         gameover = false;
+
+        threeDimensionRender.init();
     }
 
 
@@ -145,6 +148,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         Player.PLAYERS[0].removeInput(playerInput);
         MessageManager.getInstance().removeListener(this, MessageConstants.MSG_ACTOR_DEAD);
 
+        threeDimensionRender.dispose();
     }
 
 //    TranscriptStageActor transcriptStageActor;
@@ -347,6 +351,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
                 upgrading = true;
             }
         }
+
+        threeDimensionRender.update(delta);
     }
 
 
@@ -362,6 +368,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     EntityRenderSystem renderSystem = new EntityRenderSystem();
     DamageSpriteBatchRender damageSpriteBatchRender;
+
+    ThreeDimensionRender threeDimensionRender = new ThreeDimensionRender();
     @Override
     public void render() {
         SpriteBatch spriteBatch = Main.getInstance().getDrawManager().getBaseBatch();
@@ -382,6 +390,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         if (upgrading) {
             upgradeStage.draw();
         }
+
+        threeDimensionRender.render();
     }
     InputProcessor originProcessor = null;
     @Override
@@ -394,7 +404,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
                     // update transcript
                     TranscriptComponent transcript = protagonist.getEntity().getComponent(TranscriptComponent.class);
                     if (transcript != null) {
-                        transcript.transcript.totalKills += 1;
+                        transcript.
+                            transcript.totalKills += 1;
                     }
                     // update exp
                     ExpComponent expComponent = protagonist.getEntity().getComponent(ExpComponent.class);

@@ -1,5 +1,6 @@
 package com.voidvvv.game.manager;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.utils.viewport.*;
@@ -21,18 +22,23 @@ public class CameraManager implements BaseManager{
 //        screenViewport = new ScreenViewport(uiCamera);
         screenViewport = new StretchViewport(800, 600, uiCamera);
 
-        _3dViewPort = new StretchViewport(800, 600, _3dCamera);
     }
 
     @Override
     public void init() {
+        {
+            _3dCamera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            _3dCamera.position.set(10, 10, 10);
+            _3dCamera.lookAt(0, 0, 0);
+            _3dCamera.near = 1f;
+            _3dCamera.far = 300f;
+            _3dCamera.update();
+        }
+        _3dViewPort = new StretchViewport(800, 600, _3dCamera);
+
         mainCamera.setToOrtho(false, 800, 600);
         uiCamera.setToOrtho(false, 800, 600);
-        _3dCamera.position.set(10f, 10f, 10f);
-        _3dCamera.lookAt(0,0,0);
-        _3dCamera.near = 0.1f;
-        _3dCamera.far = 300f;
-        _3dCamera.update();
+
     }
 
     public OrthographicCamera getMainCamera() {
