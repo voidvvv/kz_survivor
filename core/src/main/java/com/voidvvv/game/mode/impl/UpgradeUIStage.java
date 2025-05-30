@@ -9,8 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.ecs.components.skill.MainSkillComponent;
+import com.voidvvv.game.skill.Skill;
 
 public class UpgradeUIStage extends Stage {
     TextButton skill01;
@@ -20,13 +22,15 @@ public class UpgradeUIStage extends Stage {
 
     Runnable afterConfirm;
 
-    public UpgradeUIStage(Entity actorEntity, Runnable afterConfirm, Skin skin) {
-        super();
+    public UpgradeUIStage(Entity actorEntity, Runnable afterConfirm, Skin skin
+    , Batch batch, Viewport viewport) {
+        super(viewport, batch);
         skill01 = new TextButton("Skill 01", skin);
         skill02 = new TextButton("Skill 02", skin);
         skill03 = new TextButton("Skill 03", skin);
         this.actorEntity = actorEntity;
         this.afterConfirm = afterConfirm;
+
 
         addActor(skill01);
         addActor(skill02);
@@ -40,14 +44,16 @@ public class UpgradeUIStage extends Stage {
         skill01.setPosition(100, 100);
         skill02.setPosition(100, 200);
         skill03.setPosition(100, 300);
-
+        Skill skill1 = actorEntity.getComponent(MainSkillComponent.class)
+            .skill;
+        skill01.setText(skill1.name());
+        // random select skill or new skill
         skill01.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("UpgradeUIStage", "Skill 01 clicked");
                 // Handle skill 01 click
-                actorEntity.getComponent(MainSkillComponent.class)
-                    .skill.upgrade();
+                skill1.upgrade();
                 afterConfirm.run();
             }
         });
@@ -71,6 +77,7 @@ public class UpgradeUIStage extends Stage {
                 afterConfirm.run();
             }
         });
+
         Gdx.input.setInputProcessor(this);
     }
 

@@ -16,6 +16,7 @@ import com.voidvvv.game.utils.MetaDataActorPools;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 public class CastLightBoom implements Skill, Pool.Poolable {
@@ -37,6 +38,7 @@ public class CastLightBoom implements Skill, Pool.Poolable {
     List<ContinuousCastLightBoom> continuousCastLightBooms = new ArrayList<>();
 
     public CastLightBoom() {
+        String path = CastLightBoom.class.getResource("").getPath();
     }
 
     public CastLightBoom(WorldContext worldContext) {
@@ -130,6 +132,8 @@ public class CastLightBoom implements Skill, Pool.Poolable {
             currentInterval = maxInterValArr[level];
             cast();
         }
+        ReentrantLock lock = new ReentrantLock();
+        lock.lock();
         castContinuously(delta);
     }
 
