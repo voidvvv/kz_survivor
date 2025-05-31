@@ -67,6 +67,11 @@ public abstract class VWorldActor implements VActor {
     public void dispose() {
         VActor.super.dispose();
     }
+
+    /**
+     * indicate this actor is ready to be used.
+     * if ready is false, this actor will not be able to do anything.
+     */
     public boolean ready = true;
     @Override
     public void reset() {

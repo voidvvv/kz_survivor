@@ -44,13 +44,7 @@ public class LightBoom extends BaseBullet {
     }
 
     public static LightBoom create() {
-        Gdx.app.log("LightBoom", "LightBoom create");
         LightBoom obtain = Pools.obtain(LightBoom.class);
-        boolean contains = Main.getInstance().getGameMode().getEngine().getEntities().contains(obtain.getEntity(), true);
-        if (contains) {
-            Gdx.app.log("LightBoom", "error detect! " + obtain.randomNum);
-        }
-        Gdx.app.log("LightBoom", "LightBoom create " + obtain.randomNum);
         return obtain;
     }
 
