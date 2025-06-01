@@ -9,7 +9,7 @@
             <length>16.0</length>
         </rect-props>
         <battle-pros>
-            <hp>5</hp>
+            <hp>500</hp>
             <mp>100</mp>
             <attack>10</attack>
             <defense>5</defense>
@@ -27,7 +27,7 @@
             <length>16.0</length>
         </rect-props>
         <battle-pros>
-            <hp>10</hp>
+            <hp>100</hp>
             <mp>100</mp>
             <attack>10</attack>
             <defense>5</defense>

@@ -17,10 +17,8 @@ import com.voidvvv.game.battle.DamageType;
 import com.voidvvv.game.battle.DefaultBattleComponent;
 import com.voidvvv.game.box2d.CollisionPair;
 import com.voidvvv.game.box2d.VBox2dComponent;
-import com.voidvvv.game.ecs.components.BattleContextComponent;
-import com.voidvvv.game.ecs.components.CampComponent;
-import com.voidvvv.game.ecs.components.ContactTypeComponent;
-import com.voidvvv.game.ecs.components.SimpleAnimateComponent;
+import com.voidvvv.game.ecs.components.*;
+import com.voidvvv.game.skill.CastLightBoom;
 import com.voidvvv.game.utils.AssetConstants;
 import com.voidvvv.game.utils.ReflectUtil;
 import com.voidvvv.render.actor.VActorRender;
@@ -29,6 +27,9 @@ import java.security.SecureRandom;
 import java.util.Random;
 import java.util.random.RandomGenerator;
 
+/**
+ * refer to {@link CastLightBoom}
+ */
 public class LightBoom extends BaseBullet {
     public static final ComponentMapper<BattleContextComponent> battleContextComponentMapper = ComponentMapper.getFor(BattleContextComponent.class);
 
@@ -39,17 +40,20 @@ public class LightBoom extends BaseBullet {
         if (simpleAnimateComponent == null) {
             initAnimate();
         }
-        Gdx.app.log("LightBoom", "LightBoom constructor");
+//        Gdx.app.log("LightBoom", "LightBoom constructor");
         this.randomNum = RandomGenerator.getDefault().nextLong();
     }
 
+    /**
+     * static method to create new LightBoom instance.
+     * @return
+     */
     public static LightBoom create() {
         LightBoom obtain = Pools.obtain(LightBoom.class);
         return obtain;
     }
 
     private void initAnimate() {
-
         Main.getInstance().getAssetManager().load(AssetConstants.LIGHT_BOOM_IMG, Texture.class);
         Main.getInstance().getAssetManager().finishLoading();
         Texture texture = Main.getInstance().getAssetManager().get(AssetConstants.LIGHT_BOOM_IMG, Texture.class);
@@ -68,6 +72,8 @@ public class LightBoom extends BaseBullet {
     @Override
     public void init() {
         super.init();
+        getEntity().add(new NameComponent("LightBoom"));
+
         this.getEntity().add(simpleAnimateComponent);
 
     }
@@ -108,11 +114,8 @@ public class LightBoom extends BaseBullet {
             Entity gameModeEntity = Main.getInstance().getGameMode().getEntity();
             BattleContextComponent battleContextComponent = battleContextComponentMapper.get(gameModeEntity);
             if (battleContextComponent != null && otherBattleComp != null && ownerComponent != null) {
-                BaseBattleFloat armor = otherBattleComp.getArmor();
                 BaseBattleFloat attack = ownerComponent.getAttack();
-                float damage = 50f +  (((attack.finalVal + 10) / (armor.finalVal + 1)));
-
-                battleContextComponent.getBattleContext().createDamage(owner, otherEntity, DamageType.PHISICAL, damage);
+                battleContextComponent.getBattleContext().createDamage(owner, otherEntity, DamageType.PHISICAL, attack.finalVal);
             }
             Gdx.app.log("LightBoom", "LightBoom hit other " + this.randomNum + " and destroy");
             getWorldContext().getWorld().resetVActor(this);
@@ -130,6 +133,6 @@ public class LightBoom extends BaseBullet {
     @Override
     public void reset() {
         super.reset();
-        Gdx.app.log("LightBoom", "LightBoom reset " + this.randomNum);
+//        Gdx.app.log("LightBoom", "LightBoom reset " + this.randomNum);
     }
 }

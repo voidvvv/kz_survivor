@@ -13,11 +13,8 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.base.state.Idle;
-import com.voidvvv.game.ecs.components.BaseStateActorAnimationComponent;
-import com.voidvvv.game.ecs.components.MoveChangeListenerComponent;
-import com.voidvvv.game.ecs.components.MoveComponent;
+import com.voidvvv.game.ecs.components.*;
 import com.voidvvv.game.box2d.VBox2dComponent;
-import com.voidvvv.game.ecs.components.StateMachineComponent;
 import com.voidvvv.game.ecs.components.skill.MainSkillComponent;
 import com.voidvvv.game.skill.CastLightBoom;
 import com.voidvvv.game.utils.AssetConstants;
@@ -46,6 +43,7 @@ public class Bob extends MoveShapeBox2dActor {
     @Override
     public void init() {
         super.init();
+        getEntity().add(new NameComponent("Bob"));
         StateMachine machine = new DefaultStateMachine(this, new Idle());
         StateMachineComponent stateMachineComponent = Pools.obtain(StateMachineComponent.class);
         stateMachineComponent.setStateMachine(machine);

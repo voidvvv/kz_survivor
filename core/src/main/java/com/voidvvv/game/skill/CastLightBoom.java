@@ -100,7 +100,6 @@ public class CastLightBoom implements Skill, Pool.Poolable {
         try {
             Main.getInstance().getGameMode().getEngine().addEntity(lightBoom.getEntity());
         } catch (Exception e) {
-            System.out.println(e);
             throw new RuntimeException(e);
         }
         worldContext.getWorld().spawnVActor(() -> {
