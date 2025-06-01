@@ -1,9 +1,12 @@
 package com.voidvvv.game.battle.events;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
 import com.voidvvv.game.battle.BattleContext;
 import com.voidvvv.game.battle.DamageType;
 import com.voidvvv.game.battle.DefaultBattleComponent;
+import com.voidvvv.game.ecs.components.NameComponent;
+import com.voidvvv.game.utils.AssetUtils;
 
 public class BaseDamage implements Damage{
     BattleContext battleContext;
@@ -69,7 +72,9 @@ public class BaseDamage implements Damage{
         // Apply damage logic here
         // For example, reduce the health of the target entity
         // This is just a placeholder implementation
-        System.out.println("Applying damage: " + damageVal + " from " + from + " to " + to);
+        Gdx.app.log("BaseDamage", "Applying damage: " + damageVal + " from " + AssetUtils.nameOf(from) + " to " + AssetUtils.nameOf(to));
         to.getComponent(DefaultBattleComponent.class).changeHp(-damageVal);
     }
+
+
 }

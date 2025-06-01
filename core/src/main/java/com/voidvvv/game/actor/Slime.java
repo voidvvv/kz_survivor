@@ -77,6 +77,8 @@ public class Slime extends MoveShapeBox2dActor {
     @Override
     public void init() {
         super.init();
+        getEntity().add(new NameComponent("Slime"));
+
         this.getEntity().getComponent(MoveComponent.class).speed = 100f;
         getEntity().getComponent(VBox2dComponent.class).addContactPairListener(this::contact);
 
@@ -110,8 +112,8 @@ public class Slime extends MoveShapeBox2dActor {
             if (otherBattleComp != null && thisBattleComp != null && ccc.getCampContext().isEnemy(this.getEntity(), otherEntity)) {
                 BaseBattleFloat armor = otherBattleComp.getArmor();
                 BaseBattleFloat attack = thisBattleComp.getAttack();
-                float damage = ((attack.finalVal + 10) / (armor.finalVal + 1));
-                battleContextComponent.getBattleContext().createDamage(this.getEntity(), otherEntity, DamageType.PHISICAL, damage);
+//                float damage = ((attack.finalVal + 10) / (armor.finalVal + 1));
+                battleContextComponent.getBattleContext().createDamage(this.getEntity(), otherEntity, DamageType.PHISICAL, attack.finalVal);
             }
 
         }

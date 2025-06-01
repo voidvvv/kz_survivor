@@ -14,6 +14,7 @@ import com.voidvvv.game.battle.events.DeadEvent;
 import com.voidvvv.game.ecs.components.*;
 import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.impl.flat.VFlatWorldActor;
+import com.voidvvv.game.utils.AssetUtils;
 import com.voidvvv.render.actor.VActorRender;
 
 public class MoveShapeBox2dActor extends VFlatWorldActor {
@@ -57,7 +58,7 @@ public class MoveShapeBox2dActor extends VFlatWorldActor {
             }
             boolean dead = battleContext.isDead(this.entity);
             if (dead) {
-                Gdx.app.log("MoveShapeBox2dActor", "dead");
+                Gdx.app.log("MoveShapeBox2dActor", AssetUtils.nameOf(this.getEntity()) + "_dead");
                 battleContext.addEvent(new DeadEvent(this.getEntity()));
                 setDead(true);
             }

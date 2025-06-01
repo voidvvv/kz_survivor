@@ -78,13 +78,20 @@ public class BaseBattleContext implements BattleContext{
 
     @Override
     public Damage createDamage(Entity from, Entity to, DamageType type, float damageVal) {
-        BaseDamage damage = new BaseDamage();
-        damage.setFrom(from);
-        damage.setTo(to);
-        damage.setDamageType(type);
-        damage.setDamageVal(damageVal);
-        addEvent(damage);
-        Gdx.app.log("BaseBattleContext", "createDamage: " + damageVal);
-        return damage;
+        BattleComponent fromComponent = from.getComponent(DefaultBattleComponent.class);
+        BattleComponent toComponent = to.getComponent(DefaultBattleComponent.class);
+
+        BaseBattleFloat armor = toComponent.getArmor();
+//        BaseBattleFloat attack = fromComponent.getAttack();
+        float finalDamage = (((damageVal * 100) / (armor.finalVal + 100)));
+
+        BaseDamage damageObj = new BaseDamage();
+        damageObj.setFrom(from);
+        damageObj.setTo(to);
+        damageObj.setDamageType(type);
+        damageObj.setDamageVal(finalDamage);
+        addEvent(damageObj);
+        Gdx.app.log("BaseBattleContext", "createDamage: " + finalDamage);
+        return damageObj;
     }
 }
