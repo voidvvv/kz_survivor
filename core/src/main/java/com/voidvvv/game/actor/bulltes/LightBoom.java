@@ -91,7 +91,6 @@ public class LightBoom extends BaseBullet {
         VWorldActor otherActor = ReflectUtil.convert(otherFixture.getBody().getUserData(), VWorldActor.class);
         if (otherActor == null) {
             // hit nothing
-            Gdx.app.log("LightBoom", "LightBoom hit wall " + this.randomNum + " and destroy");
 
             getWorldContext().getWorld().resetVActor(this);
             return;
@@ -115,9 +114,8 @@ public class LightBoom extends BaseBullet {
             BattleContextComponent battleContextComponent = battleContextComponentMapper.get(gameModeEntity);
             if (battleContextComponent != null && otherBattleComp != null && ownerComponent != null) {
                 BaseBattleFloat attack = ownerComponent.getAttack();
-                battleContextComponent.getBattleContext().createDamage(owner, otherEntity, DamageType.PHISICAL, attack.finalVal);
+                battleContextComponent.getBattleContext().createDamage(owner, otherEntity, DamageType.PHISICAL, 50 + attack.finalVal);
             }
-            Gdx.app.log("LightBoom", "LightBoom hit other " + this.randomNum + " and destroy");
             getWorldContext().getWorld().resetVActor(this);
         }
 

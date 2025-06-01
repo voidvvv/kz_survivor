@@ -83,7 +83,7 @@ public class BaseBattleContext implements BattleContext{
 
         BaseBattleFloat armor = toComponent.getArmor();
 //        BaseBattleFloat attack = fromComponent.getAttack();
-        float finalDamage = (((damageVal + 10) / (armor.finalVal + 1)));
+        float finalDamage = (((damageVal * 100) / (armor.finalVal + 100)));
 
         BaseDamage damageObj = new BaseDamage();
         damageObj.setFrom(from);

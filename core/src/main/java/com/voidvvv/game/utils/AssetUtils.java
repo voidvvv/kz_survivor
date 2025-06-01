@@ -1,7 +1,9 @@
 package com.voidvvv.game.utils;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.voidvvv.game.ecs.components.BaseStateActorAnimationComponent;
+import com.voidvvv.game.ecs.components.NameComponent;
 import groovy.util.ConfigObject;
 
 import java.util.Map;
@@ -44,5 +46,16 @@ public class AssetUtils {
                 b.flip(true, false);
             }
         }
+    }
+
+    public static String nameOf(Entity from) {
+        if (from == null) {
+            return "null";
+        }
+        NameComponent nameComponent = null;
+        if ((nameComponent = from.getComponent(NameComponent.class)) != null) {
+            return nameComponent.name;
+        }
+        return from.toString();
     }
 }
