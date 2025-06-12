@@ -2,14 +2,17 @@ package com.voidvvv.game.actor.bulltes;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.utils.Pools;
+import com.voidvvv.game.Main;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.box2d.CollisionPair;
 import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.ecs.components.*;
 import com.voidvvv.game.ecs.listener.TimeChangeListener;
 import com.voidvvv.game.impl.flat.VFlatWorldActor;
+import com.voidvvv.game.utils.AssetConstants;
 import com.voidvvv.game.utils.ReflectUtil;
 
 import java.util.HashSet;
@@ -35,6 +38,13 @@ public class Thunder extends BaseBullet {
 
     private void initAnimate() {
         simpleAnimateComponent = new SimpleAnimateComponent();
+        Main.getInstance().getAssetManager().load(AssetConstants.THUNDER_STONE, TextureAtlas.class);
+        Main.getInstance().getAssetManager().finishLoading();
+        TextureAtlas textureAtlas = Main.getInstance().getAssetManager().get(AssetConstants.THUNDER_STONE, TextureAtlas.class);
+
+        simpleAnimateComponent.animation = AssetConstants.makeCommonAnimation(
+            0.5f,textureAtlas.getRegions().toArray()
+        );
     }
 
     @Override
@@ -119,8 +129,9 @@ public class Thunder extends BaseBullet {
         }
     }
 
-    private void damageTo(Entity e) {
 
+    private void damageTo(Entity e) {
+        Gdx.app.log("Thunder", "damage to " + e);
     }
 
 }

@@ -23,6 +23,8 @@ public class AssetConstants {
 
     public static final String LIGHT_BOOM_IMG = "image/bullet/light_boom.png";
 
+    public static final String THUNDER_STONE = "image/bullet/stones1/packer/pack.atlas";
+
 
     public static <T> Animation<T> makeCommonAnimation (T... arr) {
         return new Animation<>(1f/arr.length, arr);
