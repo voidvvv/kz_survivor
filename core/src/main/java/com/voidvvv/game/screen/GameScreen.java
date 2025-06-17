@@ -107,7 +107,7 @@ public class GameScreen implements UpdateScreen, Telegraph {
         if (NEXT_LEVEL != null) {
             level = NEXT_LEVEL.get();
             NEXT_LEVEL = null;
-        } else {
+        } else if (level == null){
             // default
             level = new FlatWorldLevel();
         }
@@ -165,7 +165,7 @@ public class GameScreen implements UpdateScreen, Telegraph {
         level.dispose();
         disposeUI();
         disposeMessage();
-        level = null;
+//        level = null;
     }
 
 

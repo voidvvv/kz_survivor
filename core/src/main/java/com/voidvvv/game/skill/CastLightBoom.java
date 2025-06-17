@@ -33,7 +33,7 @@ public class CastLightBoom implements Skill, Pool.Poolable {
 
     int cntPerRow = 2;
     int[] cntPerRowArr = {1, 2, 3, 4, 5};
-    int level = 1;
+    int level = 0;
 
     List<ContinuousCastLightBoom> continuousCastLightBooms = new ArrayList<>();
 
@@ -131,8 +131,6 @@ public class CastLightBoom implements Skill, Pool.Poolable {
             currentInterval = maxInterValArr[level];
             cast();
         }
-        ReentrantLock lock = new ReentrantLock();
-        lock.lock();
         castContinuously(delta);
     }
 

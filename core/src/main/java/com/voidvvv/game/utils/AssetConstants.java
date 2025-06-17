@@ -30,6 +30,13 @@ public class AssetConstants {
         return new Animation<>(1f/arr.length, arr);
     }
 
+    /**
+     * Creates a common animation with a specified time duration.
+     * @param time the total time for the animation
+     * @param arr the array of frames for the animation
+     * @return a new Animation instance
+     * @param <T> the type of the frames in the animation
+     */
     public static <T> Animation<T> makeCommonAnimation (float time, T... arr) {
         return new Animation<>(time/arr.length, arr);
     }

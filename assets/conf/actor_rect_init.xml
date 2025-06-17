@@ -9,7 +9,7 @@
             <length>16.0</length>
         </rect-props>
         <battle-pros>
-            <hp>500</hp>
+            <hp>5</hp>
             <mp>100</mp>
             <attack>10</attack>
             <defense>5</defense>
@@ -27,7 +27,7 @@
             <length>16.0</length>
         </rect-props>
         <battle-pros>
-            <hp>100</hp>
+            <hp>1</hp>
             <mp>100</mp>
             <attack>10</attack>
             <defense>5</defense>
@@ -59,6 +59,19 @@
     <actor>
         <name>LightBoom</name>
         <type>com.voidvvv.game.actor.bulltes.LightBoom</type>
+        <rect-props>
+            <width>10.0</width>
+            <height>10.0</height>
+            <length>10.0</length>
+        </rect-props>
+        <move-props>
+            <speed>350</speed>
+        </move-props>
+    </actor>
+
+    <actor>
+        <name>Thunder</name>
+        <type>com.voidvvv.game.actor.bulltes.Thunder</type>
         <rect-props>
             <width>10.0</width>
             <height>10.0</height>

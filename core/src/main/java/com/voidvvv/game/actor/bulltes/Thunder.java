@@ -118,6 +118,9 @@ public class Thunder extends BaseBullet {
                 // descending time over
                 tryToDamageOther();
             }
+            if (newTime >= 1f) {
+                getWorldContext().getWorld().resetVActor(Thunder.this);
+            }
         }
     }
 
@@ -133,5 +136,7 @@ public class Thunder extends BaseBullet {
     private void damageTo(Entity e) {
         Gdx.app.log("Thunder", "damage to " + e);
     }
+
+
 
 }
