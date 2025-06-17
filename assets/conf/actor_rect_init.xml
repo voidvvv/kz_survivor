@@ -73,13 +73,13 @@
         <name>Thunder</name>
         <type>com.voidvvv.game.actor.bulltes.Thunder</type>
         <rect-props>
-            <width>10.0</width>
-            <height>10.0</height>
-            <length>10.0</length>
+            <width>75.0</width>
+            <height>75.0</height>
+            <length>75.0</length>
         </rect-props>
-        <move-props>
-            <speed>350</speed>
-        </move-props>
+<!--        <move-props>-->
+<!--            <speed>350</speed>-->
+<!--        </move-props>-->
     </actor>
 
 </users-conf>

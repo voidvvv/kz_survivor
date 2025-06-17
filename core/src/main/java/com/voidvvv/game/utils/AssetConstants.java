@@ -1,6 +1,7 @@
 package com.voidvvv.game.utils;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.utils.Array;
 
 public class AssetConstants {
     public static final String BOB_IMAGE = "image/actor/bob/wizard spritesheet calciumtrice.png";
@@ -38,7 +39,9 @@ public class AssetConstants {
      * @param <T> the type of the frames in the animation
      */
     public static <T> Animation<T> makeCommonAnimation (float time, T... arr) {
-        return new Animation<>(time/arr.length, arr);
+        return new Animation<>(time/(float) arr.length, arr);
     }
-
+    public static <T> Animation<T> makeCommonAnimation (float time, Array<T> arr) {
+        return new Animation<>(time/(float) arr.size, arr);
+    }
 }

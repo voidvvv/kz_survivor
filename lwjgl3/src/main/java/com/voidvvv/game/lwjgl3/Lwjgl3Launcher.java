@@ -3,6 +3,7 @@ package com.voidvvv.game.lwjgl3;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.voidvvv.game.Main;
+import com.voidvvv.test.TestRender;
 
 // test
 /** Launches the desktop (LWJGL3) application. */
@@ -14,6 +15,7 @@ public class Lwjgl3Launcher {
 
     private static Lwjgl3Application createApplication() {
         return new Lwjgl3Application(Main.getInstance(), getDefaultConfiguration());
+//        return new Lwjgl3Application(new TestRender(), getDefaultConfiguration());
     }
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {

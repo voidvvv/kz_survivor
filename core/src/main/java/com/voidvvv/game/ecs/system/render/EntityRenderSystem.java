@@ -32,8 +32,8 @@ public class EntityRenderSystem extends SpriteBatchRenderIteratorSystem{
             }
             SimpleAnimateComponent simpleAnimateComponent = localEntity.getComponent(SimpleAnimateComponent.class);
             if (simpleAnimateComponent != null) {
-                Animation<TextureRegion> animation = simpleAnimateComponent.animation;
-                TimeComponent timeComponent = entity.getComponent(TimeComponent.class);
+                Animation<? extends TextureRegion> animation = simpleAnimateComponent.animation;
+                TimeComponent timeComponent = localEntity.getComponent(TimeComponent.class);
                 float time = 0f;
                 if (timeComponent != null) {
                     time = timeComponent.time;

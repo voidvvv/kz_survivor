@@ -46,25 +46,7 @@ public class Thunder extends BaseBullet {
 //        TextureRegion[] array =.toArray(TextureRegion.class);
 
         simpleAnimateComponent.animation = AssetConstants.makeCommonAnimation(
-            0.8f,new TextureRegion[]{
-                textureAtlas.findRegion("0"),
-                textureAtlas.findRegion("1"),
-                textureAtlas.findRegion("2"),
-                textureAtlas.findRegion("3"),
-                textureAtlas.findRegion("4"),
-                textureAtlas.findRegion("5"),
-                textureAtlas.findRegion("6"),
-                textureAtlas.findRegion("7"),
-                textureAtlas.findRegion("8"),
-                textureAtlas.findRegion("9"),
-                textureAtlas.findRegion("10"),
-                textureAtlas.findRegion("11"),
-                textureAtlas.findRegion("12"),
-                textureAtlas.findRegion("13"),
-                textureAtlas.findRegion("14"),
-                textureAtlas.findRegion("15"),
-
-            }
+            1f,textureAtlas.getRegions()
         );
         simpleAnimateComponent.animation.setPlayMode(Animation.PlayMode.LOOP);
     }
@@ -108,7 +90,7 @@ public class Thunder extends BaseBullet {
         if (thisFixture == getEntity().getComponent(VBox2dComponent.class).getFaceFixture()) {
             return;
         }
-        VActor otherActor = ReflectUtil.convert(collisionPair.getOtherFixture().getUserData(), VActor.class);
+        VActor otherActor = ReflectUtil.convert(collisionPair.getOtherFixture().getBody().getUserData(), VActor.class);
         if (otherActor == null) {
             // do nothing
             return;
