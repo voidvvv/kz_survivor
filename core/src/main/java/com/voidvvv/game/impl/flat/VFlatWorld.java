@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.base.Updateable;
+import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.VWorld;
@@ -15,9 +16,9 @@ import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.base.world.components.VWorldActorComponent;
 import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.utils.Box2dUnitConverter;
+import com.voidvvv.game.utils.ReflectUtil;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Supplier;
 
 /**
@@ -28,6 +29,8 @@ public class VFlatWorld implements VWorld {
         public static final short BOTTOM_COLLIDE_CATEGORY = 1;
         public static final short FACE_CATEGORY = 1<<1;
     }
+
+    Box2dQueryCallBack queryCallBack;
     // box2d related
     protected World box2dWorld;
 
@@ -72,7 +75,7 @@ public class VFlatWorld implements VWorld {
         this.entity.add(actorComponent);
         initBox2dWorld();
         viewPosition.set(config.birthPlace);
-
+        queryCallBack = new Box2dQueryCallBack();
 
     }
 
@@ -123,6 +126,8 @@ public class VFlatWorld implements VWorld {
         disposeBox2dWorld();
 
         config = null;
+        queryCallBack.clear();
+        queryCallBack = null;
     }
 
 
@@ -185,7 +190,7 @@ public class VFlatWorld implements VWorld {
         bottomFixtureDef.filter.categoryBits = BOX2D_CONST.BOTTOM_COLLIDE_CATEGORY;
         bottomFixtureDef.filter.maskBits = BOX2D_CONST.BOTTOM_COLLIDE_CATEGORY;
         bottomFixtureDef.density = 0f;
-//        bottomFixtureDef.isSensor = true; // todo
+        bottomFixtureDef.isSensor = helper.sensor; // todo
         PolygonShape bottomShape = new PolygonShape();
         bottomShape.setAsBox(Box2dUnitConverter.worldToBox2d(helper.hx),
             Box2dUnitConverter.worldToBox2d(helper.hz));
@@ -275,7 +280,42 @@ public class VFlatWorld implements VWorld {
         updateables.remove(updateable);
     }
 
+//    @Override
+//    public <T extends VWorldActor> List<T> findAllVActor(float radius, float x, float y) {
+//        return box2dWorld.QueryAABB();
+//    }
+
+    @Override
+    public <T extends VWorldActor> Collection<T> findAllVActor(float x, float y, float x1, float y1) {
+        queryCallBack.clear();
+        box2dWorld.QueryAABB(queryCallBack,
+            Box2dUnitConverter.worldToBox2d(x),
+            Box2dUnitConverter.worldToBox2d(y),
+            Box2dUnitConverter.worldToBox2d(x1),
+            Box2dUnitConverter.worldToBox2d(y1));
+        return queryCallBack.list;
+    }
+
     public World getBox2dWorld() {
         return box2dWorld;
+    }
+
+    public static class Box2dQueryCallBack <T extends VWorldActor> implements  QueryCallback {
+        public Set<T> list = new HashSet<>();
+        @Override
+        public boolean reportFixture(Fixture fixture) {
+            if (ReflectUtil.convert(fixture.getBody().getUserData(), VWorldActor.class) != null) {
+                VWorldActor actor = ReflectUtil.convert(fixture.getBody().getUserData(), VWorldActor.class);
+                if (actor != null && !list.contains(actor)) {
+                    list.add((T) actor);
+                    return true; // continue to query
+                }
+            }
+            return false;
+        }
+
+        public void clear() {
+            list.clear();
+        }
     }
 }

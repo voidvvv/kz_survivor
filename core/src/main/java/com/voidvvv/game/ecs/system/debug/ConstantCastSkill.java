@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IntervalIteratingSystem;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.voidvvv.game.ecs.components.skill.MainSkillComponent;
 
 public class ConstantCastSkill extends IntervalIteratingSystem {
@@ -19,6 +20,10 @@ public class ConstantCastSkill extends IntervalIteratingSystem {
         MainSkillComponent component = entity.getComponent(MainSkillComponent.class);
         if (component != null && component.skill != null) {
             component.skill.update(getInterval());
+        }
+        if (component != null && component.skill2 != null) {
+//            Gdx.app.log("ConstantCastSkill", "Casting skill2");
+            component.skill2.update(getInterval());
         }
     }
 }

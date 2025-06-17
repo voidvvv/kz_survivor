@@ -17,6 +17,7 @@ import com.voidvvv.game.ecs.components.*;
 import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.ecs.components.skill.MainSkillComponent;
 import com.voidvvv.game.skill.CastLightBoom;
+import com.voidvvv.game.skill.CastThunder;
 import com.voidvvv.game.utils.AssetConstants;
 import com.voidvvv.game.utils.AssetUtils;
 import com.voidvvv.game.utils.MessageConstants;
@@ -57,11 +58,18 @@ public class Bob extends MoveShapeBox2dActor {
         });
 
         this.getEntity().getComponent(MoveComponent.class).speed = 100f;
+
+        MainSkillComponent mainSkillComponent = Pools.obtain(MainSkillComponent.class);
+
+
         CastLightBoom castLightBoom = Pools.obtain(CastLightBoom.class);
         castLightBoom.setWorldContext(getWorldContext());
         castLightBoom.setOwner(this.getEntity());
-        MainSkillComponent mainSkillComponent = Pools.obtain(MainSkillComponent.class);
         mainSkillComponent.skill = castLightBoom;
+        CastThunder castThunder = Pools.obtain(CastThunder.class);
+        castThunder.setWorldContext(getWorldContext());
+        castThunder.setOwner(this.getEntity());
+        mainSkillComponent.skill2 = castThunder;
         this.getEntity().add(mainSkillComponent);
     }
 

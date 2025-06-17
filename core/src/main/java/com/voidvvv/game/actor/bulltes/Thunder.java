@@ -2,7 +2,9 @@ package com.voidvvv.game.actor.bulltes;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
@@ -41,10 +43,30 @@ public class Thunder extends BaseBullet {
         Main.getInstance().getAssetManager().load(AssetConstants.THUNDER_STONE, TextureAtlas.class);
         Main.getInstance().getAssetManager().finishLoading();
         TextureAtlas textureAtlas = Main.getInstance().getAssetManager().get(AssetConstants.THUNDER_STONE, TextureAtlas.class);
+//        TextureRegion[] array =.toArray(TextureRegion.class);
 
         simpleAnimateComponent.animation = AssetConstants.makeCommonAnimation(
-            0.5f,textureAtlas.getRegions().toArray()
+            0.8f,new TextureRegion[]{
+                textureAtlas.findRegion("0"),
+                textureAtlas.findRegion("1"),
+                textureAtlas.findRegion("2"),
+                textureAtlas.findRegion("3"),
+                textureAtlas.findRegion("4"),
+                textureAtlas.findRegion("5"),
+                textureAtlas.findRegion("6"),
+                textureAtlas.findRegion("7"),
+                textureAtlas.findRegion("8"),
+                textureAtlas.findRegion("9"),
+                textureAtlas.findRegion("10"),
+                textureAtlas.findRegion("11"),
+                textureAtlas.findRegion("12"),
+                textureAtlas.findRegion("13"),
+                textureAtlas.findRegion("14"),
+                textureAtlas.findRegion("15"),
+
+            }
         );
+        simpleAnimateComponent.animation.setPlayMode(Animation.PlayMode.LOOP);
     }
 
     @Override
@@ -109,7 +131,7 @@ public class Thunder extends BaseBullet {
 
     class ThunderTimeListener implements TimeChangeListener {
         public float descendingTime = 0.5f;
-        public float triggerTime = 0.2f;
+        public float triggerTime = 0.5f;
         @Override
         public void onTimeChange(float delta, float oldTime, float newTime) {
             if (newTime >= (descendingTime + triggerTime)) {
@@ -117,9 +139,6 @@ public class Thunder extends BaseBullet {
             } else if (newTime >= descendingTime){
                 // descending time over
                 tryToDamageOther();
-            }
-            if (newTime >= 1f) {
-                getWorldContext().getWorld().resetVActor(Thunder.this);
             }
         }
     }
