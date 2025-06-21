@@ -24,7 +24,7 @@ public class CastThunder implements Skill{
     WorldContext worldContext;
     Entity owner;
 
-    public float range = 100f;
+    public float range = 800f;
     @Override
     public void cast() {
         Thunder thunder = createThunder();
@@ -50,6 +50,13 @@ public class CastThunder implements Skill{
                 // pick up one enemy entity as target
                 VWorldActor vWorldActor = all.stream()
                     .filter((a) -> ccc.getCampContext().isEnemy(owner, a.getEntity()))
+                    .sorted((a,b) -> {
+                        VRectBoundComponent aPosition = a.getEntity().getComponent(VRectBoundComponent.class);
+                        VRectBoundComponent bPosition = b.getEntity().getComponent(VRectBoundComponent.class);
+                        float aDistance = aPosition.position.dst(position);
+                        float bDistance = bPosition.position.dst(position);
+                        return Float.compare(aDistance, bDistance);
+                    })
                     .findFirst().orElse(null);
                 if (vWorldActor != null) {
                     // found an enemy, cast thunder on it

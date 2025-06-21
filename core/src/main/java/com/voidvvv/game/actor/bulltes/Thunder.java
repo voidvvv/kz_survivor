@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.base.VActor;
+import com.voidvvv.game.battle.DamageType;
 import com.voidvvv.game.box2d.CollisionPair;
 import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.ecs.components.*;
@@ -18,6 +19,7 @@ import com.voidvvv.game.utils.AssetConstants;
 import com.voidvvv.game.utils.ReflectUtil;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.random.RandomGenerator;
 
@@ -126,16 +128,26 @@ public class Thunder extends BaseBullet {
     }
 
     private void tryToDamageOther() {
-        for (Entity e: includeEntities) {
-            if (hitEntities.add(e)) {
+        Iterator<Entity> iterator = includeEntities.iterator();
+        while (iterator.hasNext()) {
+            Entity e = iterator.next();
+            if (e.flags == 0) {
+                iterator.remove();
+            } else if (hitEntities.add(e)) {
+                // already hit
                 damageTo(e);
             }
         }
+
     }
 
 
     private void damageTo(Entity e) {
-        Gdx.app.log("Thunder", "damage to " + e);
+        Entity gameModeEntity = Main.getInstance().getGameMode().getEntity();
+        BattleContextComponent battleContextComponent = gameModeEntity.getComponent(BattleContextComponent.class);
+
+        battleContextComponent.getBattleContext().createDamage(owner, e, DamageType.PHISICAL, 200);
+
     }
 
 

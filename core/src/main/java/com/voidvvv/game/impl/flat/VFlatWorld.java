@@ -237,6 +237,7 @@ public class VFlatWorld implements VWorld {
     public void resetVActor(VWorldActor actor) {
         if (actor.ready) {
             actor.ready = false;
+            actor.getEntity().flags = 0;
             this.actorComponent.resetActor(actor);
         }
     }

@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
@@ -13,6 +14,7 @@ import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.ecs.components.StateMachineComponent;
 import com.voidvvv.game.base.state.Idle;
 import com.voidvvv.game.ecs.components.TimeComponent;
+import com.voidvvv.game.utils.AssetUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +86,8 @@ public abstract class VWorldActor implements VActor {
 
     protected void unload() {
         ImmutableArray<Component> components = entity.getComponents();
+        String name = AssetUtils.nameOf(entity);
+        Gdx.app.log("VWorldActor", "unload: " + name + " _ " +  entity);
         for (int i = 0; i < components.size(); i++) {
             Component component = components.get(i);
             Pools.free(component);

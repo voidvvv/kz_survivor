@@ -88,7 +88,7 @@ public class SimpleSlimeGenerateStrategy extends IntervalSystem {
                 public void afterActiveEvent(BattleEvent event) {
                     if (DeadEvent.class.isAssignableFrom(event.getClass())) {
                         // this actor dead
-                        Gdx.app.log("SimpleSlimeGenerateStrategy", "dead slime");
+                        Gdx.app.log("SimpleSlimeGenerateStrategy", "dead slime : " + slime.getEntity());
                         worldContext.getWorld().resetVActor(slime);
                     }
                 }

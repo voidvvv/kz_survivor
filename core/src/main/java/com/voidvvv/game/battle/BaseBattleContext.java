@@ -7,6 +7,7 @@ import com.voidvvv.game.battle.events.BattleEvent;
 import com.voidvvv.game.battle.events.Damage;
 import com.voidvvv.game.ecs.ComponentMapperUtil;
 import com.voidvvv.game.ecs.components.BattleEventListenerComponent;
+import com.voidvvv.game.utils.AssetUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +81,7 @@ public class BaseBattleContext implements BattleContext{
     public Damage createDamage(Entity from, Entity to, DamageType type, float damageVal) {
         BattleComponent fromComponent = from.getComponent(DefaultBattleComponent.class);
         BattleComponent toComponent = to.getComponent(DefaultBattleComponent.class);
-
+        Gdx.app.log("BaseBattleContext", "createDamage: " + damageVal + " from: " + AssetUtils.nameOf(from) + " to: " + AssetUtils.nameOf(to));
         BaseBattleFloat armor = toComponent.getArmor();
 //        BaseBattleFloat attack = fromComponent.getAttack();
         float finalDamage = (((damageVal * 100) / (armor.finalVal + 100)));

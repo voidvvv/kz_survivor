@@ -73,7 +73,14 @@ public class MetaDataActorPools  {
                 moveComponent.vel.set(moveProps.dir);
             }
         }
+        obtain.getEntity().flags = GET_ENTITY_FLAG();
         return obtain;
+    }
+
+    public static int ENTITY_FLAG = 1;
+
+    public static int GET_ENTITY_FLAG () {
+        return ENTITY_FLAG++;
     }
 
     private static Method obtainMethod(Class<? extends VActor> type) throws NoSuchMethodException {
