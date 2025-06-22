@@ -34,7 +34,6 @@ public class Slime extends MoveShapeBox2dActor {
 
     public static final ComponentMapper<BattleContextComponent> battleContextComponentMapper = ComponentMapper.getFor(BattleContextComponent.class);
     public static Slime create() {
-        Gdx.app.log("Slime", "Slime create");
         Slime obtain = Pools.obtain(Slime.class);
         return obtain;
     }

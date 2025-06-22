@@ -52,21 +52,4 @@ public class VFlatWorldActor extends VWorldActor{
         super.reset();
     }
 
-    @Override
-    public void draw() {
-
-    }
-
-
-    @Override
-    public void setState(VActorMetaState state) {
-
-    }
-
-
-
-    @Override
-    public VActorMetaState getState() {
-        return null;
-    }
 }

@@ -19,7 +19,7 @@ import com.voidvvv.game.utils.AssetUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class VWorldActor implements VActor {
+public class VWorldActor implements VActor {
     StateMachineComponent stateMachineComponent;
     List<Class<? extends Component>> needToBeUnbind = new ArrayList<>();
     private boolean dead;

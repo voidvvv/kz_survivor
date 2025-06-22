@@ -15,13 +15,6 @@ public interface VActor extends Pool.Poolable {
         Pools.free(this);
     };
 
-
-    void draw();
     public Entity getEntity();
 
-    void setState(VActorMetaState state);
-
-    VActorMetaState getState();
-
-    String metaName();
 }

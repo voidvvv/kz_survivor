@@ -309,10 +309,10 @@ public class VFlatWorld implements VWorld {
                 VWorldActor actor = ReflectUtil.convert(fixture.getBody().getUserData(), VWorldActor.class);
                 if (actor != null && !list.contains(actor)) {
                     list.add((T) actor);
-                    return true; // continue to query
+
                 }
             }
-            return false;
+            return true; // continue to query
         }
 
         public void clear() {
