@@ -21,8 +21,7 @@ import java.util.Collection;
 public class CastThunder implements Skill{
     float time = 0f;
     float gapTime = 0f;
-    WorldContext worldContext;
-    Entity owner;
+    VWorldActor owner;
 
     public float range = 800f;
     @Override
@@ -31,25 +30,25 @@ public class CastThunder implements Skill{
     }
 
     public WorldContext getWorldContext() {
-        return worldContext;
+        return owner.getWorldContext();
     }
 
-    public void setWorldContext(WorldContext worldContext) {
-        this.worldContext = worldContext;
-    }
+//    public void setWorldContext(WorldContext worldContext) {
+//        this.worldContext = worldContext;
+//    }
 
     private Thunder createThunder() {
-        Entity thunderOwner = owner();
+        Entity thunderOwner = owner().getEntity();
         // scan the surroundings of the owner, pick up one entity to cast thunder on
         CampContextComponent ccc = ComponentMapperUtil.campContextComponentMapper.get(Main.getInstance().getGameMode().getEntity());
         if (ccc != null) {
-            VRectBoundComponent positionCompo = owner.getComponent(VRectBoundComponent.class);
+            VRectBoundComponent positionCompo = thunderOwner.getComponent(VRectBoundComponent.class);
             Vector2 position = positionCompo.position;
-            Collection<VWorldActor> all = worldContext.getWorld().findAllVActor(position.x - range / 2f, position.y - range / 2f, position.x + range / 2f, position.y + range / 2f);
+            Collection<VWorldActor> all = getWorldContext().getWorld().findAllVActor(position.x - range / 2f, position.y - range / 2f, position.x + range / 2f, position.y + range / 2f);
             if (all != null && !all.isEmpty()) {
                 // pick up one enemy entity as target
                 VWorldActor vWorldActor = all.stream()
-                    .filter((a) -> ccc.getCampContext().isEnemy(owner, a.getEntity()))
+                    .filter((a) -> ccc.getCampContext().isEnemy(thunderOwner, a.getEntity()))
                     .sorted((a,b) -> {
                         VRectBoundComponent aPosition = a.getEntity().getComponent(VRectBoundComponent.class);
                         VRectBoundComponent bPosition = b.getEntity().getComponent(VRectBoundComponent.class);
@@ -62,7 +61,7 @@ public class CastThunder implements Skill{
                     // found an enemy, cast thunder on it
                     Gdx.app.log("CastThunder", "Casting thunder on enemy: " + AssetUtils.nameOf(vWorldActor.getEntity()));
                     Thunder thunder = (Thunder) MetaDataActorPools.obtain("Thunder");
-                    thunder.owner= thunderOwner;
+                    thunder.owner= owner();
                     Entity targetEntity = vWorldActor.getEntity();
                     VRectBoundComponent thunderPosition = thunder.getEntity().getComponent(VRectBoundComponent.class);
                     VRectBoundComponent targetPosition = targetEntity.getComponent(VRectBoundComponent.class);
@@ -74,7 +73,7 @@ public class CastThunder implements Skill{
                     helper.sensor = true;
                     Main.getInstance().getGameMode().getEngine().addEntity(thunder.getEntity());
                     thunder.setWorldContext(this.getWorldContext());
-                    worldContext.getWorld().spawnVActor(() -> thunder, helper);
+                    getWorldContext().getWorld().spawnVActor(() -> thunder, helper);
                     return thunder;
                 } else {
                     // no enemy found, cast thunder on the owner
@@ -87,10 +86,10 @@ public class CastThunder implements Skill{
     }
 
     @Override
-    public Entity owner() {
+    public VWorldActor owner() {
         return owner;
     }
-    public void setOwner(Entity owner) {
+    public void setOwner(VWorldActor owner) {
         this.owner = owner;
     }
     @Override

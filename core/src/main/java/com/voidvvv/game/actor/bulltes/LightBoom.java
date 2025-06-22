@@ -102,19 +102,19 @@ public class LightBoom extends BaseBullet {
         ContactTypeComponent component = otherEntity.getComponent(ContactTypeComponent.class);
         CampComponent campComponent = otherEntity.getComponent(CampComponent.class);
         if (// hit other
-            otherEntity != owner
+            otherEntity != owner.getEntity()
                 // creature
                 && (component == null || component.type == ContactTypeComponent.CREATURE)
                 // enemy
-                && (campComponent != null && campComponent.getCampSign() != owner.getComponent(CampComponent.class).getCampSign())
+                && (campComponent != null && campComponent.getCampSign() != owner.getEntity().getComponent(CampComponent.class).getCampSign())
         ) {
             BattleComponent otherBattleComp = otherEntity.getComponent(DefaultBattleComponent.class);
-            BattleComponent ownerComponent = owner.getComponent(DefaultBattleComponent.class);
+            BattleComponent ownerComponent = owner.getEntity().getComponent(DefaultBattleComponent.class);
             Entity gameModeEntity = Main.getInstance().getGameMode().getEntity();
             BattleContextComponent battleContextComponent = battleContextComponentMapper.get(gameModeEntity);
             if (battleContextComponent != null && otherBattleComp != null && ownerComponent != null) {
                 BaseBattleFloat attack = ownerComponent.getAttack();
-                battleContextComponent.getBattleContext().createDamage(owner, otherEntity, DamageType.PHISICAL, 50 + attack.finalVal);
+                battleContextComponent.getBattleContext().createDamage(owner.getEntity(), otherEntity, DamageType.PHISICAL, 50 + attack.finalVal);
             }
             getWorldContext().getWorld().resetVActor(this);
         }

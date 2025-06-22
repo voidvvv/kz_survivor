@@ -102,11 +102,11 @@ public class Thunder extends BaseBullet {
         CampComponent campComponent = otherEntity.getComponent(CampComponent.class);
 
         if (
-            otherEntity != owner
+            otherEntity != owner.getEntity()
                 // creature
                 && (component == null || component.type == ContactTypeComponent.CREATURE)
                 // enemy
-                && (campComponent != null && campComponent.getCampSign() != owner.getComponent(CampComponent.class).getCampSign())
+                && (campComponent != null && campComponent.getCampSign() != owner.getEntity().getComponent(CampComponent.class).getCampSign())
         ) {
             includeEntities.add(otherEntity);
         }
@@ -146,7 +146,7 @@ public class Thunder extends BaseBullet {
         Entity gameModeEntity = Main.getInstance().getGameMode().getEntity();
         BattleContextComponent battleContextComponent = gameModeEntity.getComponent(BattleContextComponent.class);
 
-        battleContextComponent.getBattleContext().createDamage(owner, e, DamageType.PHISICAL, 200);
+        battleContextComponent.getBattleContext().createDamage(owner.getEntity(), e, DamageType.PHISICAL, 200);
 
     }
 

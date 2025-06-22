@@ -7,8 +7,11 @@ import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.bulltes.LightBoom;
+import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
+import com.voidvvv.game.base.world.VWorld;
+import com.voidvvv.game.base.world.VWorldActor;
 import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.ecs.components.MoveComponent;
 import com.voidvvv.game.utils.MetaDataActorPools;
@@ -22,7 +25,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class CastLightBoom implements Skill, Pool.Poolable {
 
     WorldContext worldContext;
-    Entity owner;
+    VWorldActor owner;
 
     float maxInterval = 0.5f;
     float[] maxInterValArr = {1.5f, 1.2f, 0.8f, 0.65f, 0.5f};
@@ -53,11 +56,11 @@ public class CastLightBoom implements Skill, Pool.Poolable {
         this.worldContext = worldContext;
     }
 
-    public Entity getOwner() {
+    public VWorldActor getOwner() {
         return owner;
     }
 
-    public void setOwner(Entity owner) {
+    public void setOwner(VWorldActor owner) {
         this.owner = owner;
     }
 
@@ -90,7 +93,7 @@ public class CastLightBoom implements Skill, Pool.Poolable {
     public LightBoom createLightBoom() {
         LightBoom lightBoom = (LightBoom) MetaDataActorPools.obtain("LightBoom");
         VActorSpawnHelper helper = Pools.obtain(VActorSpawnHelper.class);
-        VRectBoundComponent ownerPosition = owner.getComponent(VRectBoundComponent.class);
+        VRectBoundComponent ownerPosition = owner.getEntity().getComponent(VRectBoundComponent.class);
         if (ownerPosition != null) {
             helper.initX = ownerPosition.position.x;
             helper.initY = ownerPosition.position.y;
@@ -102,14 +105,14 @@ public class CastLightBoom implements Skill, Pool.Poolable {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        worldContext.getWorld().spawnVActor(() -> {
+        owner.getWorldContext().getWorld().spawnVActor(() -> {
             return lightBoom;
         }, helper);
         return lightBoom;
     }
 
     @Override
-    public Entity owner() {
+    public VWorldActor owner() {
         return owner;
     }
 

@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.base.VRectBoundComponent;
+import com.voidvvv.game.base.world.VWorldActor;
 import com.voidvvv.game.battle.DefaultBattleComponent;
 import com.voidvvv.game.box2d.CollisionPair;
 import com.voidvvv.game.box2d.VBox2dComponent;
@@ -19,7 +20,7 @@ public class BaseBullet extends VFlatWorldActor {
     public float initSpeed = 1000f;
     public Vector2 dir = new Vector2(1, 0);
 
-    public Entity owner;
+    public VWorldActor owner;
 
     public BaseBullet() {
         super();

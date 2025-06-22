@@ -150,7 +150,6 @@ public class VFlatWorld implements VWorld {
     public <T extends VWorldActor> T spawnVActor(Supplier<T> actorSup, VActorSpawnHelper helper) {
         T actor = actorSup.get();
         actor.setWorldContext(worldContext);
-        actor.init();
         if (!VFlatWorldActor.class.isAssignableFrom(actor.getClass())) {
             return actor;
         }
