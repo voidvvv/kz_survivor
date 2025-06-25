@@ -59,7 +59,7 @@ public class MoveShapeBox2dActor extends VFlatWorldActor {
             boolean dead = battleContext.isDead(this.entity);
             if (dead) {
                 Gdx.app.log("MoveShapeBox2dActor", AssetUtils.nameOf(this.getEntity()) + "_dead");
-                battleContext.addEvent(new DeadEvent(this.getEntity()));
+                battleContext.addEvent(new DeadEvent(this));
                 setDead(true);
             }
         }

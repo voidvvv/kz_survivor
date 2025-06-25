@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
+import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.battle.*;
 import com.voidvvv.game.battle.events.BattleEvent;
@@ -148,6 +149,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
         stage = new Stage(Main.getInstance().getCameraManager().getScreenViewport()
             , Main.getInstance().getDrawManager().getBaseBatch());
+        stage.addActor(new SingleFlatWorldUI(null, this));
         Main.getInstance().addInputProcessor(stage);
         this.timeLeft = this.timeLimit;
 
@@ -258,7 +260,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
                 public void afterActiveEvent(BattleEvent event) {
                     if (Damage.class.isAssignableFrom(event.getClass())) {
                         Damage damage = (Damage) event;
-                        if (damage.getFrom() == protagonist.getEntity()) {
+                        if (damage.getFrom() == protagonist) {
                             pTranscript.transcript.totalDamage += damage.damageVal();
 
                         }
@@ -362,7 +364,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         if (msg.message == MessageConstants.MSG_BATTLE_EVENT) {
             DeadEvent dead = ReflectUtil.convert(msg.extraInfo, DeadEvent.class);
             if (dead != null) {
-                Entity from = dead.getFrom();
+                Entity from = dead.getFrom().getEntity();
                 if (from != null && from != protagonist.getEntity()) {
                     // update transcript
                     TranscriptComponent transcript = protagonist.getEntity().getComponent(TranscriptComponent.class);
@@ -385,7 +387,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
                 DamageValue damageValue = new DamageValue();
                 damageValue.damage = (int) damage.damageVal();
                 damageValue.type = damage.damageType();
-                VRectBoundComponent targetPosition = damage.getTo().getComponent(VRectBoundComponent.class);
+                VRectBoundComponent targetPosition = damage.getTo().getEntity().getComponent(VRectBoundComponent.class);
                 if (targetPosition != null) {
                     targetPosition.getFaceCenter(tmpCenter);
                     damageValue.position.set(tmpCenter);
@@ -436,5 +438,9 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     @Override
     public void resetTime() {
 
+    }
+
+    public VActor getProtagonist() {
+        return protagonist;
     }
 }

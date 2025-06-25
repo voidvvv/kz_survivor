@@ -112,7 +112,7 @@ public class Slime extends MoveShapeBox2dActor {
                 BaseBattleFloat armor = otherBattleComp.getArmor();
                 BaseBattleFloat attack = thisBattleComp.getAttack();
 //                float damage = ((attack.finalVal + 10) / (armor.finalVal + 1));
-                battleContextComponent.getBattleContext().createDamage(this.getEntity(), otherEntity, DamageType.PHISICAL, attack.finalVal);
+                battleContextComponent.getBattleContext().createDamage(this, otherActor, DamageType.PHISICAL, attack.finalVal);
             }
 
         }

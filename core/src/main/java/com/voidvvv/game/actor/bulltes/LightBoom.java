@@ -114,7 +114,7 @@ public class LightBoom extends BaseBullet {
             BattleContextComponent battleContextComponent = battleContextComponentMapper.get(gameModeEntity);
             if (battleContextComponent != null && otherBattleComp != null && ownerComponent != null) {
                 BaseBattleFloat attack = ownerComponent.getAttack();
-                battleContextComponent.getBattleContext().createDamage(owner.getEntity(), otherEntity, DamageType.PHISICAL, 50 + attack.finalVal);
+                battleContextComponent.getBattleContext().createDamage(owner, otherActor, DamageType.PHISICAL, 50 + attack.finalVal);
             }
             getWorldContext().getWorld().resetVActor(this);
         }

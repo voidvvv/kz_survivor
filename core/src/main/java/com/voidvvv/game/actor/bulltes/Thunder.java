@@ -27,8 +27,8 @@ public class Thunder extends BaseBullet {
     public float damage = 1f;
     public static SimpleAnimateComponent simpleAnimateComponent;
     ThunderTimeListener thunderTimeListener;
-    Set<Entity> hitEntities = new HashSet<>();
-    Set<Entity> includeEntities = new HashSet<>();
+    Set<VActor> hitEntities = new HashSet<>();
+    Set<VActor> includeEntities = new HashSet<>();
     public static Thunder create() {
         Thunder obtain = Pools.obtain(Thunder.class);
         return obtain;
@@ -109,7 +109,7 @@ public class Thunder extends BaseBullet {
                 // enemy
                 && (campComponent != null && campComponent.getCampSign() != owner.getEntity().getComponent(CampComponent.class).getCampSign())
         ) {
-            includeEntities.add(otherEntity);
+            includeEntities.add(otherActor);
         }
 
     }
@@ -129,10 +129,10 @@ public class Thunder extends BaseBullet {
     }
 
     private void tryToDamageOther() {
-        Iterator<Entity> iterator = includeEntities.iterator();
+        Iterator<VActor> iterator = includeEntities.iterator();
         while (iterator.hasNext()) {
-            Entity e = iterator.next();
-            if (e.flags == 0) {
+            VActor e = iterator.next();
+            if (e.getEntity().flags == 0) {
                 iterator.remove();
             } else if (hitEntities.add(e)) {
                 // already hit
@@ -143,11 +143,11 @@ public class Thunder extends BaseBullet {
     }
 
 
-    private void damageTo(Entity e) {
+    private void damageTo(VActor e) {
         Entity gameModeEntity = Main.getInstance().getGameMode().getEntity();
         BattleContextComponent battleContextComponent = gameModeEntity.getComponent(BattleContextComponent.class);
 
-        battleContextComponent.getBattleContext().createDamage(owner.getEntity(), e, DamageType.PHISICAL, damage);
+        battleContextComponent.getBattleContext().createDamage(owner, e, DamageType.PHISICAL, damage);
 
     }
 

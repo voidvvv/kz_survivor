@@ -1,14 +1,15 @@
 package com.voidvvv.game.battle.events;
 
 import com.badlogic.ashley.core.Entity;
+import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.battle.BattleContext;
 
 public class DeadEvent implements BattleEvent{
     BattleContext battleContext;
-    Entity from;
-    Entity to;
+    VActor from;
+    VActor to;
 
-    public DeadEvent (Entity from) {
+    public DeadEvent (VActor from) {
         this.from = from;
     }
 
@@ -20,11 +21,11 @@ public class DeadEvent implements BattleEvent{
         this.battleContext = battleContext;
     }
 
-    public void setFrom(Entity from) {
+    public void setFrom(VActor from) {
         this.from = from;
     }
 
-    public void setTo(Entity to) {
+    public void setTo(VActor to) {
         this.to = to;
     }
 
@@ -34,12 +35,12 @@ public class DeadEvent implements BattleEvent{
     }
 
     @Override
-    public Entity getFrom() {
+    public VActor getFrom() {
         return from;
     }
 
     @Override
-    public Entity getTo() {
+    public VActor getTo() {
         return to;
     }
 
