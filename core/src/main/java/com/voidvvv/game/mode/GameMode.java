@@ -17,4 +17,6 @@ public interface GameMode extends Telegraph {
     Engine getEngine();
 
     void render();
+
+    void renderUI();
 }

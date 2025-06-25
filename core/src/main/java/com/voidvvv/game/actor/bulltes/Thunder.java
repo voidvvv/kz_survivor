@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.random.RandomGenerator;
 
 public class Thunder extends BaseBullet {
+    public float damage = 1f;
     public static SimpleAnimateComponent simpleAnimateComponent;
     ThunderTimeListener thunderTimeListener;
     Set<Entity> hitEntities = new HashSet<>();
@@ -114,8 +115,8 @@ public class Thunder extends BaseBullet {
     }
 
     class ThunderTimeListener implements TimeChangeListener {
-        public float descendingTime = 0.5f;
-        public float triggerTime = 0.5f;
+        public float descendingTime = 0.1f;
+        public float triggerTime = 0.9f;
         @Override
         public void onTimeChange(float delta, float oldTime, float newTime) {
             if (newTime >= (descendingTime + triggerTime)) {
@@ -146,7 +147,7 @@ public class Thunder extends BaseBullet {
         Entity gameModeEntity = Main.getInstance().getGameMode().getEntity();
         BattleContextComponent battleContextComponent = gameModeEntity.getComponent(BattleContextComponent.class);
 
-        battleContextComponent.getBattleContext().createDamage(owner.getEntity(), e, DamageType.PHISICAL, 200);
+        battleContextComponent.getBattleContext().createDamage(owner.getEntity(), e, DamageType.PHISICAL, damage);
 
     }
 

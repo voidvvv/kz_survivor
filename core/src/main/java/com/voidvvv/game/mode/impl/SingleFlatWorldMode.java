@@ -3,8 +3,6 @@ package com.voidvvv.game.mode.impl;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ai.msg.MessageManager;
@@ -14,17 +12,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
-import com.voidvvv.game.actor.ActorConstants;
-import com.voidvvv.game.actor.Alice;
-import com.voidvvv.game.actor.Bob;
-import com.voidvvv.game.actor.Slime;
-import com.voidvvv.game.actor.utils.ActorMetaData;
 import com.voidvvv.game.base.VRectBoundComponent;
-import com.voidvvv.game.base.world.VWorldActor;
-import com.voidvvv.game.base.world.components.VWorldActorComponent;
 import com.voidvvv.game.battle.*;
 import com.voidvvv.game.battle.events.BattleEvent;
 import com.voidvvv.game.battle.events.Damage;
@@ -70,7 +60,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     FlatWorldConfig config;
 
-    // stage to show game over
+    // UI
     Stage stage;
 
     UpgradeUIStage upgradeStage;
@@ -143,14 +133,14 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         entity = null;
 
         Player.PLAYERS[0].removeInput(playerInput);
-        MessageManager.getInstance().removeListener(this, MessageConstants.MSG_ACTOR_DEAD);
+        MessageManager.getInstance().removeListener(this, MessageConstants.MSG_BATTLE_EVENT);
 
     }
 
 //    TranscriptStageActor transcriptStageActor;
     private void otherInit() {
         // register message listener
-        MessageManager.getInstance().addListener(this, MessageConstants.MSG_ACTOR_DEAD);
+        MessageManager.getInstance().addListener(this, MessageConstants.MSG_BATTLE_EVENT);
 //        spawnSlime(config.birthPlace.x - 29f, config.birthPlace.y - 50f);
         damageSpriteBatchRender = new DamageSpriteBatchRender(engine);
         AssetManager assetManager = Main.getInstance().getAssetManager();
@@ -159,9 +149,6 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         stage = new Stage(Main.getInstance().getCameraManager().getScreenViewport()
             , Main.getInstance().getDrawManager().getBaseBatch());
         Main.getInstance().addInputProcessor(stage);
-//        transcriptStageActor = new TranscriptStageActor(skin, protagonist.getEntity());
-//        stage.addActor(transcriptStageActor);
-//        transcriptStageActor.setVisible(false);
         this.timeLeft = this.timeLimit;
 
         upgradeStage = new UpgradeUIStage(protagonist.getEntity(), () -> {
@@ -187,30 +174,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         entity = new Entity();
         baseBattleContext = new BaseBattleContext();
         damageValueComponent = new DamageValueComponent();
-        baseBattleContext.addGlobalListener(new BattleEventListener() {
-            @Override
-            public void afterPassiveEvent(BattleEvent event) {
-                Damage damage = ReflectUtil.convert(event, Damage.class);
-                if (damage != null) {
-                    DamageValue damageValue = new DamageValue();
-                    damageValue.damage = (int) damage.damageVal();
-                    damageValue.type = damage.damageType();
-                    VRectBoundComponent targetPosition = event.getTo().getComponent(VRectBoundComponent.class);
-                    if (targetPosition != null) {
-                        targetPosition.getFaceCenter(tmpCenter);
-                        damageValue.position.set(tmpCenter);
-                    }
-
-                    damageValueComponent.damageValues.add(damageValue);
-                }
-            }
-
-            @Override
-            public void afterActiveEvent(BattleEvent event) {
-
-            }
-        });
-        baseBattleContext.addGlobalListener(new DeadEventMessageSendListener());
+        baseBattleContext.addGlobalListener(new BattleEventMessageSendListener());
 
         BattleContextComponent obtain = Pools.obtain(BattleContextComponent.class);
         obtain.setBattleContext(baseBattleContext);
@@ -333,7 +297,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         flatWorld.viewPosition.lerp(position, 0.05f);
         context.getWorld().update(delta);
         engine.update(delta);
-        stage.act(delta);
+//        stage.act(delta);
 
         if (upgradeEventList!=null && !upgradeEventList.isEmpty()) {
             ExpComponent expComponent = upgradeEventList.pop().entity.getComponent(ExpComponent.class);
@@ -379,14 +343,23 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         if (timeLeft <= 0f) {
 
         }
+    }
+
+    @Override
+    public void renderUI() {
         if (upgrading) {
             upgradeStage.draw();
         }
+
+        // ui
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
     }
+
     InputProcessor originProcessor = null;
     @Override
     public boolean handleMessage(Telegram msg) {
-        if (msg.message == MessageConstants.MSG_ACTOR_DEAD) {
+        if (msg.message == MessageConstants.MSG_BATTLE_EVENT) {
             DeadEvent dead = ReflectUtil.convert(msg.extraInfo, DeadEvent.class);
             if (dead != null) {
                 Entity from = dead.getFrom();
@@ -406,6 +379,19 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
                         }
                     }
                 }
+            }
+            Damage damage = ReflectUtil.convert(msg.extraInfo, Damage.class);
+            if (damage != null) {
+                DamageValue damageValue = new DamageValue();
+                damageValue.damage = (int) damage.damageVal();
+                damageValue.type = damage.damageType();
+                VRectBoundComponent targetPosition = damage.getTo().getComponent(VRectBoundComponent.class);
+                if (targetPosition != null) {
+                    targetPosition.getFaceCenter(tmpCenter);
+                    damageValue.position.set(tmpCenter);
+                }
+
+                damageValueComponent.damageValues.add(damageValue);
             }
             return true;
         }

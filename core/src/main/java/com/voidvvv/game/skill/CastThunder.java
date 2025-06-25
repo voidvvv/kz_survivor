@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.bulltes.Thunder;
 import com.voidvvv.game.base.VRectBoundComponent;
@@ -62,6 +63,7 @@ public class CastThunder implements Skill{
                     Gdx.app.log("CastThunder", "Casting thunder on enemy: " + AssetUtils.nameOf(vWorldActor.getEntity()));
                     Thunder thunder = (Thunder) MetaDataActorPools.obtain("Thunder");
                     thunder.owner= owner();
+                    thunder.damage = 200;
                     Entity targetEntity = vWorldActor.getEntity();
                     VRectBoundComponent thunderPosition = thunder.getEntity().getComponent(VRectBoundComponent.class);
                     VRectBoundComponent targetPosition = targetEntity.getComponent(VRectBoundComponent.class);

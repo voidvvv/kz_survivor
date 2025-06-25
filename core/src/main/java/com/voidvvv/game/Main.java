@@ -41,6 +41,11 @@ public class Main extends Game {
 
     GameMode gameMode;
 
+    @Override
+    public void pause() {
+        super.pause();
+    }
+
     public GameMode getGameMode() {
         return gameMode;
     }

@@ -9,6 +9,9 @@ public class VRectBoundComponent extends VPositionComponent implements Component
     private float height; // y len
     private float length; // x len
 
+    /**
+     * bottom center
+     */
     public final Vector2 position = new Vector2();
 
     public float getWidth() {
