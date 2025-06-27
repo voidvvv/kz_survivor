@@ -24,6 +24,8 @@ public class SingleFlatWorldUI extends Actor implements Telegraph {
     VActor protagonist;
     float whiteHpPercent;
 
+    float rate = 0.05f; // The rate at which the white health bar decreases
+
     public SingleFlatWorldUI(Skin skin, SingleFlatWorldMode singleFlatWorldMode) {
         this.singleFlatWorldMode = singleFlatWorldMode;
         protagonist = singleFlatWorldMode.getProtagonist();
@@ -59,7 +61,7 @@ public class SingleFlatWorldUI extends Actor implements Telegraph {
         float finalVal = battle.getMaxHp().finalVal;
         float actualPercent = battle.getHp() / finalVal;
         if (whiteHpPercent > actualPercent) {
-            whiteHpPercent -= (delta * 0.05f);
+            whiteHpPercent -= (delta * rate);
         }
     }
 
@@ -74,10 +76,6 @@ public class SingleFlatWorldUI extends Actor implements Telegraph {
         shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.rect(x, y, width, height);
 
-        shapeRenderer.setColor(Color.YELLOW);
-        shapeRenderer.set(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.rect(x, y, width, height);
-
 
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
@@ -86,6 +84,10 @@ public class SingleFlatWorldUI extends Actor implements Telegraph {
         shapeRenderer.setColor(Color.RED);
         shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.rect(x, y, width * actualPercent, height);
+
+        shapeRenderer.setColor(Color.YELLOW);
+        shapeRenderer.set(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.rect(x, y, width, height);
     }
 
     @Override
