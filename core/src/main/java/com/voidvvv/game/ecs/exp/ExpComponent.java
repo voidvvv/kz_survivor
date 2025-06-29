@@ -6,7 +6,11 @@ import com.badlogic.gdx.utils.Pool;
 public class ExpComponent implements Component, Pool.Poolable {
     public float exp;
 
+    public float maxExp;
+
     public int level = 1;
+
+    public boolean main = false;
 
     @Override
     public void reset() {

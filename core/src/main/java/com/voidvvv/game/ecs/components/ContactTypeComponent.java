@@ -7,6 +7,8 @@ public class ContactTypeComponent implements Component, Pool.Poolable {
     public static final int CREATURE = 0;
     public static final int WALL = 1;
     public static final int BULLET = 2;
+
+    public static final int ITEM = 3;
     public int type;
 
     public ContactTypeComponent(int type) {

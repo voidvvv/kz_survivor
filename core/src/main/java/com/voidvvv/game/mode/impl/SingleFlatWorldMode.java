@@ -39,15 +39,13 @@ import com.voidvvv.game.mode.TimeLimitMode;
 import com.voidvvv.game.mode.VWorldContextGameMode;
 import com.voidvvv.game.player.Player;
 import com.voidvvv.game.player.PlayerInput;
-import com.voidvvv.game.utils.AssetConstants;
-import com.voidvvv.game.utils.MessageConstants;
-import com.voidvvv.game.utils.MetaDataActorPools;
-import com.voidvvv.game.utils.ReflectUtil;
+import com.voidvvv.game.utils.*;
 import com.voidvvv.game.ecs.system.render.DamageSpriteBatchRender;
 
 import java.util.*;
 
 public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode {
+    SingleFlatWorldModeConf conf;
     PlayerInput playerInput;
     WorldContext context;
     VFlatWorld flatWorld;
@@ -112,7 +110,16 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         initProtagonist();
 
         otherInit();
+        initConfig();
         gameover = false;
+    }
+
+    private void initConfig() {
+        if (conf != null) {
+            return;
+        }
+        SimpleFlatWorldConfParser parser = new SimpleFlatWorldConfParser();
+
     }
 
 
@@ -199,7 +206,12 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 //        engine.addSystem(debugRenderIteratorSystem);
 
         // autogenerate slime
-        engine.addSystem(new SimpleSlimeGenerateStrategy(context));
+        SimpleSlimeGenerateStrategy simpleSlimeGenerateStrategy = new SimpleSlimeGenerateStrategy(context);
+        simpleSlimeGenerateStrategy.setAfterProcessorSlime( slime -> {
+            slime.getEntity().add(new ExpDropComponent(20f));
+
+        });
+        engine.addSystem(simpleSlimeGenerateStrategy);
         // behavior tree
         engine.addSystem(new BehaviorTreeUpdateSystem(0.15f));
 

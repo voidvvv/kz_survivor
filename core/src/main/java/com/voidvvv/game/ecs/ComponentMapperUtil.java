@@ -1,12 +1,17 @@
 package com.voidvvv.game.ecs;
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
 import com.voidvvv.game.battle.BattleComponent;
 import com.voidvvv.game.battle.DefaultBattleComponent;
 import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.ecs.components.BattleContextComponent;
 import com.voidvvv.game.ecs.components.BattleEventListenerComponent;
 import com.voidvvv.game.ecs.components.CampContextComponent;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ComponentMapperUtil {
     public static final ComponentMapper<BattleComponent> battleMapper = ComponentMapper.getFor(BattleComponent.class);
@@ -26,4 +31,13 @@ public class ComponentMapperUtil {
     public static final ComponentMapper<CampContextComponent> campContextComponentMapper = ComponentMapper.getFor(CampContextComponent.class);
 
     public static final ComponentMapper<com.voidvvv.game.ecs.components.CampComponent> campComponentMapper = ComponentMapper.getFor(com.voidvvv.game.ecs.components.CampComponent.class);
+    static Map<Class, ComponentMapper> componentMapperMap = new HashMap<>();
+    public static <T extends Component> T getComponentFor(Class<T> clazz, Entity entity) {
+        ComponentMapper componentMapper = componentMapperMap.get(clazz);
+        if (componentMapper == null) {
+            componentMapper = ComponentMapper.getFor(clazz);
+            componentMapperMap.put(clazz, componentMapper);
+        }
+        return (T) componentMapper.get(entity);
+    }
 }

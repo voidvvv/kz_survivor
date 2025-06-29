@@ -35,6 +35,8 @@ import com.voidvvv.game.utils.MetaDataActorPools;
 public class SimpleSlimeGenerateStrategy extends IntervalSystem {
     Family family;
     WorldContext worldContext;
+
+    AfterProcessorSlime afterProcessorSlime;
     public SimpleSlimeGenerateStrategy(WorldContext worldContext) {
         super(0.5f);
         family = Family.all(EnemySignComponent.class).get();
@@ -62,6 +64,9 @@ public class SimpleSlimeGenerateStrategy extends IntervalSystem {
         BehaviorTreeComponent btComponent = Pools.obtain(BehaviorTreeComponent.class);
         btComponent.tree = new BehaviorTree(new BasicAttackTask(), slime);
         slime.getEntity().add(btComponent);
+        if (afterProcessorSlime != null) {
+            afterProcessorSlime.process(slime);
+        }
     }
 
 
@@ -99,4 +104,12 @@ public class SimpleSlimeGenerateStrategy extends IntervalSystem {
         return slime;
     }
 
+    public void setAfterProcessorSlime(AfterProcessorSlime afterProcessorSlime) {
+        this.afterProcessorSlime = afterProcessorSlime;
+    }
+
+    @FunctionalInterface
+    public static interface AfterProcessorSlime {
+        void process(Slime slime);
+    }
 }

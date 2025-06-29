@@ -40,6 +40,7 @@ public class BaseBattleContext implements BattleContext {
 
     @Override
     public void addEvent(BattleEvent battleEvent) {
+        battleEvent.setBattleContext(this);
         if (!updating)
             battleEvents.add(battleEvent);
         else

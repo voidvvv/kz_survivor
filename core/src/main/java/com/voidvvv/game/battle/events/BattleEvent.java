@@ -14,5 +14,7 @@ public interface BattleEvent extends VEvent {
      */
     BattleContext getContext();
 
+    void setBattleContext(BattleContext battleContext);
+
 
 }

@@ -15,7 +15,7 @@ public class MessageConstants {
 //    public static final int MSG_ACTOR_DEAD;
 
     public static final int MSG_BATTLE_EVENT;
-
+    public static final int MSG_LEVEL_UP;
     static {
         int s = 1;
 
@@ -30,5 +30,6 @@ public class MessageConstants {
         MSG_GAME_OVER = s++;
 //        MSG_ACTOR_DEAD = s++;
         MSG_BATTLE_EVENT = s++;
+        MSG_LEVEL_UP = s++;
     }
 }

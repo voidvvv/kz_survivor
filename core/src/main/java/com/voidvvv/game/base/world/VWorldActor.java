@@ -21,7 +21,6 @@ import java.util.List;
 
 public class VWorldActor implements VActor {
     StateMachineComponent stateMachineComponent;
-    List<Class<? extends Component>> needToBeUnbind = new ArrayList<>();
     private boolean dead;
 
     protected Entity entity = new Entity();

@@ -47,7 +47,7 @@ public class SingleFlatWorldUI extends Actor implements Telegraph {
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.setAutoShapeType(true);
         shapeRenderer.begin();
-        drawHealth(shapeRenderer, screenWidth * 0.05f, screenHeight * 0.9f, screenWidth * 0.9f, screenHeight * 0.05f);
+        drawHealth(shapeRenderer, screenWidth * 0.05f, screenHeight * 0.9f, screenWidth * 0.2f, screenHeight * 0.02f);
         shapeRenderer.end();
         batch.begin();
     }
