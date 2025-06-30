@@ -25,6 +25,7 @@ import com.voidvvv.game.camp.CampContext;
 import com.voidvvv.game.ecs.components.*;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.WorldContext;
+import com.voidvvv.game.ecs.components.sign.CouldPickOther;
 import com.voidvvv.game.ecs.exp.ExpComponent;
 import com.voidvvv.game.ecs.exp.ExpComponentSystem;
 import com.voidvvv.game.ecs.system.*;
@@ -209,7 +210,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         engine.addSystem(new TimeUpdateSystem());
         engine.addSystem(expComponentSystem);
 //        engine.addSystem(debugRenderIteratorSystem);
-
+        engine.addSystem(pickUpdateSystem);
         // autogenerate slime
         SimpleSlimeGenerateStrategy simpleSlimeGenerateStrategy = new SimpleSlimeGenerateStrategy(context);
         simpleSlimeGenerateStrategy.setAfterProcessorSlime( slime -> {
@@ -223,16 +224,18 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         engine.addSystem(new ConstantCastSkill());
         moveMapper = ComponentMapper.getFor(MoveComponent.class);
     }
-
+    PickUpdateSystem pickUpdateSystem;
     private void initsystems() {
         expComponentSystem = new ExpComponentSystem((stone) -> {
             VActorSpawnHelper helper = new VActorSpawnHelper();
-            Vector2 position = stone.getEntity().getComponent(VRectBoundComponent.class).position;
+            Vector2 position = stone.getEntity().getComponent(VRectBoundComponent.class).bottomcenter;
             helper.sensor = true;
             helper.initX = position.x;
             helper.initY = position.y;
             this.getContext().getWorld().spawnVActor(()-> stone, helper);
         });
+
+        pickUpdateSystem = new PickUpdateSystem(flatWorld.getWorldContext());
     }
 
     ComponentMapper<MoveComponent> moveMapper;
@@ -297,6 +300,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
             });
         }
         protagonist.getEntity().add(Pools.obtain(ExpComponent.class));
+        protagonist.getEntity().add(new CouldPickOther());
 
     }
 
@@ -323,7 +327,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
             return;
         }
         this.setTimeLeft(getTimeLeft() - delta);
-        Vector2 position = protagonist.getEntity().getComponent(VRectBoundComponent.class).position;
+        Vector2 position = protagonist.getEntity().getComponent(VRectBoundComponent.class).bottomcenter;
         flatWorld.viewPosition.lerp(position, 0.05f);
         context.getWorld().update(delta);
         engine.update(delta);

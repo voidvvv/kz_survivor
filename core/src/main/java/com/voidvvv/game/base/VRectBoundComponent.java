@@ -12,7 +12,7 @@ public class VRectBoundComponent extends VPositionComponent implements Component
     /**
      * bottom center
      */
-    public final Vector2 position = new Vector2();
+    public final Vector2 bottomcenter = new Vector2();
 
     public float getWidth() {
         return width;
@@ -49,8 +49,8 @@ public class VRectBoundComponent extends VPositionComponent implements Component
     }
 
     public void getFaceCenter (Vector2 v2) {
-        float centerX = this.position.x;
-        float centerY = this.position.y + this.getHeight()/2f;
+        float centerX = this.bottomcenter.x;
+        float centerY = this.bottomcenter.y + this.getHeight()/2f;
         v2.set(centerX, centerY);
     }
 
@@ -60,7 +60,7 @@ public class VRectBoundComponent extends VPositionComponent implements Component
                 "width=" + width +
                 ", height=" + height +
                 ", length=" + length +
-                ", position=" + position +
+                ", position=" + bottomcenter +
                 '}';
     }
 
@@ -77,6 +77,6 @@ public class VRectBoundComponent extends VPositionComponent implements Component
         width = 0;
         height = 0;
         length = 0;
-        position.set(0, 0);
+        bottomcenter.set(0, 0);
     }
 }

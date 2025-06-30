@@ -4,19 +4,11 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.voidvvv.game.base.MoveChangeListener;
 import com.voidvvv.game.base.VRectBoundComponent;
-import com.voidvvv.game.ecs.components.MoveChangeListenerComponent;
 import com.voidvvv.game.ecs.components.MoveComponent;
-import com.voidvvv.game.box2d.CollisionPair;
-import com.voidvvv.game.box2d.ContactPairListener;
 import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.utils.Box2dUnitConverter;
-
-import java.util.List;
 
 public class Box2dMoveSystem extends IteratingSystem {
     public static final String TAG = Box2dMoveSystem.class.getSimpleName();
@@ -51,7 +43,7 @@ public class Box2dMoveSystem extends IteratingSystem {
 //            dealWithContact(box2dComponent);
 //        }
         if (vRectBoundComponent != null) {
-            vRectBoundComponent.position.set(Box2dUnitConverter.box2dToWorld(box2dComponent.getFlatBody().getPosition()));
+            vRectBoundComponent.bottomcenter.set(Box2dUnitConverter.box2dToWorld(box2dComponent.getFlatBody().getPosition()));
         }
 
 

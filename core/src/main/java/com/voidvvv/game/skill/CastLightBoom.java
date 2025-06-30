@@ -1,16 +1,13 @@
 package com.voidvvv.game.skill;
 
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.bulltes.LightBoom;
-import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
-import com.voidvvv.game.base.world.VWorld;
 import com.voidvvv.game.base.world.VWorldActor;
 import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.ecs.components.MoveComponent;
@@ -19,7 +16,6 @@ import com.voidvvv.game.utils.MetaDataActorPools;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
 
 
 public class CastLightBoom implements Skill, Pool.Poolable {
@@ -95,8 +91,8 @@ public class CastLightBoom implements Skill, Pool.Poolable {
         VActorSpawnHelper helper = Pools.obtain(VActorSpawnHelper.class);
         VRectBoundComponent ownerPosition = owner.getEntity().getComponent(VRectBoundComponent.class);
         if (ownerPosition != null) {
-            helper.initX = ownerPosition.position.x;
-            helper.initY = ownerPosition.position.y;
+            helper.initX = ownerPosition.bottomcenter.x;
+            helper.initY = ownerPosition.bottomcenter.y;
         }
         lightBoom.setWorldContext(this.getWorldContext());
         lightBoom.owner = this.getOwner();

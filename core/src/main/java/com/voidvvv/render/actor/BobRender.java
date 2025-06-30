@@ -1,12 +1,10 @@
 package com.voidvvv.render.actor;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.Bob;
 import com.voidvvv.game.base.VActor;
@@ -104,8 +102,8 @@ public class BobRender implements VActorRender{
             baseBatch.setProjectionMatrix(Main.getInstance().getCameraManager().getMainCamera().combined);
             baseBatch.begin();
 
-            float x = rectBoundComponent.position.x - keyFrame.getRegionWidth()/2f;
-            float y = rectBoundComponent.position.y;
+            float x = rectBoundComponent.bottomcenter.x - keyFrame.getRegionWidth()/2f;
+            float y = rectBoundComponent.bottomcenter.y;
             baseBatch.draw(keyFrame, x, y);
             baseBatch.end();
         }

@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.bulltes.Thunder;
 import com.voidvvv.game.base.VRectBoundComponent;
@@ -12,7 +11,6 @@ import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.VWorldActor;
 import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.ecs.ComponentMapperUtil;
-import com.voidvvv.game.ecs.components.CampComponent;
 import com.voidvvv.game.ecs.components.CampContextComponent;
 import com.voidvvv.game.utils.AssetUtils;
 import com.voidvvv.game.utils.MetaDataActorPools;
@@ -44,7 +42,7 @@ public class CastThunder implements Skill{
         CampContextComponent ccc = ComponentMapperUtil.campContextComponentMapper.get(Main.getInstance().getGameMode().getEntity());
         if (ccc != null) {
             VRectBoundComponent positionCompo = thunderOwner.getComponent(VRectBoundComponent.class);
-            Vector2 position = positionCompo.position;
+            Vector2 position = positionCompo.bottomcenter;
             Collection<VWorldActor> all = getWorldContext().getWorld().findAllVActor(position.x - range / 2f, position.y - range / 2f, position.x + range / 2f, position.y + range / 2f);
             if (all != null && !all.isEmpty()) {
                 // pick up one enemy entity as target
@@ -53,8 +51,8 @@ public class CastThunder implements Skill{
                     .sorted((a,b) -> {
                         VRectBoundComponent aPosition = a.getEntity().getComponent(VRectBoundComponent.class);
                         VRectBoundComponent bPosition = b.getEntity().getComponent(VRectBoundComponent.class);
-                        float aDistance = aPosition.position.dst(position);
-                        float bDistance = bPosition.position.dst(position);
+                        float aDistance = aPosition.bottomcenter.dst(position);
+                        float bDistance = bPosition.bottomcenter.dst(position);
                         return Float.compare(aDistance, bDistance);
                     })
                     .findFirst().orElse(null);
@@ -67,10 +65,10 @@ public class CastThunder implements Skill{
                     Entity targetEntity = vWorldActor.getEntity();
                     VRectBoundComponent thunderPosition = thunder.getEntity().getComponent(VRectBoundComponent.class);
                     VRectBoundComponent targetPosition = targetEntity.getComponent(VRectBoundComponent.class);
-                    thunderPosition.position.set(targetPosition.position);
+                    thunderPosition.bottomcenter.set(targetPosition.bottomcenter);
                     VActorSpawnHelper helper = new VActorSpawnHelper();
-                    helper.initX = thunderPosition.position.x;
-                    helper.initY = thunderPosition.position.y;
+                    helper.initX = thunderPosition.bottomcenter.x;
+                    helper.initY = thunderPosition.bottomcenter.y;
                     helper.bodyType = BodyDef.BodyType.StaticBody;
                     helper.sensor = true;
                     Main.getInstance().getGameMode().getEngine().addEntity(thunder.getEntity());

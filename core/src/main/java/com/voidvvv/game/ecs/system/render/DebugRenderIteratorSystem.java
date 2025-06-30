@@ -2,19 +2,14 @@ package com.voidvvv.game.ecs.system.render;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.base.VRectBoundComponent;
 
-import java.io.IOException;
 import java.util.Properties;
 
 public class DebugRenderIteratorSystem{
@@ -69,13 +64,13 @@ public class DebugRenderIteratorSystem{
             return;
         }
         shapeRenderer.setColor(bottomColor);
-        shapeRenderer.rect(rectBoundComponent.position.x - rectBoundComponent.getLength() / 2f,
-            rectBoundComponent.position.y - rectBoundComponent.getWidth() / 2f,
+        shapeRenderer.rect(rectBoundComponent.bottomcenter.x - rectBoundComponent.getLength() / 2f,
+            rectBoundComponent.bottomcenter.y - rectBoundComponent.getWidth() / 2f,
             rectBoundComponent.getLength(), rectBoundComponent.getWidth());
 
         shapeRenderer.setColor(faceColor);
-        shapeRenderer.rect(rectBoundComponent.position.x - rectBoundComponent.getLength() / 2f,
-            rectBoundComponent.position.y,
+        shapeRenderer.rect(rectBoundComponent.bottomcenter.x - rectBoundComponent.getLength() / 2f,
+            rectBoundComponent.bottomcenter.y,
             rectBoundComponent.getLength(), rectBoundComponent.getHeight());
     }
 

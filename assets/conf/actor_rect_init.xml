@@ -91,9 +91,9 @@
             <height>10.0</height>
             <length>75.0</length>
         </rect-props>
-        <!--        <move-props>-->
-        <!--            <speed>350</speed>-->
-        <!--        </move-props>-->
+                <move-props>
+                    <speed>350</speed>
+                </move-props>
     </actor>
 
 </users-conf>

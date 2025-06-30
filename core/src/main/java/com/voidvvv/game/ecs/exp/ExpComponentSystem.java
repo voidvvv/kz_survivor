@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.items.ExpStone;
-import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.ecs.ComponentMapperUtil;
 import com.voidvvv.game.ecs.components.ExpDropComponent;
@@ -67,7 +66,7 @@ public class ExpComponentSystem extends IteratingSystem {
             return null;
         }
         VRectBoundComponent expPosition = ComponentMapperUtil.getComponentFor(VRectBoundComponent.class, expStone.getEntity());
-        expPosition.position.set(targetPosition.position);
+        expPosition.bottomcenter.set(targetPosition.bottomcenter);
         // add render component for exp stone
         expStone.getEntity().add(exp01_animateComponent);
         if (this.expAfterProcessor != null) {

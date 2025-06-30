@@ -56,8 +56,8 @@ public class BasicAttackTask extends LeafTask<VActor> {
         VRectBoundComponent thisPosition = thisEntity.getComponent(VRectBoundComponent.class);
         MoveComponent thisMovement = thisEntity.getComponent(MoveComponent.class);
         thisMovement.vel.set(
-                targetPosition.position.x - thisPosition.position.x,
-                targetPosition.position.y - thisPosition.position.y
+                targetPosition.bottomcenter.x - thisPosition.bottomcenter.x,
+                targetPosition.bottomcenter.y - thisPosition.bottomcenter.y
         );
 
         return Status.RUNNING;

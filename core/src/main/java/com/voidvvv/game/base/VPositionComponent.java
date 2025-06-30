@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.voidvvv.game.base.components.VComponent;
 
 public class VPositionComponent implements VComponent {
-    protected Vector3 position;
+    protected Vector3 position = new Vector3();
 
     public Vector3 getPosition() {
         return position;
