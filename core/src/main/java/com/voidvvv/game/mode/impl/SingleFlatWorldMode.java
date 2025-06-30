@@ -26,6 +26,7 @@ import com.voidvvv.game.ecs.components.*;
 import com.voidvvv.game.base.world.VActorSpawnHelper;
 import com.voidvvv.game.base.world.WorldContext;
 import com.voidvvv.game.ecs.exp.ExpComponent;
+import com.voidvvv.game.ecs.exp.ExpComponentSystem;
 import com.voidvvv.game.ecs.system.*;
 import com.voidvvv.game.ecs.system.debug.ConstantCastSkill;
 import com.voidvvv.game.ecs.system.render.DebugRenderIteratorSystem;
@@ -65,6 +66,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     UpgradeUIStage upgradeStage;
 
     Deque<UpgradeEvent> upgradeEventList = new ArrayDeque<>();
+
+    ExpComponentSystem expComponentSystem;
 
 
     public SingleFlatWorldMode() {
@@ -178,6 +181,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     DebugRenderIteratorSystem debugRenderIteratorSystem = new DebugRenderIteratorSystem();
     Vector2 tmpCenter = new Vector2();
     private void initECS() {
+        initsystems();
         engine = new Engine();
         debugRenderIteratorSystem.setEngine(engine);
         entity = new Entity();
@@ -203,6 +207,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 //        engine.addSystem(new EntityRenderSystem());
         engine.addSystem(new VWorldActorManageSystem());
         engine.addSystem(new TimeUpdateSystem());
+        engine.addSystem(expComponentSystem);
 //        engine.addSystem(debugRenderIteratorSystem);
 
         // autogenerate slime
@@ -217,6 +222,17 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
         engine.addSystem(new ConstantCastSkill());
         moveMapper = ComponentMapper.getFor(MoveComponent.class);
+    }
+
+    private void initsystems() {
+        expComponentSystem = new ExpComponentSystem((stone) -> {
+            VActorSpawnHelper helper = new VActorSpawnHelper();
+            Vector2 position = stone.getEntity().getComponent(VRectBoundComponent.class).position;
+            helper.sensor = true;
+            helper.initX = position.x;
+            helper.initY = position.y;
+            this.getContext().getWorld().spawnVActor(()-> stone, helper);
+        });
     }
 
     ComponentMapper<MoveComponent> moveMapper;
@@ -383,15 +399,16 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
                     if (transcript != null) {
                         transcript.transcript.totalKills += 1;
                     }
-                    // update exp
-                    ExpComponent expComponent = protagonist.getEntity().getComponent(ExpComponent.class);
-                    if (expComponent != null) {
-                        expComponent.exp += 10; // todo compute exp by dead enemy
-                        if (expComponent.exp >= expComponent.level * 5000f) {
-                            UpgradeEvent ue = new UpgradeEvent(protagonist.getEntity());
-                            upgradeEventList.push(ue);
-                        }
-                    }
+//                    // update exp
+//                    ExpComponent expComponent = protagonist.getEntity().getComponent(ExpComponent.class);
+//                    if (expComponent != null) {
+//                        expComponent.exp += 10; // todo compute exp by dead enemy
+//                        if (expComponent.exp >= expComponent.level * 5000f) {
+//                            UpgradeEvent ue = new UpgradeEvent(protagonist.getEntity());
+//                            upgradeEventList.push(ue);
+//                        }
+//                    }
+                    expComponentSystem.generateExpStone(from);
                 }
             }
             Damage damage = ReflectUtil.convert(msg.extraInfo, Damage.class);

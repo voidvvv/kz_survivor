@@ -15,8 +15,8 @@ public class DropItem extends VWorldActor {
         ContactTypeComponent contactType = Pools.obtain(ContactTypeComponent.class);
         contactType.type = ContactTypeComponent.ITEM;
         this.entity.add(contactType);
-        this.entity.add(Pools.obtain(MoveComponent.class));
-        this.entity.add(Pools.obtain(VRectBoundComponent.class));
+//        this.entity.add(Pools.obtain(MoveComponent.class));
+//        this.entity.add(Pools.obtain(VRectaaaaaaBoundComponent.class));
         this.entity.add(new DropSignComponent());
     }
 }

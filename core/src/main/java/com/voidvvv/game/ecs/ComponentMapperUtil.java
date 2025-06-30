@@ -33,6 +33,9 @@ public class ComponentMapperUtil {
     public static final ComponentMapper<com.voidvvv.game.ecs.components.CampComponent> campComponentMapper = ComponentMapper.getFor(com.voidvvv.game.ecs.components.CampComponent.class);
     static Map<Class, ComponentMapper> componentMapperMap = new HashMap<>();
     public static <T extends Component> T getComponentFor(Class<T> clazz, Entity entity) {
+        if (entity == null) {
+            return null;
+        }
         ComponentMapper componentMapper = componentMapperMap.get(clazz);
         if (componentMapper == null) {
             componentMapper = ComponentMapper.getFor(clazz);

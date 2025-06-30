@@ -150,9 +150,7 @@ public class VFlatWorld implements VWorld {
     public <T extends VWorldActor> T spawnVActor(Supplier<T> actorSup, VActorSpawnHelper helper) {
         T actor = actorSup.get();
         actor.setWorldContext(worldContext);
-        if (!VFlatWorldActor.class.isAssignableFrom(actor.getClass())) {
-            return actor;
-        }
+
         initBox2dContentForActor(actor, helper);
         actorComponent.addActor(actor);
         return actor;
@@ -160,7 +158,7 @@ public class VFlatWorld implements VWorld {
     ComponentMapper<VBox2dComponent> box2dMapper;
     ComponentMapper<VRectBoundComponent> rectBoundComponentComponentMapper;
     private <T extends VWorldActor> void initBox2dContentForActor(T actor, VActorSpawnHelper helper) {
-        VFlatWorldActor flatWorldActor = (VFlatWorldActor) actor;
+        VWorldActor flatWorldActor =  actor;
         Entity entity = flatWorldActor.getEntity();
         // generate box2d related
         BodyDef bd = new BodyDef();

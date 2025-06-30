@@ -18,6 +18,7 @@
             <speed>200</speed>
         </move-props>
     </actor>
+<!--    -->
     <actor>
         <name>Alice</name>
         <type>com.voidvvv.game.actor.Alice</type>
@@ -80,6 +81,19 @@
 <!--        <move-props>-->
 <!--            <speed>350</speed>-->
 <!--        </move-props>-->
+    </actor>
+
+    <actor>
+        <name>ExpStone</name>
+        <type>com.voidvvv.game.actor.items.ExpStone</type>
+        <rect-props>
+            <width>10.0</width>
+            <height>10.0</height>
+            <length>75.0</length>
+        </rect-props>
+        <!--        <move-props>-->
+        <!--            <speed>350</speed>-->
+        <!--        </move-props>-->
     </actor>
 
 </users-conf>

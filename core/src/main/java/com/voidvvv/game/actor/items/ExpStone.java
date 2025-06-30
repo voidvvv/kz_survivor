@@ -2,7 +2,9 @@ package com.voidvvv.game.actor.items;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
+import com.voidvvv.game.actor.Bob;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.battle.events.ExpGetEvent;
 import com.voidvvv.game.box2d.CollisionPair;
@@ -29,6 +31,11 @@ public class ExpStone extends DropItem {
         this.getEntity().add(vBox2dComponent);
         vBox2dComponent.addContactPairListener(this::contact);
         // Additional initialization for ExpStone can be added here
+    }
+
+    public static ExpStone create() {
+        ExpStone obtain = Pools.obtain(ExpStone.class);
+        return obtain;
     }
 
     @Override
@@ -64,9 +71,11 @@ public class ExpStone extends DropItem {
                     ComponentMapperUtil.getComponentFor(BattleContextComponent.class, gameModeEntity)
                             .getBattleContext()
                             .addEvent(expGetEvent);
+                    picked = true;
+                    // todo play exp picked sound
+                    getWorldContext().getWorld().resetVActor(this);
                 }
-                picked = true;
-                getWorldContext().getWorld().resetVActor(this);
+
             }
         } else {
             // Logic when the contact pair is destroyed
@@ -78,5 +87,13 @@ public class ExpStone extends DropItem {
     public void reset() {
         super.reset();
         // Reset logic specific to ExpStone can be added here
+    }
+
+    public float getExp() {
+        return exp;
+    }
+
+    public void setExp(float exp) {
+        this.exp = exp;
     }
 }
