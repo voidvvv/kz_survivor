@@ -87,9 +87,9 @@
         <name>ExpStone</name>
         <type>com.voidvvv.game.actor.items.ExpStone</type>
         <rect-props>
-            <width>10.0</width>
-            <height>10.0</height>
-            <length>75.0</length>
+            <width>12.0</width>
+            <height>12.0</height>
+            <length>12.0</length>
         </rect-props>
                 <move-props>
                     <speed>350</speed>

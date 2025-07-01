@@ -58,7 +58,7 @@ public class ExpStone extends DropItem {
             Vector2 position = rect.bottomcenter;
             dir.x = position.x - thisRect.bottomcenter.x;
             dir.y = position.y - thisRect.bottomcenter.y;
-            setSpeed(300f);
+//            setSpeed(300f);
 
         } else {
             setSpeed(0f);
@@ -106,6 +106,8 @@ public class ExpStone extends DropItem {
                     // todo play exp picked sound
                     Gdx.app.log("ExpStone", "Picked up exp stone with exp: " + exp);
                     getWorldContext().getWorld().resetVActor(this);
+                }else {
+                    Gdx.app.log("ExpStone", "Target does not have ExpComponent or is not the main target.");
                 }
 
             }
