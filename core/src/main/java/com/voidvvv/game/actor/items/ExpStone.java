@@ -17,6 +17,7 @@ import com.voidvvv.game.ecs.components.MoveComponent;
 import com.voidvvv.game.ecs.components.NameComponent;
 import com.voidvvv.game.ecs.components.sign.DropSignComponent;
 import com.voidvvv.game.ecs.exp.ExpComponent;
+import com.voidvvv.game.utils.AssetUtils;
 import com.voidvvv.game.utils.ReflectUtil;
 
 public class ExpStone extends DropItem {
@@ -58,7 +59,7 @@ public class ExpStone extends DropItem {
             Vector2 position = rect.bottomcenter;
             dir.x = position.x - thisRect.bottomcenter.x;
             dir.y = position.y - thisRect.bottomcenter.y;
-//            setSpeed(300f);
+            setSpeed(300f);
 
         } else {
             setSpeed(0f);
@@ -93,7 +94,8 @@ public class ExpStone extends DropItem {
                     // Ignore contact with other actors if the target is already set
                     return;
                 }
-                ExpComponent targetExpComp = ComponentMapperUtil.getComponentFor(ExpComponent.class, target);
+                // this should be assigned to other entity, not target entity!!!
+                ExpComponent targetExpComp = ComponentMapperUtil.getComponentFor(ExpComponent.class, otherActor.getEntity());
                 if (targetExpComp != null && targetExpComp.main) {
                     Entity gameModeEntity = Main.getInstance().getGameMode().getEntity();
                     ExpGetEvent expGetEvent = new ExpGetEvent();
@@ -107,7 +109,7 @@ public class ExpStone extends DropItem {
                     Gdx.app.log("ExpStone", "Picked up exp stone with exp: " + exp);
                     getWorldContext().getWorld().resetVActor(this);
                 }else {
-                    Gdx.app.log("ExpStone", "Target does not have ExpComponent or is not the main target.");
+                    Gdx.app.log("ExpStone", "Target does not have ExpComponent or is not the main target." + AssetUtils.nameOf(target));
                 }
 
             }

@@ -86,7 +86,7 @@ public class VWorldActor implements VActor {
     protected void unload() {
         ImmutableArray<Component> components = entity.getComponents();
         String name = AssetUtils.nameOf(entity);
-        Gdx.app.log("VWorldActor", "unload: " + name + " _ " +  entity);
+//        Gdx.app.log("VWorldActor", "unload: " + name + " _ " +  entity);
         for (int i = 0; i < components.size(); i++) {
             Component component = components.get(i);
             Pools.free(component);

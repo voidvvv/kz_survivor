@@ -71,7 +71,7 @@ public class SimpleSlimeGenerateStrategy extends IntervalSystem {
 
 
     public Slime spawnSlime (float x, float y) {
-        Gdx.app.log("SimpleSlimeGenerateStrategy", "spawn slime at : " + x + " " + y);
+//        Gdx.app.log("SimpleSlimeGenerateStrategy", "spawn slime at : " + x + " " + y);
         Slime slime = (Slime) MetaDataActorPools.obtain("Slime");
         VActorSpawnHelper helper = new VActorSpawnHelper();
         helper.initX = x;
@@ -93,7 +93,7 @@ public class SimpleSlimeGenerateStrategy extends IntervalSystem {
                 public void afterActiveEvent(BattleEvent event) {
                     if (DeadEvent.class.isAssignableFrom(event.getClass())) {
                         // this actor dead
-                        Gdx.app.log("SimpleSlimeGenerateStrategy", "dead slime : " + slime.getEntity());
+//                        Gdx.app.log("SimpleSlimeGenerateStrategy", "dead slime : " + slime.getEntity());
                         worldContext.getWorld().resetVActor(slime);
                     }
                 }
