@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
+import com.voidvvv.game.actor.items.ExpStone;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.battle.*;
@@ -152,7 +153,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 //    TranscriptStageActor transcriptStageActor;
     private void otherInit() {
         // register message listener
-        MessageManager.getInstance().addListener(this, MessageConstants.MSG_BATTLE_EVENT);
+        registListener();
 //        spawnSlime(config.birthPlace.x - 29f, config.birthPlace.y - 50f);
         damageSpriteBatchRender = new DamageSpriteBatchRender(engine);
         AssetManager assetManager = Main.getInstance().getAssetManager();
@@ -176,6 +177,11 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
             Main.getInstance().getCameraManager().getScreenViewport());
 
 
+    }
+
+    private void registListener() {
+        MessageManager.getInstance().addListener(this, MessageConstants.MSG_BATTLE_EVENT);
+        MessageManager.getInstance().addListener(this, MessageConstants.MSG_LEVEL_UP);
     }
 
     DamageValueComponent damageValueComponent;
@@ -232,6 +238,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
             helper.sensor = true;
             helper.initX = position.x;
             helper.initY = position.y;
+            engine.addEntity(stone.getEntity());
             this.getContext().getWorld().spawnVActor(()-> stone, helper);
         });
 
@@ -299,7 +306,9 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
                 }
             });
         }
-        protagonist.getEntity().add(Pools.obtain(ExpComponent.class));
+        ExpComponent expComponent = Pools.obtain(ExpComponent.class);
+        expComponent.main = true;
+        protagonist.getEntity().add(expComponent);
         protagonist.getEntity().add(new CouldPickOther());
 
     }
@@ -393,8 +402,9 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     InputProcessor originProcessor = null;
     @Override
     public boolean handleMessage(Telegram msg) {
+        Object extraInfo = msg.extraInfo;
         if (msg.message == MessageConstants.MSG_BATTLE_EVENT) {
-            DeadEvent dead = ReflectUtil.convert(msg.extraInfo, DeadEvent.class);
+            DeadEvent dead = ReflectUtil.convert(extraInfo, DeadEvent.class);
             if (dead != null) {
                 Entity from = dead.getFrom().getEntity();
                 if (from != null && from != protagonist.getEntity()) {
@@ -412,10 +422,10 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 //                            upgradeEventList.push(ue);
 //                        }
 //                    }
-                    expComponentSystem.generateExpStone(from);
+                    ExpStone expStone = expComponentSystem.generateExpStone(from);
                 }
             }
-            Damage damage = ReflectUtil.convert(msg.extraInfo, Damage.class);
+            Damage damage = ReflectUtil.convert(extraInfo, Damage.class);
             if (damage != null) {
                 DamageValue damageValue = new DamageValue();
                 damageValue.damage = (int) damage.damageVal();
@@ -430,8 +440,15 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
             }
             return true;
         }
-
-
+        else if (msg.message == MessageConstants.MSG_LEVEL_UP) {
+            UpgradeEvent upgrade = ReflectUtil.convert(extraInfo, UpgradeEvent.class);
+            if (upgrade != null) {
+                Entity upgradeEntity = upgrade.entity;
+                if (protagonist.getEntity() == upgradeEntity) {
+                    upgradeEventList.push(upgrade);
+                }
+            }
+        }
         return false;
     }
 

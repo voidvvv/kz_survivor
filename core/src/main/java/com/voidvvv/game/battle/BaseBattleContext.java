@@ -61,7 +61,10 @@ public class BaseBattleContext implements BattleContext {
             VActor from = event.getFrom();
             VActor to = event.getTo();
             event.apply();
-            BattleEventListenerComponent fromListener = ComponentMapperUtil.eventListenerComponentComponentMapper.get(from.getEntity());
+            BattleEventListenerComponent fromListener = null;
+            if (from != null) {
+                fromListener = ComponentMapperUtil.eventListenerComponentComponentMapper.get(from.getEntity());
+            }
             BattleEventListenerComponent toListener = null;
             if (to != null) {
                 toListener = ComponentMapperUtil.eventListenerComponentComponentMapper.get(to.getEntity());

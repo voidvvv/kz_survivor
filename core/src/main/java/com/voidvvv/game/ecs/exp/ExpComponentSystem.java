@@ -18,6 +18,9 @@ import com.voidvvv.game.utils.AssetConstants;
 import com.voidvvv.game.utils.MessageConstants;
 import com.voidvvv.game.utils.MetaDataActorPools;
 
+/**
+ * responsible for managing experience points (exp) and leveling up entities.
+ */
 public class ExpComponentSystem extends IteratingSystem {
     static final long[] expArr = new long[] {
             0, 100, 200, 300, 400, 500, 600, 700, 800, 900,
@@ -25,7 +28,7 @@ public class ExpComponentSystem extends IteratingSystem {
             3000, 3200, 3400, 3600, 3800, 4000, 4200, 4400, 4600, 4800,
             // Add more levels as needed
     };
-
+    static  final float smallExp = 20;
     public static SimpleAnimateComponent exp01_animateComponent;
 
     ExpAfterProcessor expAfterProcessor;
@@ -57,8 +60,9 @@ public class ExpComponentSystem extends IteratingSystem {
         if (expDropComponent == null) {
             return null;
         }
-        float exp = expDropComponent.exp;
+
         // small exp stone
+        float exp = smallExp;
         ExpStone expStone = (ExpStone) MetaDataActorPools.obtain(ExpStone.class.getSimpleName());
         expStone.setExp(exp);
         VRectBoundComponent targetPosition = ComponentMapperUtil.getComponentFor(VRectBoundComponent.class, entity);

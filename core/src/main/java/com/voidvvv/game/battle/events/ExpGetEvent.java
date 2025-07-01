@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.battle.BattleContext;
 import com.voidvvv.game.battle.DamageType;
+import com.voidvvv.game.ecs.exp.ExpComponent;
 import com.voidvvv.game.utils.AssetUtils;
 
 public class ExpGetEvent implements BattleEvent {
@@ -58,7 +59,10 @@ public class ExpGetEvent implements BattleEvent {
         if (to == null) {
             return;
         }
-
+        ExpComponent expComponent = to.getEntity().getComponent(ExpComponent.class);
+        if (expComponent != null) {
+            expComponent.exp += exp;
+        }
     }
 
 }

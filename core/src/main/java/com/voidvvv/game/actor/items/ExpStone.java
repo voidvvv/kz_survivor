@@ -14,6 +14,7 @@ import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.ecs.ComponentMapperUtil;
 import com.voidvvv.game.ecs.components.BattleContextComponent;
 import com.voidvvv.game.ecs.components.MoveComponent;
+import com.voidvvv.game.ecs.components.NameComponent;
 import com.voidvvv.game.ecs.components.sign.DropSignComponent;
 import com.voidvvv.game.ecs.exp.ExpComponent;
 import com.voidvvv.game.utils.ReflectUtil;
@@ -34,8 +35,10 @@ public class ExpStone extends DropItem {
         picked = false;
         vBox2dComponent = new VBox2dComponent();
         this.getEntity().add(vBox2dComponent);
+        this.entity.add(Pools.obtain(MoveComponent.class));
         vBox2dComponent.addContactPairListener(this::contact);
         chase = false;
+        this.getEntity().add(new NameComponent("ExpStone"));
         // Additional initialization for ExpStone can be added here
     }
 
