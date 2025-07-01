@@ -1,35 +1,25 @@
-# kz_servivor
+# kz_survivor
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
+![asd](./pic/demo.png)
 
-This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
+kz_survivor is a Cool survivor-like Game written in Java Libgdx.
 
-## Platforms
+## how to run it?
+the most simple way to run this project on your own PC through the source code is :
+``lwjgl3:run``
 
-- `core`: Main module with the application logic shared by all platforms.
-- `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
-- `android`: Android mobile platform. Needs Android SDK.
+this command will build the gradle and run the windows game.
+## how to build it?
+you can build the project by running the following command:
+```
+./gradlew build
+```
 
-## Gradle
-
-This project uses [Gradle](https://gradle.org/) to manage dependencies.
-The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
-Useful Gradle tasks and flags:
-
-- `--continue`: when using this flag, errors will not stop the tasks from running.
-- `--daemon`: thanks to this flag, Gradle daemon will be used to run chosen tasks.
-- `--offline`: when using this flag, cached dependency archives will be used.
-- `--refresh-dependencies`: this flag forces validation of all dependencies. Useful for snapshot versions.
-- `android:lint`: performs Android project validation.
-- `build`: builds sources and archives of every project.
-- `cleanEclipse`: removes Eclipse project data.
-- `cleanIdea`: removes IntelliJ project data.
-- `clean`: removes `build` folders, which store compiled classes and built archives.
-- `eclipse`: generates Eclipse project data.
-- `idea`: generates IntelliJ project data.
-- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
-- `lwjgl3:run`: starts the application.
-- `test`: runs unit tests (if any).
-
-Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
-For example, `core:clean` removes `build` folder only from the `core` project.
+## about the project
+this is a game which designed and developed by myself. I like coding, I like Game. Then I though, why not make a game by myself? So I started this project.
+I hope you like it. If you have any question, please feel free to contact me.
+### Why is Java?
+Maybe you have the question: why do you make a game in Java? there are lots of other Game Dev Engine and languages, such as Unity, Unreal Engine, C++, C#, Python, etc. Why do you choose Java?
+I choose Java because I am familiar with it, and I think it is a good language for game development.
+And thanks for LIBGDX, it is a great game development framework for Java. It provides a lot of features and tools to make game development easier and more efficient.
+In my own opinion, Java could be a good programming language for game development, especially for 2D games. With the help of libraries like LibGDX, developers can create games that are not only functional but also visually appealing and engaging.
