@@ -167,11 +167,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
         upgradeStage = new UpgradeUIStage(protagonist.getEntity(), () -> {
             this.upgrading = false;
-            if (originProcessor == null) {
-                throw new IllegalStateException("originProcessor is null");
-            }
-            Gdx.input.setInputProcessor(originProcessor);
-            originProcessor = null;
+            Main.getInstance().removeInputProcessor(upgradeStage);
         }, skin,
             Main.getInstance().getDrawManager().getBaseBatch(),
             Main.getInstance().getCameraManager().getScreenViewport());
@@ -349,8 +345,9 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
                 expComponent.level += 1;
                 // trigger upgrade event
                 originProcessor = Gdx.input.getInputProcessor();
-                Gdx.input.setInputProcessor(null);
+//                Gdx.input.setInputProcessor(null);
                 upgradeStage.init();
+                Main.getInstance().addInputProcessor(upgradeStage);
                 upgrading = true;
             }
         }

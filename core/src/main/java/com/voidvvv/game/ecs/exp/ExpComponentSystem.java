@@ -28,6 +28,7 @@ public class ExpComponentSystem extends IteratingSystem {
             3000, 3200, 3400, 3600, 3800, 4000, 4200, 4400, 4600, 4800,
             // Add more levels as needed
     };
+    String smallExpPicName = AssetConstants.EXP_STONE_GREEN;
     static  final float smallExp = 20;
     public static SimpleAnimateComponent exp01_animateComponent;
 
@@ -46,9 +47,9 @@ public class ExpComponentSystem extends IteratingSystem {
     private void init() {
         if (exp01_animateComponent == null) {
             exp01_animateComponent = new SimpleAnimateComponent();
-            Main.getInstance().getAssetManager().load(AssetConstants.EXP_STONE, Texture.class);
+            Main.getInstance().getAssetManager().load(smallExpPicName, Texture.class);
             Main.getInstance().getAssetManager().finishLoading();
-            Texture texture = Main.getInstance().getAssetManager().get(AssetConstants.EXP_STONE, Texture.class);
+            Texture texture = Main.getInstance().getAssetManager().get(smallExpPicName, Texture.class);
             TextureRegion tr = new TextureRegion(texture);
             exp01_animateComponent.animation = new com.badlogic.gdx.graphics.g2d.Animation<>(0.1f, tr);
 

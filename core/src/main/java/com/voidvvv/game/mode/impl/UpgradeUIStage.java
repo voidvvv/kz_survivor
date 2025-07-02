@@ -78,7 +78,7 @@ public class UpgradeUIStage extends Stage {
             }
         });
 
-        Gdx.input.setInputProcessor(this);
+//        Gdx.input.setInputProcessor(this);
     }
 
     @Override

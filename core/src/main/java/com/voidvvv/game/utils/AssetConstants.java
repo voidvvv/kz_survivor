@@ -26,7 +26,9 @@ public class AssetConstants {
 
     public static final String THUNDER_STONE = "image/bullet/stones1/packer/pack.atlas";
 
-    public static final String EXP_STONE = "image/drop/exp/exp_01.png";
+    public static final String EXP_STONE_PURPLE = "image/drop/exp/purple_stone.png";
+    public static final String EXP_STONE_GREEN = "image/drop/exp/green_stone.png";
+    public static final String EXP_STONE_GOLD = "image/drop/exp/yellow_stone.png";
 
 
     public static <T> Animation<T> makeCommonAnimation (T... arr) {
