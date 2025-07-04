@@ -378,7 +378,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         spriteBatch.end();
         // debug rectangle
         debugRenderIteratorSystem.render();
-        stage.draw();
+//        stage.draw();
         // if time up, show game over
         if (timeLeft <= 0f) {
 
@@ -387,12 +387,14 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     @Override
     public void renderUI() {
+        stage.getViewport().apply();
         if (upgrading) {
             upgradeStage.draw();
         }
 
         // ui
         stage.act(Gdx.graphics.getDeltaTime());
+
         stage.draw();
     }
 

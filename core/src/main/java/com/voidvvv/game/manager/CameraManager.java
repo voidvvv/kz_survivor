@@ -3,6 +3,7 @@ package com.voidvvv.game.manager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.utils.viewport.*;
+import com.voidvvv.game.viewport.SubWindowViewport;
 
 public class CameraManager implements BaseManager{
     OrthographicCamera mainCamera;
@@ -18,9 +19,9 @@ public class CameraManager implements BaseManager{
         uiCamera = new OrthographicCamera();
         _3dCamera = new PerspectiveCamera();
         worldViewPort = new StretchViewport(800, 600, mainCamera);
+//        worldViewPort = new SubWindowViewport(0.1f, 0.1f, 0.5f, 0.5f, 800,600,mainCamera);
 //        screenViewport = new ScreenViewport(uiCamera);
         screenViewport = new StretchViewport(800, 600, uiCamera);
-
         _3dViewPort = new StretchViewport(800, 600, _3dCamera);
     }
 

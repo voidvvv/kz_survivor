@@ -56,6 +56,7 @@ public class VSimpleFlatWorldRender implements WorldRender {
 
     @Override
     public void render(VWorld world) {
+        viewport.apply();
         VFlatWorld flatWorld = (VFlatWorld) world;
         List<? extends VWorldActor> vWorldActors = flatWorld.allActors();
         Camera camera = viewport.getCamera();

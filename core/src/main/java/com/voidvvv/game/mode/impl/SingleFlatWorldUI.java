@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.base.VActor;
@@ -33,6 +34,12 @@ public class SingleFlatWorldUI extends Actor implements Telegraph {
         MessageManager.getInstance().addListener(this, MessageConstants.MSG_BATTLE_EVENT);
         DefaultBattleComponent battle = protagonist.getEntity().getComponent(DefaultBattleComponent.class);
         whiteHpPercent = battle.getHp() / battle.getMaxHp().finalVal;
+        Viewport viewport = new Viewport() {
+            @Override
+            public void apply() {
+                super.apply();
+            }
+        };
     }
 
     @Override
