@@ -17,6 +17,7 @@ import com.voidvvv.game.Main;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.battle.DefaultBattleComponent;
 import com.voidvvv.game.battle.events.HealthChangeEvent;
+import com.voidvvv.game.ecs.exp.ExpComponent;
 import com.voidvvv.game.utils.MessageConstants;
 import com.voidvvv.game.utils.ReflectUtil;
 
@@ -24,6 +25,8 @@ public class SingleFlatWorldUI extends Actor implements Telegraph {
     SingleFlatWorldMode singleFlatWorldMode;
     VActor protagonist;
     float whiteHpPercent;
+
+    ExpComponent expComponent;
 
     float rate = 0.05f; // The rate at which the white health bar decreases
 
@@ -34,12 +37,7 @@ public class SingleFlatWorldUI extends Actor implements Telegraph {
         MessageManager.getInstance().addListener(this, MessageConstants.MSG_BATTLE_EVENT);
         DefaultBattleComponent battle = protagonist.getEntity().getComponent(DefaultBattleComponent.class);
         whiteHpPercent = battle.getHp() / battle.getMaxHp().finalVal;
-        Viewport viewport = new Viewport() {
-            @Override
-            public void apply() {
-                super.apply();
-            }
-        };
+        expComponent = protagonist.getEntity().getComponent(ExpComponent.class);
     }
 
     @Override
@@ -55,10 +53,28 @@ public class SingleFlatWorldUI extends Actor implements Telegraph {
         shapeRenderer.setAutoShapeType(true);
         shapeRenderer.begin();
         drawHealth(shapeRenderer, screenWidth * 0.05f, screenHeight * 0.9f, screenWidth * 0.2f, screenHeight * 0.02f);
+        drawExpBar(shapeRenderer, screenWidth * 0.05f, screenHeight * 0.85f, screenWidth * 0.2f, screenHeight * 0.02f);
         shapeRenderer.end();
         batch.begin();
     }
 
+    private void drawExpBar(ShapeRenderer shapeRenderer, float x, float y, float width, float height) {
+        // black background
+        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.rect(x, y, width, height);
+        // current exp
+        float maxExp = expComponent.maxExp;
+        float exp = expComponent.exp;
+        float percent = exp / maxExp;
+        shapeRenderer.setColor(Color.GREEN);
+        shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.rect(x, y, width * percent, height);
+        // frame
+        shapeRenderer.setColor(Color.YELLOW);
+        shapeRenderer.set(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.rect(x, y, width, height);
+    }
 
 
     @Override

@@ -20,7 +20,7 @@ public class CameraManager implements BaseManager{
         _3dCamera = new PerspectiveCamera();
         worldViewPort = new StretchViewport(800, 600, mainCamera);
 //        worldViewPort = new SubWindowViewport(0.1f, 0.1f, 0.5f, 0.5f, 800,600,mainCamera);
-//        screenViewport = new ScreenViewport(uiCamera);
+//        screenViewport = new ScreenViewport( uiCamera);
         screenViewport = new StretchViewport(800, 600, uiCamera);
         _3dViewPort = new StretchViewport(800, 600, _3dCamera);
     }

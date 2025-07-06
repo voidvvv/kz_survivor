@@ -7,6 +7,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.items.ExpStone;
 import com.voidvvv.game.base.VRectBoundComponent;
@@ -23,9 +24,9 @@ import com.voidvvv.game.utils.MetaDataActorPools;
  */
 public class ExpComponentSystem extends IteratingSystem {
     static final long[] expArr = new long[] {
-            0, 100, 200, 300, 400, 500, 600, 700, 800, 900,
+            100, 200, 300, 400, 500, 600, 700, 800, 900,
             1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800,
-            3000, 3200, 3400, 3600, 3800, 4000, 4200, 4400, 4600, 4800,
+            3000, 3200, 3400, 3600, 3800, 4000, 4200, 4400, 4600, 4800, 5000
             // Add more levels as needed
     };
     String smallExpPicName = AssetConstants.EXP_STONE_GREEN;
@@ -87,17 +88,22 @@ public class ExpComponentSystem extends IteratingSystem {
         if (level <= 0) {
             level = 1; // Invalid level, do nothin
         }
-        float maxExp = maxDefaultExp;
-        if (level <= expArr.length) {
-            maxExp = expArr[level - 1];
-        }
+        float maxExp = expComponent.maxExp;
         if (expComponent.exp >= maxExp) {
             expComponent.level++;
             expComponent.exp -= maxExp;
+            expComponent.maxExp = expArr[expComponent.level - 1];
             // send level up event
             MessageManager.getInstance().dispatchMessage(MessageConstants.MSG_LEVEL_UP, new UpgradeEvent(entity));
             // Optionally, you can add logic to handle level up effects here
         }
+    }
+
+    public ExpComponent obtainExpComponent() {
+        ExpComponent expComponent = Pools.obtain(ExpComponent.class);
+        expComponent.level = 1;
+        expComponent.maxExp = expArr[expComponent.level - 1];
+        return expComponent;
     }
 
     public static interface ExpAfterProcessor {

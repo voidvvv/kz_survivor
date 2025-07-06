@@ -302,7 +302,8 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
                 }
             });
         }
-        ExpComponent expComponent = Pools.obtain(ExpComponent.class);
+
+        ExpComponent expComponent = expComponentSystem.obtainExpComponent();
         expComponent.main = true;
         protagonist.getEntity().add(expComponent);
         protagonist.getEntity().add(new CouldPickOther());

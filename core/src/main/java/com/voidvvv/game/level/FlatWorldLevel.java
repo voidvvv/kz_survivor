@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.base.world.VWorld;
@@ -16,6 +17,9 @@ import com.voidvvv.game.mode.impl.SingleFlatWorldMode;
 import com.voidvvv.game.utils.AssetConstants;
 import com.voidvvv.render.world.VSimpleFlatWorldRender;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
 import java.util.function.Supplier;
 
 public class FlatWorldLevel implements Level{
@@ -129,6 +133,7 @@ public class FlatWorldLevel implements Level{
         render.render(world);
         gameMode.render();
         renderUI();
+
     }
 
     private void renderUI() {
