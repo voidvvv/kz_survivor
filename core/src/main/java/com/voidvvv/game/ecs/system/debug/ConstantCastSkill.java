@@ -6,6 +6,7 @@ import com.badlogic.ashley.systems.IntervalIteratingSystem;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.voidvvv.game.ecs.components.skill.MainSkillComponent;
+import com.voidvvv.game.skill.Skill;
 
 public class ConstantCastSkill extends IntervalIteratingSystem {
 
@@ -18,12 +19,15 @@ public class ConstantCastSkill extends IntervalIteratingSystem {
     @Override
     protected void processEntity(Entity entity) {
         MainSkillComponent component = entity.getComponent(MainSkillComponent.class);
-        if (component != null && component.skill != null) {
-            component.skill.update(getInterval());
+
+        for (Skill skill : component.skills) {
+            if (skill != null) {
+                skill.update(getInterval());
+                Gdx.app.log("ConstantCastSkill", "Casting skill: " + skill.name());
+            } else {
+                Gdx.app.log("ConstantCastSkill", "Skill is null, skipping cast.");
+            }
         }
-        if (component != null && component.skill2 != null) {
-//            Gdx.app.log("ConstantCastSkill", "Casting skill2");
-            component.skill2.update(getInterval());
-        }
+
     }
 }

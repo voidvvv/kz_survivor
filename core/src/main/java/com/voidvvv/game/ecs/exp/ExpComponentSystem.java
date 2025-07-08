@@ -85,14 +85,19 @@ public class ExpComponentSystem extends IteratingSystem {
     protected void processEntity(Entity entity, float deltaTime) {
         ExpComponent expComponent = expComponentComponentMapper.get(entity);
         int level = expComponent.level;
-        if (level <= 0) {
-            level = 1; // Invalid level, do nothin
-        }
+
         float maxExp = expComponent.maxExp;
         if (expComponent.exp >= maxExp) {
             expComponent.level++;
             expComponent.exp -= maxExp;
-            expComponent.maxExp = expArr[expComponent.level - 1];
+            if (expComponent.level <= expArr.length) {
+                maxExp = expArr[expComponent.level - 1];
+            } else {
+                // If the level exceeds the predefined array, set to a default value
+                maxExp = maxDefaultExp;
+
+            }
+            expComponent.maxExp = maxExp;
             // send level up event
             MessageManager.getInstance().dispatchMessage(MessageConstants.MSG_LEVEL_UP, new UpgradeEvent(entity));
             // Optionally, you can add logic to handle level up effects here

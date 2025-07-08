@@ -54,8 +54,13 @@ public class SingleFlatWorldUI extends Actor implements Telegraph {
         shapeRenderer.begin();
         drawHealth(shapeRenderer, screenWidth * 0.05f, screenHeight * 0.9f, screenWidth * 0.2f, screenHeight * 0.02f);
         drawExpBar(shapeRenderer, screenWidth * 0.05f, screenHeight * 0.85f, screenWidth * 0.2f, screenHeight * 0.02f);
+        drawSkillMiniIcon(shapeRenderer, screenWidth * 0.05f, screenHeight * 0.8f, screenWidth * 0.02f, screenHeight * 0.02f, screenWidth * 0.01f);
         shapeRenderer.end();
         batch.begin();
+    }
+
+    private void drawSkillMiniIcon(ShapeRenderer shapeRenderer, float initX, float initY, float width, float height, float gap) {
+
     }
 
     private void drawExpBar(ShapeRenderer shapeRenderer, float x, float y, float width, float height) {

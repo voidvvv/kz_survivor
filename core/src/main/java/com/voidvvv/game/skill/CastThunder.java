@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.actor.bulltes.Thunder;
 import com.voidvvv.game.base.VRectBoundComponent;
@@ -110,6 +111,11 @@ public class CastThunder implements Skill{
             cast();
             gapTime = 0f;
         }
+    }
+
+    @Override
+    public Drawable miniIcon() {
+        return null;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.voidvvv.game.skill;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
@@ -131,6 +132,11 @@ public class CastLightBoom implements Skill, Pool.Poolable {
             cast();
         }
         castContinuously(delta);
+    }
+
+    @Override
+    public Drawable miniIcon() {
+        return null;
     }
 
     private void castContinuously(float delta) {

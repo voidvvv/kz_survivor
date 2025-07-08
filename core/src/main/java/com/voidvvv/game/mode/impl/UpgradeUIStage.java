@@ -46,14 +46,14 @@ public class UpgradeUIStage extends Stage {
         skill03.setPosition(100, 300);
         Skill skill1 = actorEntity.getComponent(MainSkillComponent.class)
             .skill;
-        skill01.setText(skill1.name());
+//        skill01.setText(skill1.name());
         // random select skill or new skill
         skill01.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("UpgradeUIStage", "Skill 01 clicked");
                 // Handle skill 01 click
-                skill1.upgrade();
+//                skill1.upgrade();
                 afterConfirm.run();
             }
         });
@@ -62,8 +62,8 @@ public class UpgradeUIStage extends Stage {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("UpgradeUIStage", "skill02 clicked");
                 // Handle skill 01 click
-                actorEntity.getComponent(MainSkillComponent.class)
-                    .skill.upgrade();
+//                actorEntity.getComponent(MainSkillComponent.class)
+//                    .skill.upgrade();
                 afterConfirm.run();
             }
         });
@@ -72,8 +72,8 @@ public class UpgradeUIStage extends Stage {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("UpgradeUIStage", "skill03 clicked");
                 // Handle skill 01 click
-                actorEntity.getComponent(MainSkillComponent.class)
-                        .skill.upgrade();
+//                actorEntity.getComponent(MainSkillComponent.class)
+//                        .skill.upgrade();
                 afterConfirm.run();
             }
         });
