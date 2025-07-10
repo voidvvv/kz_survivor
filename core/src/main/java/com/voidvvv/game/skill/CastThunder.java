@@ -115,7 +115,7 @@ public class CastThunder implements Skill{
 
     @Override
     public Drawable miniIcon() {
-        return null;
+        return Skill.super.miniIcon();
     }
 
     @Override

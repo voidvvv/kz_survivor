@@ -17,9 +17,13 @@ import com.voidvvv.game.Main;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.battle.DefaultBattleComponent;
 import com.voidvvv.game.battle.events.HealthChangeEvent;
+import com.voidvvv.game.ecs.components.skill.MainSkillComponent;
 import com.voidvvv.game.ecs.exp.ExpComponent;
+import com.voidvvv.game.skill.Skill;
 import com.voidvvv.game.utils.MessageConstants;
 import com.voidvvv.game.utils.ReflectUtil;
+
+import java.util.List;
 
 public class SingleFlatWorldUI extends Actor implements Telegraph {
     SingleFlatWorldMode singleFlatWorldMode;
@@ -27,6 +31,7 @@ public class SingleFlatWorldUI extends Actor implements Telegraph {
     float whiteHpPercent;
 
     ExpComponent expComponent;
+    MainSkillComponent mainSkillComponent;
 
     float rate = 0.05f; // The rate at which the white health bar decreases
 
@@ -38,6 +43,7 @@ public class SingleFlatWorldUI extends Actor implements Telegraph {
         DefaultBattleComponent battle = protagonist.getEntity().getComponent(DefaultBattleComponent.class);
         whiteHpPercent = battle.getHp() / battle.getMaxHp().finalVal;
         expComponent = protagonist.getEntity().getComponent(ExpComponent.class);
+        mainSkillComponent = protagonist.getEntity().getComponent(MainSkillComponent.class);
     }
 
     @Override
@@ -54,13 +60,31 @@ public class SingleFlatWorldUI extends Actor implements Telegraph {
         shapeRenderer.begin();
         drawHealth(shapeRenderer, screenWidth * 0.05f, screenHeight * 0.9f, screenWidth * 0.2f, screenHeight * 0.02f);
         drawExpBar(shapeRenderer, screenWidth * 0.05f, screenHeight * 0.85f, screenWidth * 0.2f, screenHeight * 0.02f);
-        drawSkillMiniIcon(shapeRenderer, screenWidth * 0.05f, screenHeight * 0.8f, screenWidth * 0.02f, screenHeight * 0.02f, screenWidth * 0.01f);
+        drawSkillMiniIcon(shapeRenderer, batch,  screenWidth * 0.05f, screenHeight * 0.8f, screenWidth * 0.02f, screenHeight * 0.02f, screenWidth * 0.01f);
         shapeRenderer.end();
         batch.begin();
     }
 
-    private void drawSkillMiniIcon(ShapeRenderer shapeRenderer, float initX, float initY, float width, float height, float gap) {
-
+    private void drawSkillMiniIcon(ShapeRenderer shapeRenderer, Batch batch, float initX, float initY, float width, float height, float gap) {
+        shapeRenderer.end();
+        batch.begin();
+        int capacity = mainSkillComponent.skillCapacity;
+        List<Skill> skills = mainSkillComponent.skills;
+        for (int i = 0; i < capacity; i++) {
+            if (i < skills.size()) {
+                skills.get(i).miniIcon().draw(batch, initX + i * (width + gap), initY, width, height);
+            } else {
+                // empty frame
+            }
+        }
+        batch.end();
+        shapeRenderer.begin();
+        // draw frame
+        shapeRenderer.setColor(Color.YELLOW);
+        shapeRenderer.set(ShapeRenderer.ShapeType.Line);
+        for (int i = 0; i < capacity; i++) {
+            shapeRenderer.rect(initX + i * (width + gap), initY, width, height);
+        }
     }
 
     private void drawExpBar(ShapeRenderer shapeRenderer, float x, float y, float width, float height) {

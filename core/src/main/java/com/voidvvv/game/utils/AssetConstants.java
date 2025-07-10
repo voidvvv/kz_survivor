@@ -29,6 +29,7 @@ public class AssetConstants {
     public static final String EXP_STONE_PURPLE = "image/drop/exp/purple_stone.png";
     public static final String EXP_STONE_GREEN = "image/drop/exp/green_stone.png";
     public static final String EXP_STONE_GOLD = "image/drop/exp/yellow_stone.png";
+    public static final String SKILL_MINI_ICON_PLACEHOLDER = "image/ui/skill/placeholder.png";
 
 
     public static <T> Animation<T> makeCommonAnimation (T... arr) {

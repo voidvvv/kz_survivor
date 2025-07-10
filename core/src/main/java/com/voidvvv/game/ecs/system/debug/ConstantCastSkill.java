@@ -23,9 +23,9 @@ public class ConstantCastSkill extends IntervalIteratingSystem {
         for (Skill skill : component.skills) {
             if (skill != null) {
                 skill.update(getInterval());
-                Gdx.app.log("ConstantCastSkill", "Casting skill: " + skill.name());
+//                Gdx.app.log("ConstantCastSkill", "Casting skill: " + skill.name());
             } else {
-                Gdx.app.log("ConstantCastSkill", "Skill is null, skipping cast.");
+//                Gdx.app.log("ConstantCastSkill", "Skill is null, skipping cast.");
             }
         }
 

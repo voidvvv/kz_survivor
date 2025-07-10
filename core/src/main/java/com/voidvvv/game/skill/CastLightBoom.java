@@ -134,10 +134,10 @@ public class CastLightBoom implements Skill, Pool.Poolable {
         castContinuously(delta);
     }
 
-    @Override
-    public Drawable miniIcon() {
-        return null;
-    }
+//    @Override
+//    public Drawable miniIcon() {
+//        return null;
+//    }
 
     private void castContinuously(float delta) {
         Iterator<ContinuousCastLightBoom> iterator = continuousCastLightBooms.iterator();
