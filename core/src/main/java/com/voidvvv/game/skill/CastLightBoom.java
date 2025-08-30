@@ -74,7 +74,7 @@ public class CastLightBoom implements Skill, Pool.Poolable {
                 LightBoom lightBoom = createLightBoom();
                 lightBoom.getEntity().getComponent(MoveComponent.class).vel.set(direction);
             } else {
-                ContinuousCastLightBoom continueCast = Pools.obtain(ContinuousCastLightBoom.class);
+                ContinuousCastLightBoom continueCast = new ContinuousCastLightBoom();
                 continueCast.maxInterval = 0.075f;
                 continueCast.maxCnt = localCntPerRow;
                 continueCast.currentInterval = 0f;
@@ -172,20 +172,20 @@ public class CastLightBoom implements Skill, Pool.Poolable {
         continuousCastLightBooms.clear();
     }
 
-    static class ContinuousCastLightBoom implements Pool.Poolable {
+    static class ContinuousCastLightBoom {
         public int maxCnt;
         public int currentCnt;
         public float maxInterval;
         public float currentInterval;
         public final Vector2 dir = new Vector2(1, 0);
 
-        @Override
-        public void reset() {
-            maxCnt = 1;
-            currentCnt = 0;
-            maxInterval = 0.1f;
-            currentInterval = 0f;
-            dir.set(1, 0);
-        }
+//        @Override
+//        public void reset() {
+//            maxCnt = 1;
+//            currentCnt = 0;
+//            maxInterval = 0.1f;
+//            currentInterval = 0f;
+//            dir.set(1, 0);
+//        }
     }
 }

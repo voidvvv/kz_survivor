@@ -3,6 +3,7 @@ package com.voidvvv.game.ecs;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
+import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.battle.BattleComponent;
 import com.voidvvv.game.battle.DefaultBattleComponent;
 import com.voidvvv.game.box2d.VBox2dComponent;
@@ -22,6 +23,8 @@ public class ComponentMapperUtil {
 
     public static final ComponentMapper<VBox2dComponent> box2dMapper = ComponentMapper.getFor(VBox2dComponent.class);
 
+    public static final ComponentMapper<VRectBoundComponent> rectBoundMapper = ComponentMapper.getFor(VRectBoundComponent.class);
+
     public static final ComponentMapper<BattleEventListenerComponent> eventListenerComponentComponentMapper = ComponentMapper.getFor(BattleEventListenerComponent.class);
 
     public static final ComponentMapper<com.voidvvv.game.ecs.components.DamageValueComponent> damageValueComponentMapper = ComponentMapper.getFor(com.voidvvv.game.ecs.components.DamageValueComponent.class);
@@ -29,6 +32,8 @@ public class ComponentMapperUtil {
     public static final ComponentMapper<com.voidvvv.game.ecs.components.StateMachineComponent> stateMachineComponentMapper = ComponentMapper.getFor(com.voidvvv.game.ecs.components.StateMachineComponent.class);
 
     public static final ComponentMapper<CampContextComponent> campContextComponentMapper = ComponentMapper.getFor(CampContextComponent.class);
+
+    public static final ComponentMapper<BattleContextComponent> battleContextComponentMapper = ComponentMapper.getFor(BattleContextComponent.class);
 
     public static final ComponentMapper<com.voidvvv.game.ecs.components.CampComponent> campComponentMapper = ComponentMapper.getFor(com.voidvvv.game.ecs.components.CampComponent.class);
     static Map<Class, ComponentMapper> componentMapperMap = new HashMap<>();

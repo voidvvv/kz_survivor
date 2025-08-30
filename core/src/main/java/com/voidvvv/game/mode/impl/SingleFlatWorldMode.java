@@ -322,22 +322,52 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     boolean upgrading = false;
     @Override
     public void update(float delta) {
+        upgradePaddleUpdate(delta);
+        gameOverCheck(delta);
+        normalUpdate(delta);
+    }
+
+    private void normalUpdate(float delta) {
         if (upgrading) {
-            upgradeStage.act(delta);
             return;
         }
 
+        if (timeLeft <= 0f || gameover) {
+            return;
+        }
+        updateWorldViewPosition(delta);
+        mainUpdate(delta);
+        updateTime(delta);
+    }
+
+    private void mainUpdate(float delta) {
+        context.getWorld().update(delta);
+        engine.update(delta);
+    }
+
+    private void updateWorldViewPosition(float delta) {
+        Vector2 position = protagonist.getEntity().getComponent(VRectBoundComponent.class).bottomcenter;
+        flatWorld.viewPosition.lerp(position, 0.05f);
+
+    }
+
+    private void updateTime(float delta) {
+        this.setTimeLeft(getTimeLeft() - delta);
+    }
+
+    private void gameOverCheck(float delta) {
         if (timeLeft <= 0f || gameover) {
 //            transcriptStageActor.setVisible(true);
             MessageManager.getInstance().dispatchMessage(MessageConstants.MSG_GAME_OVER, protagonist.getEntity().getComponent(TranscriptComponent.class).transcript);
             return;
         }
-        this.setTimeLeft(getTimeLeft() - delta);
-        Vector2 position = protagonist.getEntity().getComponent(VRectBoundComponent.class).bottomcenter;
-        flatWorld.viewPosition.lerp(position, 0.05f);
-        context.getWorld().update(delta);
-        engine.update(delta);
-//        stage.act(delta);
+    }
+
+    private void upgradePaddleUpdate(float delta) {
+        if (upgrading) {
+            upgradeStage.act(delta);
+            return;
+        }
 
         if (upgradeEventList!=null && !upgradeEventList.isEmpty()) {
             ExpComponent expComponent = upgradeEventList.pop().entity.getComponent(ExpComponent.class);
