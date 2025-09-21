@@ -15,9 +15,6 @@ import com.voidvvv.game.Main;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.state.Idle;
 import com.voidvvv.game.battle.*;
-import com.voidvvv.game.battle.events.BattleEvent;
-import com.voidvvv.game.battle.events.DeadEvent;
-import com.voidvvv.game.camp.CampContext;
 import com.voidvvv.game.ecs.ComponentMapperUtil;
 import com.voidvvv.game.ecs.components.*;
 import com.voidvvv.game.box2d.CollisionPair;
@@ -27,7 +24,7 @@ import com.voidvvv.game.utils.AssetUtils;
 import com.voidvvv.game.utils.ReflectUtil;
 import com.voidvvv.render.actor.SlimeRender;
 
-public class Slime extends MoveShapeBox2dActor {
+public class Slime extends VFlatWorldCreature {
     public static final String NAME = "Slime";
 
     public static BaseStateActorAnimationComponent animPrototype;

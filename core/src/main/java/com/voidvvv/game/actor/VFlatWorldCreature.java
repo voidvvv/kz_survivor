@@ -3,13 +3,9 @@ package com.voidvvv.game.actor;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
-import com.voidvvv.game.base.VRectBoundComponent;
 import com.voidvvv.game.battle.BattleContext;
-import com.voidvvv.game.battle.DefaultBattleComponent;
 import com.voidvvv.game.battle.events.DeadEvent;
 import com.voidvvv.game.ecs.components.*;
 import com.voidvvv.game.box2d.VBox2dComponent;
@@ -17,10 +13,17 @@ import com.voidvvv.game.impl.flat.VFlatWorldActor;
 import com.voidvvv.game.utils.AssetUtils;
 import com.voidvvv.render.actor.VActorRender;
 
-public class MoveShapeBox2dActor extends VFlatWorldActor {
+public class VFlatWorldCreature extends VFlatWorldActor {
+//    private boolean dead;
+//    public boolean isDead () {
+//        return dead;
+//    }
+//    public void setDead (boolean dead) {
+//        this.dead = dead;
+//    }
     public static final ComponentMapper<BattleContextComponent> battleContextComponentMapper = ComponentMapper.getFor(BattleContextComponent.class);
 
-    public MoveShapeBox2dActor(VActorRender actorRender) {
+    public VFlatWorldCreature(VActorRender actorRender) {
         super(actorRender);
 
 
@@ -30,7 +33,7 @@ public class MoveShapeBox2dActor extends VFlatWorldActor {
     @Override
     public void init() {
         super.init();
-        this.setDead(false);
+//        this.setDead(false);
 //        this.getEntity().add(Pools.obtain(MoveComponent.class));
         this.getEntity().add(Pools.obtain(VBox2dComponent.class));
 //        this.getEntity().add(Pools.obtain(VRectBoundComponent.class));
@@ -38,7 +41,9 @@ public class MoveShapeBox2dActor extends VFlatWorldActor {
 //        this.getEntity().add(Pools.obtain(DefaultBattleComponent.class));
         this.getEntity().add(Pools.obtain(MoveChangeListenerComponent.class));
 
-        this.getEntity().add(Pools.obtain(ContactTypeComponent.class));
+        this.getEntity().add(Pools.obtain(ContactTypeComponent.class)); // creature
+
+        this.getEntity().add(new DiedableComponent());
 
     }
 
@@ -46,7 +51,8 @@ public class MoveShapeBox2dActor extends VFlatWorldActor {
     public void update(float delta) {
         super.update(delta);
         Entity modeEntity = Main.getInstance().getGameMode().getEntity();
-        if (!this.isDead()) {
+        DiedableComponent component = getComponent(DiedableComponent.class);
+        if (!component.isDied) {
             // getWorldContext().getWorld().resetVActor(this);
             BattleContextComponent battleContextComponent = battleContextComponentMapper.get(modeEntity);
             if (battleContextComponent == null) {
@@ -58,9 +64,9 @@ public class MoveShapeBox2dActor extends VFlatWorldActor {
             }
             boolean dead = battleContext.isDead(this.entity);
             if (dead) {
-                Gdx.app.log("MoveShapeBox2dActor", AssetUtils.nameOf(this.getEntity()) + "_dead");
+                Gdx.app.log("VFlatWorldCreature", AssetUtils.nameOf(this.getEntity()) + "_dead");
                 battleContext.addEvent(new DeadEvent(this));
-                setDead(true);
+
             }
         }
 

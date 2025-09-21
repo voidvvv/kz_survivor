@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
+import com.voidvvv.game.actor.VFlatWorldCreature;
 import com.voidvvv.game.actor.items.ExpStone;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VRectBoundComponent;
@@ -38,6 +39,7 @@ import com.voidvvv.game.impl.flat.FlatWorldConfig;
 import com.voidvvv.game.impl.flat.VFlatWorld;
 import com.voidvvv.game.impl.flat.VFlatWorldActor;
 import com.voidvvv.game.mode.DamageValue;
+import com.voidvvv.game.mode.GameMode;
 import com.voidvvv.game.mode.TimeLimitMode;
 import com.voidvvv.game.mode.VWorldContextGameMode;
 import com.voidvvv.game.player.Player;
@@ -49,7 +51,6 @@ import java.util.*;
 
 public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode {
     SingleFlatWorldModeConf conf;
-    PlayerInput playerInput;
     WorldContext context;
     VFlatWorld flatWorld;
     BaseBattleContext baseBattleContext;
@@ -104,7 +105,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         // init ECS
         if (context == null) {
             context = initWorld(config);
-        } else  {
+        } else {
             flatWorld = new VFlatWorld(context);
             flatWorld.setConfig(config);
             context.setWorld(flatWorld);
@@ -145,12 +146,12 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         engine = null;
         entity = null;
 
-        Player.PLAYERS[0].removeInput(playerInput);
+        Player.PLAYERS[0].removeInput(this);
         MessageManager.getInstance().removeListener(this, MessageConstants.MSG_BATTLE_EVENT);
 
     }
 
-//    TranscriptStageActor transcriptStageActor;
+    //    TranscriptStageActor transcriptStageActor;
     private void otherInit() {
         // register message listener
         registListener();
@@ -183,6 +184,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     DamageValueComponent damageValueComponent;
     DebugRenderIteratorSystem debugRenderIteratorSystem = new DebugRenderIteratorSystem();
     Vector2 tmpCenter = new Vector2();
+
     private void initECS() {
         initsystems();
         engine = new Engine();
@@ -215,7 +217,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         engine.addSystem(pickUpdateSystem);
         // autogenerate slime
         SimpleSlimeGenerateStrategy simpleSlimeGenerateStrategy = new SimpleSlimeGenerateStrategy(context);
-        simpleSlimeGenerateStrategy.setAfterProcessorSlime( slime -> {
+        simpleSlimeGenerateStrategy.setAfterProcessorSlime(slime -> {
             slime.getEntity().add(new ExpDropComponent(20f));
 
         });
@@ -226,7 +228,9 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         engine.addSystem(new ConstantCastSkill());
         moveMapper = ComponentMapper.getFor(MoveComponent.class);
     }
+
     PickUpdateSystem pickUpdateSystem;
+
     private void initsystems() {
         expComponentSystem = new ExpComponentSystem((stone) -> {
             VActorSpawnHelper helper = new VActorSpawnHelper();
@@ -235,7 +239,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
             helper.initX = position.x;
             helper.initY = position.y;
             engine.addEntity(stone.getEntity());
-            this.getContext().getWorld().spawnVActor(()-> stone, helper);
+            this.getContext().getWorld().spawnVActor(() -> stone, helper);
         });
 
         pickUpdateSystem = new PickUpdateSystem(flatWorld.getWorldContext());
@@ -260,9 +264,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         // world
 //        this.protagonist.setWorldContext(context);
         this.flatWorld.spawnVActor(() -> localProtagonist, helper);
-        // add protagonist to Player1
-        playerInput = new SingleFlatWorldInput(protagonist);
-        Player.PLAYERS[0].addInput(playerInput);
+        Player.PLAYERS[0].addInput(this);
 
         BattleEventListenerComponent eventListenerComponent =
             protagonist.getEntity().getComponent(BattleEventListenerComponent.class);
@@ -277,6 +279,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
                 public void afterActiveEvent(BattleEvent event) {
                     if (DeadEvent.class.isAssignableFrom(event.getClass())) {
                         // this actor dead
+                        protagonist.getComponent(DiedableComponent.class).isDied = true;
                         gameover = true;
                     }
                 }
@@ -318,8 +321,10 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
         }
 
     }
+
     boolean gameover = false;
     boolean upgrading = false;
+
     @Override
     public void update(float delta) {
         upgradePaddleUpdate(delta);
@@ -369,7 +374,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
             return;
         }
 
-        if (upgradeEventList!=null && !upgradeEventList.isEmpty()) {
+        if (upgradeEventList != null && !upgradeEventList.isEmpty()) {
             ExpComponent expComponent = upgradeEventList.pop().entity.getComponent(ExpComponent.class);
             if (expComponent != null) {
                 expComponent.exp = 0;
@@ -397,13 +402,14 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
 
     EntityRenderSystem renderSystem = new EntityRenderSystem();
     DamageSpriteBatchRender damageSpriteBatchRender;
+
     @Override
     public void render() {
         SpriteBatch spriteBatch = Main.getInstance().getDrawManager().getBaseBatch();
         spriteBatch.setProjectionMatrix(Main.getInstance().getCameraManager().getMainCamera().combined);
         spriteBatch.begin();
 
-        renderSystem.render(getContext().getWorld().getEntity(),0f, spriteBatch);
+        renderSystem.render(getContext().getWorld().getEntity(), 0f, spriteBatch);
         damageSpriteBatchRender.render(spriteBatch);
 
         spriteBatch.end();
@@ -430,6 +436,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     }
 
     InputProcessor originProcessor = null;
+
     @Override
     public boolean handleMessage(Telegram msg) {
         Object extraInfo = msg.extraInfo;
@@ -469,8 +476,7 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
                 damageValueComponent.damageValues.add(damageValue);
             }
             return true;
-        }
-        else if (msg.message == MessageConstants.MSG_LEVEL_UP) {
+        } else if (msg.message == MessageConstants.MSG_LEVEL_UP) {
             UpgradeEvent upgrade = ReflectUtil.convert(extraInfo, UpgradeEvent.class);
             if (upgrade != null) {
                 Entity upgradeEntity = upgrade.entity;
@@ -523,4 +529,37 @@ public class SingleFlatWorldMode implements VWorldContextGameMode, TimeLimitMode
     public VActor getProtagonist() {
         return protagonist;
     }
+
+    @Override
+    public void move(Vector2 dir) {
+        moveProtagonist(dir);
+    }
+
+    private void moveProtagonist(Vector2 dir) {
+        DiedableComponent dieable = protagonist.getComponent(DiedableComponent.class);
+        if (dieable == null || dieable.isDied) {
+            return;
+        }
+        MoveComponent moveComponent = moveMapper.get(protagonist.getEntity());
+        if (moveComponent == null) {
+            return;
+        }
+        moveComponent.vel.set(dir);
+    }
+
+    @Override
+    public void skill1() {
+
+    }
+
+    @Override
+    public void skill2() {
+
+    }
+
+    @Override
+    public void special() {
+
+    }
+
 }

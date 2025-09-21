@@ -21,16 +21,10 @@ import java.util.List;
 
 public class VWorldActor implements VActor {
     StateMachineComponent stateMachineComponent;
-    private boolean dead;
+
 
     protected Entity entity = new Entity();
 
-    public boolean isDead () {
-        return dead;
-    }
-    public void setDead (boolean dead) {
-        this.dead = dead;
-    }
     public String metaName () {
         return "VWorldActor";
     }

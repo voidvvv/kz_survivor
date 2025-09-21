@@ -39,6 +39,8 @@ public class ExpStone extends DropItem {
         this.entity.add(Pools.obtain(MoveComponent.class));
         vBox2dComponent.addContactPairListener(this::contact);
         chase = false;
+        settlement = false;
+        settlementActor = null;
         this.getEntity().add(new NameComponent("ExpStone"));
         // Additional initialization for ExpStone can be added here
     }
@@ -52,6 +54,41 @@ public class ExpStone extends DropItem {
     public void update(float delta) {
         super.update(delta);
         // Additional update logic for ExpStone can be added here
+        chaseTarget(delta);
+        settlement(delta);
+    }
+
+
+    boolean settlement = false;
+    VActor settlementActor = null;
+    private void settlement(float delta) {
+        if (!settlement) {
+            return;
+        }
+        settlement = false;
+        // this should be assigned to other entity, not target entity!!!
+        ExpComponent targetExpComp = ComponentMapperUtil.getComponentFor(ExpComponent.class, settlementActor.getEntity());
+        if (targetExpComp != null && targetExpComp.main) {
+            Entity gameModeEntity = Main.getInstance().getGameMode().getEntity();
+            ExpGetEvent expGetEvent = new ExpGetEvent();
+            expGetEvent.setTo(settlementActor);
+            expGetEvent.setExp(exp);
+            ComponentMapperUtil.getComponentFor(BattleContextComponent.class, gameModeEntity)
+                .getBattleContext()
+                .addEvent(expGetEvent);
+            picked = true;
+            // todo play exp picked sound
+            Gdx.app.log("ExpStone", "Picked up exp stone with exp: " + exp);
+            getWorldContext().getWorld().resetVActor(this);
+        }else {
+            Gdx.app.log("ExpStone", "Target does not have ExpComponent or is not the main target." + AssetUtils.nameOf(settlementActor.getEntity()));
+        }
+    }
+
+    private void chaseTarget(float delta) {
+        if (!chase) {
+            return;
+        }
         Entity target = ComponentMapperUtil.getComponentFor(DropSignComponent.class, entity).target;
         if(chase && target!= null && target.flags != 0) {
             VRectBoundComponent rect = target.getComponent(VRectBoundComponent.class);
@@ -94,24 +131,8 @@ public class ExpStone extends DropItem {
                     // Ignore contact with other actors if the target is already set
                     return;
                 }
-                // this should be assigned to other entity, not target entity!!!
-                ExpComponent targetExpComp = ComponentMapperUtil.getComponentFor(ExpComponent.class, otherActor.getEntity());
-                if (targetExpComp != null && targetExpComp.main) {
-                    Entity gameModeEntity = Main.getInstance().getGameMode().getEntity();
-                    ExpGetEvent expGetEvent = new ExpGetEvent();
-                    expGetEvent.setTo(otherActor);
-                    expGetEvent.setExp(exp);
-                    ComponentMapperUtil.getComponentFor(BattleContextComponent.class, gameModeEntity)
-                            .getBattleContext()
-                            .addEvent(expGetEvent);
-                    picked = true;
-                    // todo play exp picked sound
-                    Gdx.app.log("ExpStone", "Picked up exp stone with exp: " + exp);
-                    getWorldContext().getWorld().resetVActor(this);
-                }else {
-                    Gdx.app.log("ExpStone", "Target does not have ExpComponent or is not the main target." + AssetUtils.nameOf(target));
-                }
-
+                settlementActor = otherActor;
+                settlement = true;
             }
         } else {
             // Logic when the contact pair is destroyed

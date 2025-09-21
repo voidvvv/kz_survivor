@@ -32,6 +32,7 @@ public class Box2dMoveSystem extends IteratingSystem {
         VRectBoundComponent vRectBoundComponent = rectBoundComponentComponentMapper.get(entity);
         if (moveComponent != null) {
             Vector2 vel = moveComponent.vel.nor();
+            additionalVel(entity);
             tmp.set(vel);
             if (box2dComponent != null) {
                 box2dComponent.getFlatBody().setLinearVelocity(Box2dUnitConverter.worldToBox2d(tmp.scl(moveComponent.speed).add(moveComponent.additionalVel)));
@@ -46,6 +47,10 @@ public class Box2dMoveSystem extends IteratingSystem {
             vRectBoundComponent.bottomcenter.set(Box2dUnitConverter.box2dToWorld(box2dComponent.getFlatBody().getPosition()));
         }
 
+
+    }
+
+    private void additionalVel(Entity entity) {
 
     }
 

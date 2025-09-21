@@ -1,6 +1,5 @@
 package com.voidvvv.game.actor;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.ai.msg.MessageManager;
@@ -9,12 +8,10 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.Main;
 import com.voidvvv.game.base.state.Idle;
 import com.voidvvv.game.ecs.components.*;
-import com.voidvvv.game.box2d.VBox2dComponent;
 import com.voidvvv.game.ecs.components.skill.MainSkillComponent;
 import com.voidvvv.game.skill.CastLightBoom;
 import com.voidvvv.game.skill.CastThunder;
@@ -23,7 +20,7 @@ import com.voidvvv.game.utils.AssetUtils;
 import com.voidvvv.game.utils.MessageConstants;
 import com.voidvvv.render.actor.BobRender;
 
-public class Bob extends MoveShapeBox2dActor {
+public class Bob extends VFlatWorldCreature {
     public static final String NAME = "Bob";
     public static BaseStateActorAnimationComponent animPrototype;
     public String metaName () {
